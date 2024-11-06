@@ -1,0 +1,39 @@
+---
+
+include:
+  - template: 'Workflows/MergeRequest-Pipelines.gitlab-ci.yml'
+
+stages:
+  - 🚚 publish
+
+variables:
+  # Secrets (set in GitLab CI/CD settings)
+  # - AWS IAM id/secret key for 'bas-gitlab-ci-bas-embedded-maps' user
+  #   - AWS_ACCESS_KEY_ID: "[Sensitive]"
+  #   - AWS_SECRET_ACCESS_KEY: "[Sensitive]"
+
+  # Publishing
+  S3_BUCKET_STAGE: embedded-maps-testing.data.bas.ac.uk
+  S3_BUCKET_PROD: embedded-maps.data.bas.ac.uk
+
+image:
+  name: governmentpaas/awscli:latest
+  entrypoint: [""]
+
+# Jobs
+
+publish-content-stage:
+  stage: 🚚 publish
+  needs: []
+  script:
+    - "aws s3 sync public/ s3://$S3_BUCKET_STAGE/v1/"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $CI_COMMIT_TAG == null'
+
+publish-content-prod:
+  stage: 🚚 publish
+  needs: []
+  script:
+    - "aws s3 sync public/ s3://$S3_BUCKET_PROD/v1/"
+  rules:
+    - if: $CI_COMMIT_TAG

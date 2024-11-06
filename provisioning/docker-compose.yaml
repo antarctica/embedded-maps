@@ -1,0 +1,12 @@
+---
+
+services:
+  terraform:
+    image: hashicorp/terraform:1.9.5
+    volumes:
+      - .:/workspace
+    entrypoint: /bin/ash
+    working_dir: /workspace
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY

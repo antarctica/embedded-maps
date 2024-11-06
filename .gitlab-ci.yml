@@ -22,7 +22,7 @@ image:
 
 # Jobs
 
-publish-content-stage:
+publish-stage:
   stage: 🚚 publish
   needs: []
   script:
@@ -30,7 +30,7 @@ publish-content-stage:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && $CI_COMMIT_TAG == null'
 
-publish-content-prod:
+publish-prod:
   stage: 🚚 publish
   needs: []
   script:

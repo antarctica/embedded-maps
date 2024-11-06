@@ -29,13 +29,13 @@ The initial version of this service:
 For an Antarctic map:
 
 ```html
-<iframe src="https://embedded-maps-testing.data.bas.ac.uk/?geom=%5B%5B%5B-180%2C%20-90%5D%2C%5B180%2C%20-90%5D%2C%5B180%2C%20-60%5D%2C%5B-180%2C%20-60%5D%2C%5B-180%2C%20-90%5D%5D%5D" style="border:none;"></iframe>
+<iframe src="https://embedded-maps.data.bas.ac.uk/v1/?geom=%5B%5B%5B-180%2C%20-90%5D%2C%5B180%2C%20-90%5D%2C%5B180%2C%20-60%5D%2C%5B-180%2C%20-60%5D%2C%5B-180%2C%20-90%5D%5D%5D" style="border:none;"></iframe>
 ```
 
 For a sub-Antarctic map:
 
 ```html
-<iframe src="https://embedded-maps-testing.data.bas.ac.uk/?geom=geom=%5B%5B%5B-180%2C-60%5D%2C%5B180%2C-60%5D%2C%5B180%2C-50%5D%2C%5B-180%2C-50%5D%2C%5B-180%2C-60%5D%5D%5D" style="border:none;"></iframe>
+<iframe src="https://embedded-maps.data.bas.ac.uk/v1/?geom=geom=%5B%5B%5B-180%2C-60%5D%2C%5B180%2C-60%5D%2C%5B180%2C-50%5D%2C%5B-180%2C-50%5D%2C%5B-180%2C-60%5D%5D%5D" style="border:none;"></iframe>
 ```
 
 **Note:** Requests for any other geometries will return a null response (grey square).

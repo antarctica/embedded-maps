@@ -112,24 +112,22 @@ $ python -m http.server 9000 --directory public
 
 ## Testing
 
-For local testing, with the app running locally run in a separate terminal:
+A simple page embedding maps for each supported [Well Known Extent](#well-known-extents) is provided for manual testing:
 
-```
-$ python -m http.server 9001 --directory tests
-```
+- `tests/local-dev.html` (for local development)
+- `tests/integration.html` (for integration/testing)
+- `tests/production.html` (for production)
 
-For remote testing, manually visit:
+To test an environment locally:
 
-- `$ENDPOINT/?geom=%5B%5B%5B-180%2C%20-90%5D%2C%5B180%2C%20-90%5D%2C%5B180%2C%20-60%5D%2C%5B-180%2C%20-60%5D%2C%5B-180%2C%20-90%5D%5D%5D` (Antarctica)
-- `$ENDPOINT/?geom=%5B%5B%5B-180%2C-60%5D%2C%5B180%2C-60%5D%2C%5B180%2C-50%5D%2C%5B-180%2C-50%5D%2C%5B-180%2C-60%5D%5D%5D` (Sub Antarctica)
+- run the app running locally
+- in a separate terminal, run `python -m http.server 9001 --directory tests`
+- visit: http://localhost:9001/{environment}
 
-Where `$ENDPOINT` is:
+For remote testing, visit:
 
-- `https://embedded-maps-testing.bas.ac.uk/v1/` (integration)
-- `https://embedded-maps.bas.ac.uk/v1/` (integration)
-
-These URLs should return an expected map of each of these [Well Known Regions](#well-known-regions) based on their 
-[Well Known Extents](#well-known-extents).
+- https://embedded-maps-testing.data.bas.ac.uk/tests/v1/integration.html
+- https://embedded-maps.data.bas.ac.uk/tests/v1/production.html
 
 ### Health monitoring
 

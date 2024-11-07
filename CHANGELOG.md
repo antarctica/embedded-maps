@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 * test pages for hosted environments
   [#6](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/6)
+* Continuous Deployment environments
+  [#5](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/5)
+* Automated GitLab releases via Continuous Deployment
+  [#4](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/4)
 
 ## [0.1.1] 2024-11-06
 

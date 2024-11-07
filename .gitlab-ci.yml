@@ -5,6 +5,7 @@ include:
 
 stages:
   - 🚚 publish
+  - 📣 release
 
 variables:
   # Secrets (set in GitLab CI/CD settings)
@@ -15,6 +16,10 @@ variables:
   # Publishing
   S3_BUCKET_STAGE: embedded-maps-testing.data.bas.ac.uk
   S3_BUCKET_PROD: embedded-maps.data.bas.ac.uk
+
+  # Environment test URLs
+  ENV_STAGE_HREF: https://embedded-maps-testing.data.bas.ac.uk/tests/v1/integration.html
+  ENV_PROD_HREF: https://embedded-maps.data.bas.ac.uk/tests/v1/production.html
 
 image:
   name: governmentpaas/awscli:latest
@@ -27,6 +32,10 @@ publish-stage:
   needs: []
   script:
     - "aws s3 sync public/ s3://$S3_BUCKET_STAGE/v1/"
+    - "aws s3 sync tests/ s3://$S3_BUCKET_STAGE/tests/v1/"
+  environment:
+    name: stage
+    url: $ENV_STAGE_HREF
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && $CI_COMMIT_TAG == null'
 
@@ -35,5 +44,56 @@ publish-prod:
   needs: []
   script:
     - "aws s3 sync public/ s3://$S3_BUCKET_PROD/v1/"
+    - "aws s3 sync tests/ s3://$S3_BUCKET_PROD/tests/v1/"
+  environment:
+    name: production
+    url: $ENV_PROD_HREF
+  rules:
+    - if: $CI_COMMIT_TAG
+
+release:
+  stage: 📣 release
+  needs: []
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  before_script:
+    - apk add --no-cache curl jq
+
+    - export TAG_NO_PREFIX=$(echo $CI_COMMIT_TAG | cut -c 2-)
+    # for a string v0.8.13, replace last digit to always be 0
+    - export TAG_NO_PATCH=$(echo $CI_COMMIT_TAG | sed 's/[0-9]$/0/')
+
+    - 'curl -s -H "Authorization: Bearer $PROJECT_ACCESS_TOKEN" "$CI_API_V4_URL/projects/$CI_PROJECT_ID/milestones?title=$CI_COMMIT_TAG" > milestone_exact.json'
+    - 'curl -s -H "Authorization: Bearer $PROJECT_ACCESS_TOKEN" "$CI_API_V4_URL/projects/$CI_PROJECT_ID/milestones?title=$TAG_NO_PATCH" > milestone-minor.json'
+    - export MILESTONE_TITLE_EXACT=$(cat milestone_exact.json | jq -r ".[0] | .title") && rm milestone_exact.json
+    - export MILESTONE_TITLE_MINOR=$(cat milestone-minor.json | jq -r ".[0] | .title") && rm milestone-minor.json
+    - >
+      if [ "$MILESTONE_TITLE_EXACT" != "null" ]; then
+          export MILESTONE_TITLE=$MILESTONE_TITLE_EXACT
+      elif [ "$MILESTONE_TITLE_MINOR" != "null" ]; then
+          export MILESTONE_TITLE=$MILESTONE_TITLE_MINOR
+      else
+          export MILESTONE_TITLE=""
+      fi
+
+    - curl -s -L -O https://github.com/taiki-e/parse-changelog/releases/download/v0.6.8/parse-changelog-x86_64-unknown-linux-musl.tar.gz
+    - tar -xzf parse-changelog-x86_64-unknown-linux-musl.tar.gz -C /usr/local/bin/
+    - parse-changelog CHANGELOG.md "$TAG_NO_PREFIX" > changelog.txt
+
+    # the release section cannot access variables defined in a script but can read from a file :|
+    - echo "$TAG_NO_PREFIX" > tag_no_prefix.txt
+    - echo "$MILESTONE_TITLE" > milestone_title.txt
+  script:
+    - echo 'releasing'
+  release:
+    name: $(cat tag_no_prefix.txt)
+    tag_name: $CI_COMMIT_TAG
+    milestones:
+      - $(cat milestone_title.txt)
+    description: $(cat changelog.txt)
+    assets:
+      links:
+        - name: README
+          url: '$CI_PROJECT_URL/-/blob/$CI_COMMIT_TAG/README.md'
+          link_type: runbook
   rules:
     - if: $CI_COMMIT_TAG

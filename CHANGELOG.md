@@ -1,4 +1,4 @@
-# BAS Embedded Maps - Changelog
+# BAS Embedded Maps Service - Changelog
 
 All notable changes to this project will be documented in this file.
 
@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   [#5](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/5)
 * Automated GitLab releases via Continuous Deployment
   [#4](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/4)
+
+### Changed
+
+* updating project name to 'Embedded Maps Service' (rather than 'Embedded Maps')
 
 ## [0.1.1] 2024-11-06
 

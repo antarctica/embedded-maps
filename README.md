@@ -1,4 +1,4 @@
-# BAS Embedded Maps
+# BAS Embedded Maps Service
 
 Embeddable maps for visualising a feature on a suitable base map.
 

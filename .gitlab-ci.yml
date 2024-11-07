@@ -34,7 +34,7 @@ publish-stage:
     - "aws s3 sync public/ s3://$S3_BUCKET_STAGE/v1/"
     - "aws s3 sync tests/ s3://$S3_BUCKET_STAGE/tests/v1/"
   environment:
-    name: stage
+    name: staging
     url: $ENV_STAGE_HREF
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && $CI_COMMIT_TAG == null'

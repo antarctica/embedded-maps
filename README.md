@@ -1,6 +1,6 @@
-# BAS Embedded Maps
+# BAS Embedded Maps Service
 
-Embeddable maps for visualising a feature on a suitable base map.
+Simple embeddable maps for visualising a feature on a suitable basemap.
 
 ## Overview
 
@@ -8,14 +8,13 @@ Embeddable maps for visualising a feature on a suitable base map.
 of interest to others. Some resources, indicated with a '🛡' or '🔒' symbol, can only be accessed by BAS staff or
 project members respectively. Contact the [Project Maintainer](#project-maintainer) to request access.
 
-This project provides a service applications can use to embed simple maps via an iframe of a single feature's geometry 
-given by a query string parameter. 
+This project provides a service for applications to embed simple maps of a single feature's geometry.
 
-These maps use a suitable basemap based on the feature geometry (i.e. Antarctic/Arctic/World/etc.) is used, with fixed 
-and minimal map controls and feature symbology. 
-
-Where a geometry is known to give a poor result (such as a bounding box covering Antarctica), a densified polygon will
-be substituted automatically.
+- maps are embedded via an iframe and the feature geometry is set via a `geom` query string parameter
+- maps use a basemap based on the feature geometry (i.e. if in the Antarctic, an Antarctic basemap)
+- maps use fixed and minimal map controls and feature symbology
+- where a geometry is known to give a poor result (such as a bounding box covering Antarctica), a densified polygon 
+  will be substituted automatically
 
 ### Status
 

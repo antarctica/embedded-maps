@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+* test pages for hosted environments
+  [#6](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/6)
+
 ## [0.1.1] 2024-11-06
 
 ### Fixed

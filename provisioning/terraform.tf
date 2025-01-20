@@ -97,7 +97,7 @@ resource "aws_s3_bucket_website_configuration" "testing" {
     suffix = "index.html"
   }
   error_document {
-    key = "404.html"
+    key = "index.html"
   }
 }
 
@@ -142,7 +142,7 @@ resource "aws_s3_bucket_website_configuration" "production" {
     suffix = "index.html"
   }
   error_document {
-    key = "404.html"
+    key = "index.html"
   }
 }
 
@@ -252,10 +252,11 @@ resource "aws_acm_certificate_validation" "production" {
 ##
 
 resource "aws_cloudfront_distribution" "testing" {
-  enabled     = true
-  comment     = "BAS Embedded Maps (Testing)"
-  price_class = "PriceClass_100" # US and EU edge locations only
-  aliases     = [aws_s3_bucket.testing.bucket]
+  enabled             = true
+  comment             = "BAS Embedded Maps (Testing)"
+  default_root_object = "index.html"
+  price_class         = "PriceClass_100" # US and EU edge locations only
+  aliases             = [aws_s3_bucket.testing.bucket]
 
   origin {
     domain_name = aws_s3_bucket_website_configuration.testing.website_endpoint
@@ -300,6 +301,13 @@ resource "aws_cloudfront_distribution" "testing" {
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
     acm_certificate_arn      = aws_acm_certificate_validation.testing.certificate_arn
+  }
+
+  # Add custom error response for SPA routing
+  custom_error_response {
+    error_code         = 404
+    response_code      = 200
+    response_page_path = "/index.html"
   }
 }
 
@@ -353,6 +361,13 @@ resource "aws_cloudfront_distribution" "production" {
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
     acm_certificate_arn      = aws_acm_certificate_validation.production.certificate_arn
+  }
+
+  # Add custom error response for SPA routing
+  custom_error_response {
+    error_code         = 404
+    response_code      = 200
+    response_page_path = "/index.html"
   }
 }
 

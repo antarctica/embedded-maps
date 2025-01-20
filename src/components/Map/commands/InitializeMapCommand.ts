@@ -23,8 +23,9 @@ export class InitializeMapCommand implements MapCommand {
       });
       return {
         execute: (mapView: __esri.MapView) => {
+          mapView.set('rotation', basemapConfig.rotation);
           applyBasemapConstraints(mapView, basemapConfig);
-          mapView.goTo({ target: mapCenter, rotation: basemapConfig.rotation }, { animate: false });
+          mapView.goTo({ target: mapCenter }, { animate: false });
         },
       };
     }

@@ -59,9 +59,10 @@ export class FindAssetCommand implements MapCommand {
       this.map.basemap = basemapConfig.basemap;
       return {
         execute: (mapView: __esri.MapView) => {
+          mapView.set('rotation', basemapConfig.rotation);
           applyBasemapConstraints(mapView, basemapConfig);
+          mapView.goTo({ target: assetLocation, scale: 1000000 }, { animate: false });
           applyPolarHeadingCorrection(mapView, mapProjection);
-          mapView.goTo({ target: assetLocation, rotation: basemapConfig.rotation, scale: 1000000 });
         },
       };
     }

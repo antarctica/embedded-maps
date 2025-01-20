@@ -37,11 +37,9 @@ export class AddBboxCommand implements MapCommand {
 
       return {
         execute: (mapView: __esri.MapView) => {
+          mapView.set('rotation', basemapConfig.rotation);
           applyBasemapConstraints(mapView, basemapConfig);
-          mapView.goTo(
-            { target: basemapConfig.viewExtent, rotation: basemapConfig.rotation },
-            { animate: false },
-          );
+          mapView.goTo({ target: basemapConfig.viewExtent }, { animate: false });
         },
       };
     }

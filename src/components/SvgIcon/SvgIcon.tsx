@@ -44,7 +44,7 @@ interface IconProps {
 const SvgIcon: React.FC<IconProps> = React.forwardRef<SVGSVGElement, IconProps>(
   ({ name, size = 12, color = 'currentColor', className, style }, ref) => (
     <svg ref={ref} className={className} width={size} height={size} fill={color} style={style}>
-      <use xlinkHref={`/svg/sprites.svg#${name}`} />
+      <use xlinkHref={`/v1/svg/sprites.svg#${name}`} />
     </svg>
   ),
 );

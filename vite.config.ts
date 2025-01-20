@@ -12,4 +12,5 @@ export default defineConfig({
     setupFiles: './src/test/setup.tsx',
     environment: 'jsdom',
   },
+  base: '/v1/',
 });

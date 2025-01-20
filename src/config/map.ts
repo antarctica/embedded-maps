@@ -22,12 +22,12 @@ export function getMapProjectionFromPosition([, latitude]: [number, number]): Ma
 }
 
 export function getMapProjectionFromBbox(bbox: [number, number, number, number]): MapProjection {
-  const [, minY] = bbox;
+  const [, minY, maxY] = bbox;
 
   switch (true) {
-    case minY <= -55:
+    case maxY <= -55 && minY <= -55:
       return MapProjection.ANTARCTIC;
-    case minY >= 55:
+    case minY >= 55 && maxY >= 55:
       return MapProjection.ARCTIC;
     default:
       return MapProjection.WORLD;

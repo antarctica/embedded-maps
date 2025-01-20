@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom/client';
 import { routeTree } from './routeTree.gen';
 
 // Create a new router instance
-const router = createRouter({ routeTree, basepath: '/v1' });
+const router = createRouter({ routeTree, basepath: import.meta.env.VITE_BASE_PATH });
 
 // Register the router instance for type safety
 declare module '@tanstack/react-router' {

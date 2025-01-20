@@ -1,0 +1,49 @@
+import Graphic from '@arcgis/core/Graphic';
+import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
+import EsriMap from '@arcgis/core/Map';
+import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
+
+import { MapCommand, PostInitCommand } from '@/arcgis/typings/commandtypes';
+import { getBasemapConfigForMapProjection, getMapProjectionFromBbox } from '@/config/map';
+
+import { applyBasemapConstraints, createGeometryFromBBox } from '../utils';
+export class AddBboxCommand implements MapCommand {
+  constructor(
+    private map: EsriMap,
+    private bbox?: [number, number, number, number],
+  ) {}
+
+  async execute(): Promise<void | PostInitCommand> {
+    if (this.bbox) {
+      const mapProjection = getMapProjectionFromBbox(this.bbox);
+      const basemapConfig = getBasemapConfigForMapProjection(mapProjection);
+      this.map.basemap = basemapConfig.basemap;
+
+      const bboxGraphic = new Graphic({
+        geometry: createGeometryFromBBox(this.bbox, mapProjection),
+        symbol: new SimpleFillSymbol({
+          color: [204, 0, 51, 0.2], // #CC0033 @ 80% opacity
+          outline: {
+            color: [204, 0, 51, 1], // #CC0033
+            width: 1,
+          },
+        }),
+      });
+
+      const bboxGraphicsLayer = new GraphicsLayer({
+        graphics: [bboxGraphic],
+      });
+      this.map.add(bboxGraphicsLayer);
+
+      return {
+        execute: (mapView: __esri.MapView) => {
+          applyBasemapConstraints(mapView, basemapConfig);
+          mapView.goTo(
+            { target: basemapConfig.viewExtent, rotation: basemapConfig.rotation },
+            { animate: false },
+          );
+        },
+      };
+    }
+  }
+}

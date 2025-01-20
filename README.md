@@ -8,64 +8,52 @@ Simple embeddable maps for visualising a feature on a suitable basemap.
 of interest to others. Some resources, indicated with a '🛡' or '🔒' symbol, can only be accessed by BAS staff or
 project members respectively. Contact the [Project Maintainer](#project-maintainer) to request access.
 
-This project provides a service for applications to embed simple maps of a single feature's geometry.
-
-- maps are embedded via an iframe and the feature geometry is set via a `geom` query string parameter
+This project provides a service for applications to embed simple maps of the Polar Regions.
+- maps are embedded via an iframe and the display of features is controlled by query parameters
 - maps use a basemap based on the feature geometry (i.e. if in the Antarctic, an Antarctic basemap)
 - maps use fixed and minimal map controls and feature symbology
-- where a geometry is known to give a poor result (such as a bounding box covering Antarctica), a densified polygon 
-  will be substituted automatically
 
 ### Status
-
-The initial version of this service:
-
-- has very limited support for a fixed set of geometries only
-- is intended for use in the [ADD Metadata Toolbox 🛡️](https://gitlab.data.bas.ac.uk/MAGIC/add-metadata-toolbox) only
+The initial version of this service is intended for use in the [ADD Metadata Toolbox 🛡️](https://gitlab.data.bas.ac.uk/MAGIC/add-metadata-toolbox) only
 
 ## Usage
+The service supports three map projections that are automatically selected based on the provided geometry:
+
+- Antarctic projection (latitude ≤ -60°)
+- Arctic projection (latitude ≥ 60°)
+- World projection (latitudes between -60° and 60°)
+
+Maps can be configured using the following query parameters:
+
+- `center`: Initial center coordinates [longitude, latitude] `array[number, number]`
+- `zoom`: Initial zoom level `number`
+- `bbox`: Bounding box coordinates [minX, minY, maxX, maxY] `array[number, number, number, number]`
+- `globe_overview`: Whether to show a globe overview `boolean`
+- `asset_id`: Asset ID to display on the map `string`
+
 
 For an Antarctic map:
 
 ```html
-<iframe src="https://embedded-maps.data.bas.ac.uk/v1/?geom=%5B%5B%5B-180%2C%20-90%5D%2C%5B180%2C%20-90%5D%2C%5B180%2C%20-60%5D%2C%5B-180%2C%20-60%5D%2C%5B-180%2C%20-90%5D%5D%5D" style="border:none;"></iframe>
+<iframe src="https://embedded-maps.data.bas.ac.uk/v1/?center=[-180, -90]&zoom=6&globe_overview=true" style="border:none;"></iframe>
 ```
-
-For a sub-Antarctic map:
-
-```html
-<iframe src="https://embedded-maps.data.bas.ac.uk/v1/?geom=geom=%5B%5B%5B-180%2C-60%5D%2C%5B180%2C-60%5D%2C%5B180%2C-50%5D%2C%5B-180%2C-50%5D%2C%5B-180%2C-60%5D%5D%5D" style="border:none;"></iframe>
-```
-
-**Note:** Requests for any other geometries will return a null response (grey square).
 
 ## Implementation
 
 ### App
+The application is built using React and the ArcGIS Maps SDK for JavaScript. Key features include:
 
-A very simple placeholder app is used to parse the geometry query string value and use this to set the href of an 
-`<img>` element. I.e. if the geom matches the [Well Known Extent](#well-known-extents) for Antarctica, the href to an 
-image of map with the relevant extent shown is used.
-
-`public/index.html` acts as the app entry point and template. `public/assets/js/main.js` contains all logic, including
-locally defined [Well Known Extents](#well-known-extents).
+- Automatic projection selection based on geometry location
+- Support for different basemaps optimized for Antarctic, Arctic, and World views
+- Built-in map controls (zoom, home)
+- Optional globe overview
+- Loading states and error handling
 
 ### Basemaps
 
 This service uses basemaps as determined by [MAGIC/esri#86 🛡️](https://gitlab.data.bas.ac.uk/MAGIC/esri/-/issues/86).
 
-### Well Known Regions
-
-Well Known Regions represent commonly referenced and understood areas of the world.
-
-Supported regions are currently defined indirectly via their extents locally within `public/assets/js/main.js`.
-
-### Well Known Extents
-
-Well Known Extents represent commonly (if not officially) agreed upon bounding extents for 
-[Well Known Regions](#well-known-extents). They consist of a bounding box expressed as a GeoJSON formatted geometry.
-
-Supported extents are currently defined locally within `public/assets/js/main.js`.
+Each projection comes with an optimized basemap and view configuration for the best visualization of features in that region.
 
 ## Setup
 
@@ -104,10 +92,14 @@ See the [BAS Terraform Remote State 🛡️](https://gitlab.data.bas.ac.uk/WSF/t
 permissions to remote state are enforced.
 
 ## Developing
+To set up the project locally, follow these steps:
 
+```shell
+npm install
+npm run dev
 ```
-$ python -m http.server 9000 --directory public
-```
+
+**Note:** Node.js is required to run the project.
 
 ## Testing
 

@@ -1,5 +1,6 @@
 import { cva } from '@styled-system/css';
 import { Box } from '@styled-system/jsx';
+import React from 'react';
 
 import SpinLoader from '../SpinLoader';
 
@@ -30,9 +31,24 @@ const loadingScrim = cva({
     },
   },
 });
+
 function LoadingScrim({ isLoading, error }: { isLoading: boolean; error?: string }) {
+  const [shouldShow, setShouldShow] = React.useState(false);
+
+  React.useEffect(() => {
+    let timeoutId: number;
+    if (isLoading) {
+      timeoutId = window.setTimeout(() => {
+        setShouldShow(true);
+      }, 100);
+    } else {
+      setShouldShow(false);
+    }
+    return () => clearTimeout(timeoutId);
+  }, [isLoading]);
+
   return (
-    <Box className={loadingScrim({ isLoading })}>
+    <Box className={loadingScrim({ isLoading: shouldShow })}>
       {error ? <h2>{`Error initializing map: ${error}`}</h2> : <SpinLoader size={100}></SpinLoader>}
     </Box>
   );

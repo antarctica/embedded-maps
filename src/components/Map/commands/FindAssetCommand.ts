@@ -5,7 +5,7 @@ import EsriMap from '@arcgis/core/Map';
 
 import { MapCommand, ViewCommand } from '@/arcgis/typings/commandtypes';
 import { ASSETFIELDNAME, ASSETLAYERMAPID, ASSETLAYERPORTALID } from '@/config/assetLayer';
-import { getBasemapConfigForMapProjection, getMapProjectionFromPosition } from '@/config/map';
+import { getBasemapConfigForMapProjection, getMapProjectionFromPosition } from '@/config/basemap';
 
 import { applyBasemapConstraints, applyPolarHeadingCorrection } from '../utils/mapViewUtils';
 

@@ -1,8 +1,5 @@
 import Basemap from '@arcgis/core/Basemap';
-import Polygon from '@arcgis/core/geometry/Polygon';
-import SpatialReference from '@arcgis/core/geometry/SpatialReference';
-
-import { generateCircleRings } from '@/components/Map/utils/mapViewUtils';
+import { Polygon, SpatialReference } from '@arcgis/core/geometry';
 
 export enum MapProjection {
   ANTARCTIC = 'antarctic',
@@ -51,6 +48,19 @@ export function getMapProjectionFromBbox([minX, minY, maxX, maxY]: [
   }
 }
 
+export function getBasemapConfigForMapProjection(mapProjection: MapProjection): BasemapConfig {
+  switch (mapProjection) {
+    case MapProjection.ANTARCTIC:
+      return ANTARCTIC_BASEMAP_CONFIG;
+    case MapProjection.ARCTIC:
+      return ARCTIC_BASEMAP_CONFIG;
+    case MapProjection.SOUTH_GEORGIA:
+      return SOUTH_GEORGIA_BASEMAP_CONFIG;
+    case MapProjection.WORLD:
+      return WORLD_BASEMAP_CONFIG;
+  }
+}
+
 export interface BasemapConfig {
   basemap: Basemap;
   rotation: number;
@@ -58,7 +68,33 @@ export interface BasemapConfig {
   spatialReference: SpatialReference;
 }
 
-const ANTARCTIC_BASEMAP_CONFIG: BasemapConfig = {
+/**
+ * Generates a circle of points around a center point.
+ * @param {number} numVertices - The number of vertices to generate.
+ * @param {number} radius - The radius of the circle.
+ * @param {Array<number>} [center=[0, 0]] - The center point of the circle.
+ * @returns {Array<Array<number>>} An array of points representing the circle.
+ */
+export function generateCircleRings(
+  numVertices: number,
+  radius: number,
+  center: [number, number] = [0, 0],
+): number[][] {
+  const points: number[][] = [];
+  const [centerX, centerY] = center;
+
+  // Generate points around the circle
+  for (let i = 0; i <= numVertices; i++) {
+    // Use <= to close the circle by repeating the first point
+    const angle = (i * 2 * Math.PI) / numVertices;
+    const x = centerX + radius * Math.cos(angle);
+    const y = centerY + radius * Math.sin(angle);
+    points.push([x, y]);
+  }
+  return points;
+}
+
+export const ANTARCTIC_BASEMAP_CONFIG: BasemapConfig = {
   basemap: new Basemap({
     portalItem: {
       id: '435e23642bf94b83b07d1d3fc0c5c9d5',
@@ -72,7 +108,7 @@ const ANTARCTIC_BASEMAP_CONFIG: BasemapConfig = {
   spatialReference: new SpatialReference({ wkid: 3031 }),
 };
 
-const ARCTIC_BASEMAP_CONFIG: BasemapConfig = {
+export const ARCTIC_BASEMAP_CONFIG: BasemapConfig = {
   basemap: new Basemap({
     portalItem: {
       id: 'beee46578bc44e0bb47901f04400588a',
@@ -86,7 +122,7 @@ const ARCTIC_BASEMAP_CONFIG: BasemapConfig = {
   spatialReference: new SpatialReference({ wkid: 5936 }),
 };
 
-const WORLD_BASEMAP_CONFIG: BasemapConfig = {
+export const WORLD_BASEMAP_CONFIG: BasemapConfig = {
   basemap: new Basemap({
     portalItem: {
       id: '67ab7f7c535c4687b6518e6d2343e8a2',
@@ -108,7 +144,7 @@ const WORLD_BASEMAP_CONFIG: BasemapConfig = {
   spatialReference: new SpatialReference({ wkid: 3857 }),
 };
 
-const SOUTH_GEORGIA_BASEMAP_CONFIG: BasemapConfig = {
+export const SOUTH_GEORGIA_BASEMAP_CONFIG: BasemapConfig = {
   basemap: new Basemap({
     portalItem: {
       id: 'a9d30e0b6f2d47528e3c2f938420f630',
@@ -129,16 +165,3 @@ const SOUTH_GEORGIA_BASEMAP_CONFIG: BasemapConfig = {
   }),
   spatialReference: new SpatialReference({ wkid: 3762 }),
 };
-
-export function getBasemapConfigForMapProjection(mapProjection: MapProjection): BasemapConfig {
-  switch (mapProjection) {
-    case MapProjection.ANTARCTIC:
-      return ANTARCTIC_BASEMAP_CONFIG;
-    case MapProjection.ARCTIC:
-      return ARCTIC_BASEMAP_CONFIG;
-    case MapProjection.SOUTH_GEORGIA:
-      return SOUTH_GEORGIA_BASEMAP_CONFIG;
-    case MapProjection.WORLD:
-      return WORLD_BASEMAP_CONFIG;
-  }
-}

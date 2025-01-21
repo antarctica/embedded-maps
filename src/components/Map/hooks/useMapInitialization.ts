@@ -53,7 +53,7 @@ export function useMapInitialization({
         postInitCommandsRef.current = postInitCommands;
       });
     }
-  }, [map, initialCenter, initialAssetId, initialBbox, executeCommands, setMap]);
+  }, [map, initialCenter, initialAssetId, initialBbox, showRegion, executeCommands, setMap]);
 
   const handleViewReady = async (view: __esri.MapView) => {
     // Execute any pending post-init commands

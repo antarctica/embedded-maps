@@ -1,6 +1,6 @@
 import Polygon from '@arcgis/core/geometry/Polygon';
 
-import { MapProjection } from '@/config/map';
+import { MapProjection } from '@/config/basemap';
 
 interface RingCoordinates {
   minLon: number;

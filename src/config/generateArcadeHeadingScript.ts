@@ -1,4 +1,4 @@
-import { MapProjection } from './map';
+import { MapProjection } from './basemap';
 
 interface ArcadeHeadingConfig {
   longitudeField: string;

@@ -4,7 +4,7 @@ import EsriMap from '@arcgis/core/Map';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
 
 import { MapCommand, ViewCommand } from '@/arcgis/typings/commandtypes';
-import { getBasemapConfigForMapProjection, getMapProjectionFromBbox } from '@/config/map';
+import { getBasemapConfigForMapProjection, getMapProjectionFromBbox } from '@/config/basemap';
 
 import { createGeometryFromBBox } from '../utils/bboxUtils';
 import { applyBasemapConstraints } from '../utils/mapViewUtils';

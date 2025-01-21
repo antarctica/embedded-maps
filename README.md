@@ -32,7 +32,7 @@ Maps can be configured using the following query parameters:
 - `globe_overview`: Whether to show a globe overview `boolean`
 - `asset_id`: Asset ID to display on the map `string`
 - `hide_ui`: Whether to hide the map controls `boolean`
-
+- `show_region`: Whether to zoom to the basemap region or not `boolean`
 
 For an Antarctic map:
 

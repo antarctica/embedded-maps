@@ -5,7 +5,8 @@ import { Route } from '@/routes/__root';
 import { Map } from '../Map/Map';
 
 export function App() {
-  const { asset_id, center, zoom, bbox, globe_overview, scale, hide_ui } = Route.useSearch();
+  const { asset_id, center, zoom, bbox, globe_overview, scale, hide_ui, show_region } =
+    Route.useSearch();
 
   return (
     <Map
@@ -16,6 +17,7 @@ export function App() {
       initialScale={scale}
       includeGlobeOverview={globe_overview}
       hideUI={hide_ui}
+      showRegion={show_region}
     />
   );
 }

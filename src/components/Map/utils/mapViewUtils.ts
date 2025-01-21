@@ -32,7 +32,7 @@ export async function applyPolarHeadingCorrection(
   mapView: __esri.MapView,
   mapProjection: MapProjection,
 ) {
-  if (mapProjection === MapProjection.WORLD) {
+  if (mapProjection === MapProjection.WORLD || mapProjection === MapProjection.SOUTH_GEORGIA) {
     return;
   }
 

@@ -6,17 +6,6 @@ html, body, #root {
   width: 100%;
 }
 
-#ref-globe .esri-attribution{
-  display: none;
-}
-
-.esri-ui-inner-container .esri-component{
-  box-shadow:none !important
-}
-
-.esri-component {
-  margin: 0 !important;
-}
 
 
 

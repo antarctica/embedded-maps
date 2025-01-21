@@ -1,7 +1,7 @@
 import '@arcgis/map-components/dist/components/arcgis-placement';
 
-import { css } from '@styled-system/css';
-import { Box, Flex } from '@styled-system/jsx';
+import { css, cva } from '@styled-system/css';
+import { Flex } from '@styled-system/jsx';
 import React from 'react';
 
 import { ArcMapView } from '@/arcgis/components/ArcView/ArcMapView';
@@ -20,7 +20,38 @@ interface MapProps {
   initialScale?: number;
   includeGlobeOverview?: boolean;
   hideUI?: boolean;
+  showRegion?: boolean;
 }
+
+const viewPadding = {
+  top: 40,
+  left: 40,
+  right: 40,
+  bottom: 40,
+};
+
+const mapViewContainerRecipe = cva({
+  base: {
+    position: 'relative',
+    w: 'full',
+    h: 'full',
+    '& .esri-ui': {
+      inset: '0 !important',
+    },
+
+    '& #ref-globe .esri-attribution': {
+      display: 'none',
+    },
+
+    '& .esri-ui-inner-container .esri-component': {
+      boxShadow: '[none !important]',
+    },
+
+    '& .esri-component': {
+      margin: '[0 !important]',
+    },
+  },
+});
 
 export function Map({
   initialAssetId,
@@ -30,6 +61,7 @@ export function Map({
   initialScale,
   includeGlobeOverview,
   hideUI,
+  showRegion,
 }: MapProps) {
   const [viewPoint, setViewPoint] = React.useState<__esri.Viewpoint | undefined>(undefined);
 
@@ -37,6 +69,7 @@ export function Map({
     initialAssetId,
     initialCenter,
     initialBbox,
+    showRegion,
   });
 
   if (!map || isLoading || error) {
@@ -44,7 +77,7 @@ export function Map({
   }
 
   return (
-    <Box position={'relative'} w={'full'} h={'full'}>
+    <div className={mapViewContainerRecipe()}>
       <ArcMapView
         className={css({ w: 'full', h: 'full', pointerEvents: 'auto' })}
         map={map}
@@ -54,6 +87,7 @@ export function Map({
           });
         }}
         scale={initialScale}
+        padding={viewPadding}
         zoom={initialZoom}
       >
         {!hideUI && (
@@ -72,6 +106,6 @@ export function Map({
           </>
         )}
       </ArcMapView>
-    </Box>
+    </div>
   );
 }

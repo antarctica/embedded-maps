@@ -8,26 +8,40 @@ export enum MapProjection {
   ANTARCTIC = 'antarctic',
   ARCTIC = 'arctic',
   WORLD = 'world',
+  SOUTH_GEORGIA = 'south_georgia',
 }
 
-export function getMapProjectionFromPosition([, latitude]: [number, number]): MapProjection {
+export function getMapProjectionFromPosition([longitude, latitude]: [
+  number,
+  number,
+]): MapProjection {
   switch (true) {
-    case latitude <= -50:
-      return MapProjection.ANTARCTIC;
     case latitude >= 50:
       return MapProjection.ARCTIC;
+    case latitude <= -50:
+      if (
+        latitude >= -55.200717 &&
+        latitude <= -53.641972 &&
+        longitude >= -38.643677 &&
+        longitude <= -35.271423
+      ) {
+        return MapProjection.SOUTH_GEORGIA;
+      }
+      return MapProjection.ANTARCTIC;
     default:
       return MapProjection.WORLD;
   }
 }
 
-export function getMapProjectionFromBbox([, minY, , maxY]: [
+export function getMapProjectionFromBbox([minX, minY, maxX, maxY]: [
   number,
   number,
   number,
   number,
 ]): MapProjection {
   switch (true) {
+    case minX >= -38.643677 && maxX <= -35.271423 && minY >= -55.200717 && maxY <= -53.641972:
+      return MapProjection.SOUTH_GEORGIA;
     case maxY <= -50 && minY <= -50:
       return MapProjection.ANTARCTIC;
     case minY >= 50 && maxY >= 50:
@@ -94,12 +108,36 @@ const WORLD_BASEMAP_CONFIG: BasemapConfig = {
   spatialReference: new SpatialReference({ wkid: 3857 }),
 };
 
+const SOUTH_GEORGIA_BASEMAP_CONFIG: BasemapConfig = {
+  basemap: new Basemap({
+    portalItem: {
+      id: 'a9d30e0b6f2d47528e3c2f938420f630',
+    },
+  }),
+  rotation: 0,
+  viewExtent: new Polygon({
+    rings: [
+      [
+        [-38.643677, -55.200717],
+        [-38.643677, -53.641972],
+        [-35.271423, -53.641972],
+        [-35.271423, -55.200717],
+        [-38.643677, -55.200717],
+      ],
+    ],
+    spatialReference: SpatialReference.WGS84,
+  }),
+  spatialReference: new SpatialReference({ wkid: 3762 }),
+};
+
 export function getBasemapConfigForMapProjection(mapProjection: MapProjection): BasemapConfig {
   switch (mapProjection) {
     case MapProjection.ANTARCTIC:
       return ANTARCTIC_BASEMAP_CONFIG;
     case MapProjection.ARCTIC:
       return ARCTIC_BASEMAP_CONFIG;
+    case MapProjection.SOUTH_GEORGIA:
+      return SOUTH_GEORGIA_BASEMAP_CONFIG;
     case MapProjection.WORLD:
       return WORLD_BASEMAP_CONFIG;
   }
@@ -119,7 +157,7 @@ export function calculateCorrectedHeading(
   projection: MapProjection,
   symbolRotationToUp: number = 0,
 ): number {
-  if (projection === MapProjection.WORLD) {
+  if (projection === MapProjection.WORLD || projection === MapProjection.SOUTH_GEORGIA) {
     return (heading + symbolRotationToUp) % 360;
   }
   const bearingToPole = calculateProjectedBearingToPole(position, projection);

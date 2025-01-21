@@ -12,22 +12,25 @@ export enum MapProjection {
 
 export function getMapProjectionFromPosition([, latitude]: [number, number]): MapProjection {
   switch (true) {
-    case latitude <= -60:
+    case latitude <= -50:
       return MapProjection.ANTARCTIC;
-    case latitude >= 60:
+    case latitude >= 50:
       return MapProjection.ARCTIC;
     default:
       return MapProjection.WORLD;
   }
 }
 
-export function getMapProjectionFromBbox(bbox: [number, number, number, number]): MapProjection {
-  const [, minY, maxY] = bbox;
-
+export function getMapProjectionFromBbox([, minY, , maxY]: [
+  number,
+  number,
+  number,
+  number,
+]): MapProjection {
   switch (true) {
-    case maxY <= -55 && minY <= -55:
+    case maxY <= -50 && minY <= -50:
       return MapProjection.ANTARCTIC;
-    case minY >= 55 && maxY >= 55:
+    case minY >= 50 && maxY >= 50:
       return MapProjection.ARCTIC;
     default:
       return MapProjection.WORLD;

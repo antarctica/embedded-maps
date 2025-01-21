@@ -2,7 +2,7 @@ import Basemap from '@arcgis/core/Basemap';
 import Polygon from '@arcgis/core/geometry/Polygon';
 import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 
-import { generateCircleRings } from '@/components/Map/utils';
+import { generateCircleRings } from '@/components/Map/utils/mapViewUtils';
 
 export enum MapProjection {
   ANTARCTIC = 'antarctic',

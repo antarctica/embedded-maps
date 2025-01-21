@@ -4,7 +4,7 @@ import EsriMap from '@arcgis/core/Map';
 import { MapCommand, ViewCommand } from '@/arcgis/typings/commandtypes';
 import { getBasemapConfigForMapProjection, getMapProjectionFromPosition } from '@/config/map';
 
-import { applyBasemapConstraints } from '../utils';
+import { applyBasemapConstraints } from '../utils/mapViewUtils';
 export class MapCenterCommand implements MapCommand {
   constructor(private center: [number, number]) {}
 

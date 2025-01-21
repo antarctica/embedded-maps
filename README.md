@@ -31,6 +31,7 @@ Maps can be configured using the following query parameters:
 - `bbox`: Bounding box coordinates [minX, minY, maxX, maxY] `array[number, number, number, number]`
 - `globe_overview`: Whether to show a globe overview `boolean`
 - `asset_id`: Asset ID to display on the map `string`
+- `hide_ui`: Whether to hide the map controls `boolean`
 
 
 For an Antarctic map:

@@ -7,7 +7,7 @@ import { MapCommand, ViewCommand } from '@/arcgis/typings/commandtypes';
 import { ASSETFIELDNAME, ASSETLAYERMAPID, ASSETLAYERPORTALID } from '@/config/assetLayer';
 import { getBasemapConfigForMapProjection, getMapProjectionFromPosition } from '@/config/map';
 
-import { applyBasemapConstraints, applyPolarHeadingCorrection } from '../utils';
+import { applyBasemapConstraints, applyPolarHeadingCorrection } from '../utils/mapViewUtils';
 
 export class FindAssetCommand implements MapCommand {
   private assetLayer: FeatureLayer;

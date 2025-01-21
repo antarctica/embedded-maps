@@ -6,7 +6,9 @@ import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
 import { MapCommand, ViewCommand } from '@/arcgis/typings/commandtypes';
 import { getBasemapConfigForMapProjection, getMapProjectionFromBbox } from '@/config/map';
 
-import { applyBasemapConstraints, createGeometryFromBBox } from '../utils';
+import { createGeometryFromBBox } from '../utils/bboxUtils';
+import { applyBasemapConstraints } from '../utils/mapViewUtils';
+
 export class AddBboxCommand implements MapCommand {
   constructor(
     private map: EsriMap,

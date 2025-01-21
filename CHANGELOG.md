@@ -7,8 +7,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [0.2.0] 2025-01-20
 
-### Changed
+### Added
+* added query parameters to the map
+  - `center`: Initial center coordinates [longitude, latitude] `array[number, number]`
+  - `zoom`: Initial zoom level `number`
+  - `scale`: Initial scale level `number`
+  - `bbox`: Bounding box coordinates [minX, minY, maxX, maxY] `array[number, number, number, number]`
+  - `globe_overview`: Whether to show a globe overview `boolean`
+  - `asset_id`: Asset ID to display on the map `string`
+  - `hide_ui`: Whether to hide the map controls `boolean`
+  - `show_region`: Whether to zoom to the basemap region or not `boolean`
 
+### Changed
 * refactored embeded map component to use arcgis library and react.
 * added polar heading correction for asset icons
 * added basemap config.

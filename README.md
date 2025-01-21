@@ -17,11 +17,12 @@ This project provides a service for applications to embed simple maps of the Pol
 The initial version of this service is intended for use in the [ADD Metadata Toolbox 🛡️](https://gitlab.data.bas.ac.uk/MAGIC/add-metadata-toolbox) only
 
 ## Usage
-The service supports three map projections that are automatically selected based on the provided geometry:
+The service supports four map projections that are automatically selected based on the provided geometry:
 
 - Antarctic projection (latitude ≤ -60°)
 - Arctic projection (latitude ≥ 60°)
 - World projection (latitudes between -60° and 60°)
+- South Georgia projection (latitude between -55.200717 and -53.641972 and longitude between -38.643677 and -35.271423)
 
 Maps can be configured using the following query parameters:
 

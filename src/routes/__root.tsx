@@ -12,6 +12,7 @@ const assetSearchSchema = z.object({
   zoom: fallback(z.number().optional(), undefined),
   scale: fallback(z.number().optional(), undefined),
   bbox: fallback(z.array(z.number()).length(4).optional(), undefined),
+  hide_ui: fallback(z.boolean().optional(), undefined),
 });
 
 export const Route = createRootRoute({

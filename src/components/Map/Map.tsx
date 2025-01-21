@@ -19,6 +19,7 @@ interface MapProps {
   initialBbox?: [number, number, number, number];
   initialScale?: number;
   includeGlobeOverview?: boolean;
+  hideUI?: boolean;
 }
 
 export function Map({
@@ -28,6 +29,7 @@ export function Map({
   initialBbox,
   initialScale,
   includeGlobeOverview,
+  hideUI,
 }: MapProps) {
   const [viewPoint, setViewPoint] = React.useState<__esri.Viewpoint | undefined>(undefined);
 
@@ -54,16 +56,20 @@ export function Map({
         scale={initialScale}
         zoom={initialZoom}
       >
-        <arcgis-placement position="top-left">
-          <Flex gap={'4'} direction="column">
-            <ZoomControl />
-            <HomeControl viewPoint={viewPoint} />
-          </Flex>
-        </arcgis-placement>
-        {includeGlobeOverview && (
-          <arcgis-placement position="top-right">
-            <Globe initialAssetId={initialAssetId} />
-          </arcgis-placement>
+        {!hideUI && (
+          <>
+            <arcgis-placement position="top-left">
+              <Flex gap={'4'} direction="column">
+                <ZoomControl />
+                <HomeControl viewPoint={viewPoint} />
+              </Flex>
+            </arcgis-placement>
+            {includeGlobeOverview && (
+              <arcgis-placement position="top-right">
+                <Globe initialAssetId={initialAssetId} />
+              </arcgis-placement>
+            )}
+          </>
         )}
       </ArcMapView>
     </Box>

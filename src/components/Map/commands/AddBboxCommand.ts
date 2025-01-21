@@ -3,7 +3,7 @@ import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import EsriMap from '@arcgis/core/Map';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
 
-import { MapCommand, PostInitCommand } from '@/arcgis/typings/commandtypes';
+import { MapCommand, ViewCommand } from '@/arcgis/typings/commandtypes';
 import { getBasemapConfigForMapProjection, getMapProjectionFromBbox } from '@/config/map';
 
 import { applyBasemapConstraints, createGeometryFromBBox } from '../utils';
@@ -13,11 +13,11 @@ export class AddBboxCommand implements MapCommand {
     private bbox?: [number, number, number, number],
   ) {}
 
-  async execute(): Promise<void | PostInitCommand> {
+  async executeOnMap(map: EsriMap): Promise<ViewCommand | void> {
     if (this.bbox) {
       const mapProjection = getMapProjectionFromBbox(this.bbox);
       const basemapConfig = getBasemapConfigForMapProjection(mapProjection);
-      this.map.basemap = basemapConfig.basemap;
+      map.basemap = basemapConfig.basemap;
 
       const bboxGraphic = new Graphic({
         geometry: createGeometryFromBBox(this.bbox, mapProjection),
@@ -36,7 +36,7 @@ export class AddBboxCommand implements MapCommand {
       this.map.add(bboxGraphicsLayer);
 
       return {
-        execute: (mapView: __esri.MapView) => {
+        executeOnView: (mapView: __esri.MapView) => {
           mapView.set('rotation', basemapConfig.rotation);
           applyBasemapConstraints(mapView, basemapConfig);
           mapView.goTo({ target: basemapConfig.viewExtent }, { animate: false });

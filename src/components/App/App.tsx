@@ -5,7 +5,7 @@ import { Route } from '@/routes/__root';
 import { Map } from '../Map/Map';
 
 export function App() {
-  const { asset_id, center, zoom, bbox, globe_overview } = Route.useSearch();
+  const { asset_id, center, zoom, bbox, globe_overview, scale } = Route.useSearch();
 
   return (
     <Map
@@ -13,6 +13,7 @@ export function App() {
       initialCenter={center as [number, number]}
       initialZoom={zoom}
       initialBbox={bbox as [number, number, number, number]}
+      initialScale={scale}
       includeGlobeOverview={globe_overview}
     />
   );

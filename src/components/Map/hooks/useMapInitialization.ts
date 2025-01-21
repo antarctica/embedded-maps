@@ -1,9 +1,9 @@
 import EsriMap from '@arcgis/core/Map';
 import { useEffect, useRef } from 'react';
 
-import { MapCommand, PostInitCommand } from '@/arcgis/typings/commandtypes';
+import { MapCommand, ViewCommand } from '@/arcgis/typings/commandtypes';
 import { FindAssetCommand } from '@/components/Map/commands/FindAssetCommand';
-import { InitializeMapCommand } from '@/components/Map/commands/InitializeMapCommand';
+import { MapCenterCommand } from '@/components/Map/commands/MapCenterCommand';
 
 import { useMapCommandExecuter } from '../../../arcgis/hooks/useMapCommandExecuter';
 import { AddBboxCommand } from '../commands/AddBboxCommand';
@@ -19,45 +19,43 @@ interface UseMapInitializationResult {
   map: EsriMap | null;
   error: Error | null;
   isLoading: boolean;
-  handleViewReady: (view: __esri.MapView) => void;
+  handleViewReady: (view: __esri.MapView) => Promise<void>;
 }
 
 export function useMapInitialization({
   initialAssetId,
   initialCenter,
   initialBbox,
-  onViewReady,
 }: UseMapInitializationProps): UseMapInitializationResult {
   const { map, setMap, error, isExecuting, executeCommands } = useMapCommandExecuter();
-  const postInitCommandsRef = useRef<PostInitCommand[]>([]);
+  const postInitCommandsRef = useRef<ViewCommand[]>([]);
 
   useEffect(() => {
     if (!map) {
       const mapInstance = new EsriMap();
       setMap(mapInstance);
-      const commands: MapCommand[] = [new InitializeMapCommand(mapInstance, initialCenter)];
+      const commands: MapCommand[] = [];
 
+      if (initialCenter) {
+        commands.push(new MapCenterCommand(initialCenter));
+      }
       if (initialAssetId && !initialBbox) {
-        commands.push(new FindAssetCommand(mapInstance, initialAssetId));
+        commands.push(new FindAssetCommand(initialAssetId));
       }
       if (initialBbox) {
         commands.push(new AddBboxCommand(mapInstance, initialBbox));
       }
 
-      executeCommands(commands).then((results) => {
-        const postInitCommands = results.filter(
-          (result): result is PostInitCommand => result != null,
-        );
+      executeCommands(mapInstance, commands).then((results) => {
+        const postInitCommands = results.filter((result): result is ViewCommand => result != null);
         postInitCommandsRef.current = postInitCommands;
       });
     }
   }, [map, initialCenter, initialAssetId, initialBbox, executeCommands, setMap]);
 
-  const handleViewReady = (view: __esri.MapView) => {
+  const handleViewReady = async (view: __esri.MapView) => {
     // Execute any pending post-init commands
-    postInitCommandsRef.current.forEach((cmd) => cmd.execute(view));
-
-    onViewReady?.(view);
+    await Promise.all(postInitCommandsRef.current.map((cmd) => cmd.executeOnView(view)));
   };
 
   return {

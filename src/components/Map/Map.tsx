@@ -2,6 +2,7 @@ import '@arcgis/map-components/dist/components/arcgis-placement';
 
 import { css } from '@styled-system/css';
 import { Box, Flex } from '@styled-system/jsx';
+import React from 'react';
 
 import { ArcMapView } from '@/arcgis/components/ArcView/ArcMapView';
 
@@ -16,6 +17,7 @@ interface MapProps {
   initialCenter?: [number, number];
   initialZoom?: number;
   initialBbox?: [number, number, number, number];
+  initialScale?: number;
   includeGlobeOverview?: boolean;
 }
 
@@ -24,8 +26,11 @@ export function Map({
   initialCenter,
   initialZoom,
   initialBbox,
+  initialScale,
   includeGlobeOverview,
 }: MapProps) {
+  const [viewPoint, setViewPoint] = React.useState<__esri.Viewpoint | undefined>(undefined);
+
   const { map, error, isLoading, handleViewReady } = useMapInitialization({
     initialAssetId,
     initialCenter,
@@ -42,14 +47,17 @@ export function Map({
         className={css({ w: 'full', h: 'full', pointerEvents: 'auto' })}
         map={map}
         onarcgisViewReadyChange={(event) => {
-          handleViewReady(event.target.view);
+          handleViewReady(event.target.view).then(() => {
+            setViewPoint(event.target.view.viewpoint);
+          });
         }}
+        scale={initialScale}
         zoom={initialZoom}
       >
         <arcgis-placement position="top-left">
           <Flex gap={'4'} direction="column">
             <ZoomControl />
-            <HomeControl />
+            <HomeControl viewPoint={viewPoint} />
           </Flex>
         </arcgis-placement>
         {includeGlobeOverview && (

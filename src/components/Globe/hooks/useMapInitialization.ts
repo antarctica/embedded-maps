@@ -23,8 +23,8 @@ export function useMapInitialization({
     if (!map) {
       const mapInstance = new EsriMap();
       setMap(mapInstance);
-      const commands = [new InitializeMapCommand(mapInstance, initialAssetId)];
-      executeCommands(commands);
+      const commands = [new InitializeMapCommand(initialAssetId)];
+      executeCommands(mapInstance, commands);
     }
   }, [map, initialAssetId, executeCommands, setMap]);
 

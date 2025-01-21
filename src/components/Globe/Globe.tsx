@@ -30,6 +30,9 @@ export function Globe({ initialAssetId }: GlobeProps) {
         }
       }
     },
+    {
+      initial: true,
+    },
   );
   useWatchEffect(
     () => sceneView?.viewpoint,
@@ -41,6 +44,9 @@ export function Globe({ initialAssetId }: GlobeProps) {
           // swallow error
         }
       }
+    },
+    {
+      initial: true,
     },
   );
 

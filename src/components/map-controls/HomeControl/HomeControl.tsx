@@ -6,9 +6,12 @@ import { useCurrentMapView, useWatchState } from '@/arcgis/hooks';
 import { MapButton } from '../../Button/MapButton';
 import SvgIcon from '../../SvgIcon';
 
-function HomeControl() {
+function HomeControl({ viewPoint }: { viewPoint?: __esri.Viewpoint }) {
   const mapView = useCurrentMapView();
-  const widget = React.useMemo(() => new HomeVM({ view: mapView }), [mapView]);
+  const widget = React.useMemo(
+    () => new HomeVM({ view: mapView, viewpoint: viewPoint }),
+    [mapView, viewPoint],
+  );
   const isDisabled = useWatchState(() => widget.state === 'disabled') ?? false;
   return (
     <MapButton

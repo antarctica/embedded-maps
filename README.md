@@ -27,6 +27,7 @@ Maps can be configured using the following query parameters:
 
 - `center`: Initial center coordinates [longitude, latitude] `array[number, number]`
 - `zoom`: Initial zoom level `number`
+- `scale`: Initial scale level `number`
 - `bbox`: Bounding box coordinates [minX, minY, maxX, maxY] `array[number, number, number, number]`
 - `globe_overview`: Whether to show a globe overview `boolean`
 - `asset_id`: Asset ID to display on the map `string`

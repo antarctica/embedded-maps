@@ -8,13 +8,10 @@ import { MapCommand } from '@/arcgis/typings/commandtypes';
 import { ASSETFIELDNAME, ASSETLAYERMAPID, ASSETLAYERPORTALID } from '@/config/assetLayer';
 
 export class InitializeMapCommand implements MapCommand {
-  constructor(
-    private map: EsriMap,
-    private assetId?: string,
-  ) {}
+  constructor(private assetId?: string) {}
 
-  async execute(): Promise<void> {
-    this.map.basemap = Basemap.fromId('satellite');
+  async executeOnMap(map: EsriMap): Promise<void> {
+    map.basemap = Basemap.fromId('satellite');
     if (this.assetId) {
       const featureLayer = new FeatureLayer({
         id: ASSETLAYERMAPID,
@@ -47,7 +44,7 @@ export class InitializeMapCommand implements MapCommand {
           }),
         }),
       });
-      this.map.layers.push(featureLayer);
+      map.add(featureLayer);
     }
   }
 }

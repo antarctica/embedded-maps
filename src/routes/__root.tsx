@@ -10,6 +10,7 @@ const assetSearchSchema = z.object({
   globe_overview: fallback(z.boolean().optional(), undefined),
   center: fallback(z.array(z.number()).length(2).optional(), undefined),
   zoom: fallback(z.number().optional(), undefined),
+  scale: fallback(z.number().optional(), undefined),
   bbox: fallback(z.array(z.number()).length(4).optional(), undefined),
 });
 

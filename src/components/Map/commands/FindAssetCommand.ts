@@ -3,7 +3,7 @@ import FeatureEffect from '@arcgis/core/layers/support/FeatureEffect';
 import FeatureFilter from '@arcgis/core/layers/support/FeatureFilter';
 import EsriMap from '@arcgis/core/Map';
 
-import { MapCommand, PostInitCommand } from '@/arcgis/typings/commandtypes';
+import { MapCommand, ViewCommand } from '@/arcgis/typings/commandtypes';
 import { ASSETFIELDNAME, ASSETLAYERMAPID, ASSETLAYERPORTALID } from '@/config/assetLayer';
 import { getBasemapConfigForMapProjection, getMapProjectionFromPosition } from '@/config/map';
 
@@ -12,10 +12,7 @@ import { applyBasemapConstraints, applyPolarHeadingCorrection } from '../utils';
 export class FindAssetCommand implements MapCommand {
   private assetLayer: FeatureLayer;
 
-  constructor(
-    private map: EsriMap,
-    private assetId: string,
-  ) {
+  constructor(private assetId: string) {
     this.assetLayer = new FeatureLayer({
       id: ASSETLAYERMAPID,
       portalItem: {
@@ -49,19 +46,19 @@ export class FindAssetCommand implements MapCommand {
     }
   }
 
-  async execute(): Promise<void | PostInitCommand> {
-    this.map.add(this.assetLayer);
+  async executeOnMap(map: EsriMap): Promise<ViewCommand | void> {
+    map.add(this.assetLayer);
     const assetLocation = await this.getAssetLocation();
     if (assetLocation) {
       const { longitude, latitude } = assetLocation;
       const mapProjection = getMapProjectionFromPosition([longitude, latitude]);
       const basemapConfig = getBasemapConfigForMapProjection(mapProjection);
-      this.map.basemap = basemapConfig.basemap;
+      map.basemap = basemapConfig.basemap;
       return {
-        execute: (mapView: __esri.MapView) => {
+        executeOnView: async (mapView: __esri.MapView) => {
           mapView.set('rotation', basemapConfig.rotation);
           applyBasemapConstraints(mapView, basemapConfig);
-          mapView.goTo({ target: assetLocation, scale: 1000000 }, { animate: false });
+          await mapView.goTo({ target: assetLocation }, { animate: false });
           applyPolarHeadingCorrection(mapView, mapProjection);
         },
       };

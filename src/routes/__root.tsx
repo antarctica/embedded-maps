@@ -1,3 +1,5 @@
+import { css } from '@styled-system/css';
+import { VisuallyHidden } from '@styled-system/jsx';
 import { createRootRoute, Outlet } from '@tanstack/react-router';
 import { fallback, zodValidator } from '@tanstack/zod-adapter';
 import * as React from 'react';
@@ -19,9 +21,15 @@ const assetSearchSchema = z.object({
 export const Route = createRootRoute({
   component: () => (
     <React.Fragment>
-      <AuthWrapper appId="m3Tb1Ix8KOmX1Vh4">
-        <Outlet />
-      </AuthWrapper>
+      <main className={css({ w: 'full', h: 'full' })}>
+        <VisuallyHidden>
+          <h1>British Antarctic Survey Embedded Map</h1>
+        </VisuallyHidden>
+
+        <AuthWrapper appId="m3Tb1Ix8KOmX1Vh4">
+          <Outlet />
+        </AuthWrapper>
+      </main>
     </React.Fragment>
   ),
   validateSearch: zodValidator(assetSearchSchema),

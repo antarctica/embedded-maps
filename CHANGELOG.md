@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [0.2.0] 2025-01-20
+## [0.2.0] 2025-01-22
 
 ### Added
 * added query parameters to the map
@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - `asset_id`: Asset ID to display on the map `string`
   - `hide_ui`: Whether to hide the map controls `boolean`
   - `show_region`: Whether to zoom to the basemap region or not `boolean`
+* added end to end tests for the map parameters
+* added unit tests for bbox logic
 
 ### Changed
 * refactored embeded map component to use arcgis library and react.

@@ -25,7 +25,7 @@ test.describe.parallel('Mercator Bounding Boxes', () => {
           timeout: 5000,
         });
 
-        await expect(page).toHaveScreenshot(`home-bbox-${bbox.join('-')}.png`, { fullPage: true });
+        await expect(page).toHaveScreenshot(`bbox-${bbox.join('-')}.png`, { fullPage: true });
       });
 
       test('should not have any automatically detectable accessibility issues', async ({

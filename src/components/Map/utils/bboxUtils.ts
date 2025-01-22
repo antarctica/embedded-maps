@@ -10,15 +10,23 @@ interface RingCoordinates {
   densificationSteps: number;
 }
 
-function createDensifiedEdge(
+/**
+ * Creates a densified edge between two longitudes at a given latitude.
+ * @param startLon - The starting longitude.
+ * @param endLon - The ending longitude.
+ * @param latitude - The latitude at which to create the edge.
+ * @param vertices - The number of vertices to create.
+ * @returns An array of coordinates representing the densified edge.
+ */
+export function createLatitudeParallelPoints(
   startLon: number,
   endLon: number,
   latitude: number,
-  steps: number,
+  vertices: number,
 ): number[][] {
   const coordinates: number[][] = [];
-  for (let i = 0; i <= steps; i++) {
-    const fraction = i / steps;
+  for (let i = 0; i < vertices; i++) {
+    const fraction = i / (vertices - 1);
     const lon = startLon + (endLon - startLon) * fraction;
     coordinates.push([lon, latitude]);
   }
@@ -35,10 +43,10 @@ function createPolarBbox({
   const ring: number[][] = [];
 
   // Bottom edge
-  ring.push(...createDensifiedEdge(minLon, maxLon, minLat, densificationSteps));
+  ring.push(...createLatitudeParallelPoints(minLon, maxLon, minLat, densificationSteps));
 
   // Top edge (reverse)
-  ring.push(...createDensifiedEdge(minLon, maxLon, maxLat, densificationSteps).reverse());
+  ring.push(...createLatitudeParallelPoints(minLon, maxLon, maxLat, densificationSteps).reverse());
 
   ring.push(ring[0]); // Close the ring
   return ring;
@@ -51,13 +59,16 @@ function createAntimeridianRings({
   maxLat,
   densificationSteps,
 }: RingCoordinates): number[][][] {
+  // halve the densification steps and round up to the nearest integer
+  const halfDensificationSteps = Math.ceil(densificationSteps / 2);
+
   // Western polygon (minLon to 180)
   const westRing = createPolarBbox({
     minLon,
     maxLon: 180,
     minLat,
     maxLat,
-    densificationSteps,
+    densificationSteps: halfDensificationSteps,
   });
 
   // Eastern polygon (-180 to maxLon)
@@ -66,7 +77,7 @@ function createAntimeridianRings({
     maxLon,
     minLat,
     maxLat,
-    densificationSteps,
+    densificationSteps: halfDensificationSteps,
   });
 
   return [westRing, eastRing];

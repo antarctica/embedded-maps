@@ -14,12 +14,10 @@ afterEach(() => {
  * @returns A function that wraps children with the provided context providers
  */
 export const withProviders = (providers: React.ComponentType<{ children: React.ReactNode }>[]) => {
-  const WithProvidersWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return function WithProvidersWrapper({ children }: { children: React.ReactNode }) {
     // Reduce the providers array to wrap the children with each provider
     return providers.reduce((prevChildren, Provider) => {
       return <Provider>{prevChildren}</Provider>;
     }, children);
   };
-
-  return WithProvidersWrapper;
 };

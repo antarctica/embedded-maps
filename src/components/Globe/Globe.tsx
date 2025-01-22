@@ -20,9 +20,9 @@ export function Globe({ initialAssetId }: GlobeProps) {
   });
 
   useWatchEffect(
-    () => mapView?.viewpoint,
+    () => mapView.viewpoint,
     () => {
-      if (mapView?.interacting || mapView?.animation) {
+      if (mapView.interacting || mapView.animation) {
         try {
           sceneView?.set('viewpoint', mapView.viewpoint);
         } catch {

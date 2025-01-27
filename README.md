@@ -44,6 +44,7 @@ For an Antarctic map:
 ## Implementation
 
 ### App
+
 The application is built using React and the ArcGIS Maps SDK for JavaScript. Key features include:
 
 - Automatic projection selection based on geometry location
@@ -95,6 +96,7 @@ See the [BAS Terraform Remote State 🛡️](https://gitlab.data.bas.ac.uk/WSF/t
 permissions to remote state are enforced.
 
 ## Developing
+
 To set up the project locally, follow these steps:
 
 ```shell
@@ -139,14 +141,14 @@ A Continuous Deployment process using GitLab's CI/CD platform is configured in [
 
 ## Project maintainer
 
-British Antarctic Survey ([BAS](https://www.bas.ac.uk)) Mapping and Geographic Information Centre
-([MAGIC](https://www.bas.ac.uk/teams/magic)). Contact [magic@bas.ac.uk](mailto:magic@bas.ac.uk).
+Mapping and Geographic Information Centre ([MAGIC](https://www.bas.ac.uk/teams/magic)), British Antarctic Survey
+([BAS](https://www.bas.ac.uk)).
 
-The project lead is [@felnne](https://www.bas.ac.uk/profile/felnne).
+Project lead: [@felnne](https://www.bas.ac.uk/profile/felnne).
 
 ## License
 
-Copyright (c) 2024 UK Research and Innovation (UKRI), British Antarctic Survey (BAS).
+Copyright (c) 2024-2025 UK Research and Innovation (UKRI), British Antarctic Survey (BAS).
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

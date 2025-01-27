@@ -5,8 +5,6 @@ import { fallback, zodValidator } from '@tanstack/zod-adapter';
 import * as React from 'react';
 import { z } from 'zod';
 
-import AuthWrapper from '@/arcgis/auth/AuthWrapper';
-
 const assetSearchSchema = z.object({
   asset_id: fallback(z.string().optional(), undefined),
   globe_overview: fallback(z.boolean().optional(), undefined),
@@ -25,10 +23,7 @@ export const Route = createRootRoute({
         <VisuallyHidden>
           <h1>British Antarctic Survey Embedded Map</h1>
         </VisuallyHidden>
-
-        <AuthWrapper appId="m3Tb1Ix8KOmX1Vh4">
-          <Outlet />
-        </AuthWrapper>
+        <Outlet />
       </main>
     </React.Fragment>
   ),

@@ -5,32 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [0.2.0] 2025-01-22
+## [Unreleased]
 
 ### Added
-* added query parameters to the map
-  - `center`: Initial center coordinates [longitude, latitude] `array[number, number]`
-  - `zoom`: Initial zoom level `number`
-  - `scale`: Initial scale level `number`
-  - `bbox`: Bounding box coordinates [minX, minY, maxX, maxY] `array[number, number, number, number]`
-  - `globe_overview`: Whether to show a globe overview `boolean`
-  - `asset_id`: Asset ID to display on the map `string`
-  - `hide_ui`: Whether to hide the map controls `boolean`
-  - `show_region`: Whether to zoom to the basemap region or not `boolean`
-* added end to end tests for the map parameters
-* added unit tests for bbox logic
+
+* Query parameters for `center`, `zoom`, `scale`, `bbox`, `globe_overview`, `asset_id`, `hide_ui`, `show_region`
+* Playwright end to end tests
+* Unit tests for bbox logic
+* Basemap config
+
+### Fixed
+
+* Asset icon headings in polar projections
 
 ### Changed
-* refactored embeded map component to use arcgis library and react.
-* added polar heading correction for asset icons
-* added basemap config.
 
+* Refactored embeded map component to use arcgis and react
 
 ## [0.1.2] 2025-01-16
 
 ### Added
 
-* test pages for hosted environments
+* Test pages for hosted environments
   [#6](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/6)
 * Continuous Deployment environments
   [#5](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/5)
@@ -39,13 +35,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
-* updating project name to 'Embedded Maps Service' (rather than 'Embedded Maps')
+* Updating project name to 'Embedded Maps Service' (rather than 'Embedded Maps')
 
 ## [0.1.1] 2024-11-06
 
 ### Fixed
 
-* hiding CSS overflows
+* Hiding CSS overflows
 
 ## [0.1.0] 2024-11-06
 

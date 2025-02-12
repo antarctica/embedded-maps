@@ -24,7 +24,11 @@ export function Globe({ initialAssetId, initialBbox }: GlobeProps) {
       if (!sceneView) {
         return;
       }
-
+      // ***HACK***
+      // Suppress console.error to arcgis internal logging when an error that we don't
+      // care about is logged by esri internal code.
+      const originalConsoleError = console.error;
+      console.error = () => {}; // temporarily suppress console.error
       try {
         sceneView.set('viewpoint', mapView.viewpoint);
 
@@ -46,6 +50,8 @@ export function Globe({ initialAssetId, initialBbox }: GlobeProps) {
         }
       } catch {
         // swallow error
+      } finally {
+        console.error = originalConsoleError;
       }
     },
     [mapView],

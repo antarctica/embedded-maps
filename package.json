@@ -11,7 +11,9 @@
     "studio": "panda studio",
     "preview": "vite preview",
     "new-component": "new-component",
-    "check-types": "tsc --noemit -p tsconfig.json"
+    "check-types": "tsc --noemit -p tsconfig.json",
+    "test:e2e": "playwright test --project=chromium",
+    "test:e2e:update": "playwright test --project=chromium --update-snapshots"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": "eslint --fix"

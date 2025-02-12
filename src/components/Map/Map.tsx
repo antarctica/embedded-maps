@@ -100,7 +100,7 @@ export function Map({
             </arcgis-placement>
             {includeGlobeOverview && (
               <arcgis-placement position="top-right">
-                <Globe initialAssetId={initialAssetId} />
+                <Globe initialAssetId={initialAssetId} initialBbox={initialBbox} />
               </arcgis-placement>
             )}
           </>

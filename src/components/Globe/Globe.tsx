@@ -4,14 +4,18 @@ import React, { useCallback, useState } from 'react';
 
 import { ArcSceneView } from '@/arcgis/components/ArcView/ArcSceneView';
 import { useCurrentMapView, useWatchEffect } from '@/arcgis/hooks';
+import { isEsriPoint } from '@/arcgis/typings/typeGuards';
+import { isPolarProjection } from '@/config/basemap';
+import { isDefined } from '@/utils/typeGuards';
 
 import { useMapInitialization } from './hooks/useMapInitialization';
 
 interface GlobeProps {
   initialAssetId?: string;
+  initialBbox?: [number, number, number, number];
 }
 
-export function Globe({ initialAssetId }: GlobeProps) {
+export function Globe({ initialAssetId, initialBbox }: GlobeProps) {
   const mapView = useCurrentMapView();
   const [sceneView, setSceneView] = useState<__esri.SceneView>();
 
@@ -24,12 +28,22 @@ export function Globe({ initialAssetId }: GlobeProps) {
       try {
         sceneView.set('viewpoint', mapView.viewpoint);
 
-        // lock the globe to always maintain a constant orientation
-        const { longitude, latitude } = sceneView.viewpoint.targetGeometry as __esri.Point;
-        const camera = sceneView?.viewpoint.camera.clone();
-        const headingCorrection = latitude < 0 ? -longitude : longitude;
-        camera.heading = headingCorrection;
-        sceneView.set('camera', camera);
+        const targetGeometry = sceneView.viewpoint.targetGeometry;
+        if (isEsriPoint(targetGeometry)) {
+          // lock the globe to always maintain a constant orientation
+          const { longitude, latitude } = targetGeometry;
+          if (!isDefined(longitude) || !isDefined(latitude)) {
+            return;
+          }
+
+          //only correct the heading if the mapview is a polar projection
+          if (isPolarProjection(mapView.spatialReference.wkid)) {
+            const camera = sceneView?.viewpoint.camera.clone();
+            const headingCorrection = latitude < 0 ? -longitude : longitude;
+            camera.heading = headingCorrection;
+            sceneView.set('camera', camera);
+          }
+        }
       } catch {
         // swallow error
       }
@@ -39,6 +53,7 @@ export function Globe({ initialAssetId }: GlobeProps) {
 
   const { map } = useMapInitialization({
     initialAssetId,
+    initialBbox,
   });
 
   useWatchEffect(

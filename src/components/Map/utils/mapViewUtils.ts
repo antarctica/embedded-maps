@@ -103,7 +103,7 @@ function updateRotationSettings(
 export function applyBasemapConstraints(mapView: __esri.MapView, basemapConfig: BasemapConfig) {
   mapView.constraints = {
     geometry: basemapConfig.viewExtent,
-    snapToZoom: false,
+    snapToZoom: true,
     rotationEnabled: false,
   };
 }

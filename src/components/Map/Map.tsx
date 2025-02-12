@@ -21,6 +21,7 @@ interface MapProps {
   includeGlobeOverview?: boolean;
   hideUI?: boolean;
   showRegion?: boolean;
+  showAssetPopup?: boolean;
 }
 
 const viewPadding = {
@@ -62,6 +63,7 @@ export function Map({
   includeGlobeOverview,
   hideUI,
   showRegion,
+  showAssetPopup,
 }: MapProps) {
   const [viewPoint, setViewPoint] = React.useState<__esri.Viewpoint | undefined>(undefined);
 
@@ -70,6 +72,7 @@ export function Map({
     initialCenter,
     initialBbox,
     showRegion,
+    showAssetPopup,
   });
 
   if (!map || isLoading || error) {

@@ -14,6 +14,7 @@ const assetSearchSchema = z.object({
   bbox: fallback(z.array(z.number()).length(4).optional(), undefined),
   'hide-ui': fallback(z.boolean().optional(), undefined),
   'show-region': fallback(z.boolean().optional(), undefined),
+  'show-asset-popup': fallback(z.boolean().optional(), undefined),
 });
 
 export const Route = createRootRoute({

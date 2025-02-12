@@ -14,6 +14,7 @@ export function App() {
     scale,
     'hide-ui': hideUI,
     'show-region': showRegion,
+    'show-asset-popup': showAssetPopup,
   } = Route.useSearch();
 
   return (
@@ -26,6 +27,7 @@ export function App() {
       includeGlobeOverview={globeOverview}
       hideUI={hideUI}
       showRegion={showRegion}
+      showAssetPopup={showAssetPopup}
     />
   );
 }

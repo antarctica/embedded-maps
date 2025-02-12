@@ -1,7 +1,8 @@
+import TileLayer from '@arcgis/core/layers/TileLayer';
+
 import { ASSETHEADINGFIELD, ASSETLAYERMAPID, ASSETLONGITUDEFIELD } from '@/config/assetLayer';
 import { BasemapConfig, MapProjection } from '@/config/basemap';
 import { generateArcadeHeadingScript } from '@/config/generateArcadeHeadingScript';
-
 /**
  * Applies heading correction for assets in polar map projections
  * @param mapView - The ESRI MapView instance
@@ -101,6 +102,13 @@ function updateRotationSettings(
 }
 
 export function applyBasemapConstraints(mapView: __esri.MapView, basemapConfig: BasemapConfig) {
+  // turn on resampling for basemap layers
+  for (const layer of mapView.map.basemap.baseLayers) {
+    if (layer instanceof TileLayer) {
+      layer.set('resampling', true);
+    }
+  }
+
   mapView.constraints = {
     geometry: basemapConfig.viewExtent,
     snapToZoom: true,

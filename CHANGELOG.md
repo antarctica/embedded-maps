@@ -8,6 +8,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Added
+* Scale bar control [#10](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/10)
+* Theme support based on user OS preferences [#14](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/14)
+* Parameter for showing asset popup [#25](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/25)
+
+### Changed
+* Refactored query parameters to use kebab-case
+* Enabled resampling on basemap layers to prevent disappearing from view [#17](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/17)
+
+### Fixed
+* Globe overview now matches basemap rotation for polar coordinate systems [#15](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/15)
+* Support for bounding box marker on globe overview [#16](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/16)
+
+### Removed
+* Outdated testing documentation
+
+## [0.1.3] 2025-02-11
+
+### Added
 
 * Query parameters for `center`, `zoom`, `scale`, `bbox`, `globe_overview`, `asset_id`, `hide_ui`, `show_region`
 * Playwright end to end tests

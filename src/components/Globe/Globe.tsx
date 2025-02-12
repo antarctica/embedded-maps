@@ -1,3 +1,5 @@
+import { Point, SpatialReference } from '@arcgis/core/geometry';
+import { project } from '@arcgis/core/geometry/projection';
 import { css } from '@styled-system/css';
 import { Box, Circle } from '@styled-system/jsx';
 import React, { useCallback, useState } from 'react';
@@ -6,7 +8,6 @@ import { ArcSceneView } from '@/arcgis/components/ArcView/ArcSceneView';
 import { useCurrentMapView, useWatchEffect } from '@/arcgis/hooks';
 import { isEsriPoint } from '@/arcgis/typings/typeGuards';
 import { isPolarProjection } from '@/config/basemap';
-import { isDefined } from '@/utils/typeGuards';
 
 import { useMapInitialization } from './hooks/useMapInitialization';
 
@@ -24,34 +25,52 @@ export function Globe({ initialAssetId, initialBbox }: GlobeProps) {
       if (!sceneView) {
         return;
       }
-      // ***HACK***
-      // Suppress console.error to arcgis internal logging when an error that we don't
-      // care about is logged by esri internal code.
-      const originalConsoleError = console.error;
-      console.error = () => {}; // temporarily suppress console.error
+
+      const viewPointTargetGeometry = mapView.viewpoint.targetGeometry;
+      if (!isEsriPoint(viewPointTargetGeometry)) {
+        return;
+      }
+
+      const globalCRSViewPoint = project(viewPointTargetGeometry, SpatialReference.WGS84);
+
+      if (Array.isArray(globalCRSViewPoint)) {
+        return;
+      }
+
+      if (!isEsriPoint(globalCRSViewPoint)) {
+        return;
+      }
+
+      let { longitude, latitude } = globalCRSViewPoint;
+
+      //check if within 0.0001 of the poles using a tolerance of 0.0001
+      if (Math.abs(latitude) - 90 < 0.0001) {
+        // bump the latitude by a tiny amount to prevent polar projection issues
+        latitude += 1;
+      }
+      if (Math.abs(longitude) - 180 < 0.0001) {
+        // bump the longitude by a tiny amount to prevent polar projection issues
+        longitude += 1;
+      }
+
+      const newViewPoint = mapView.viewpoint.clone();
+      newViewPoint.targetGeometry = new Point({
+        longitude,
+        latitude,
+      });
+
       try {
-        sceneView.set('viewpoint', mapView.viewpoint);
-
-        const targetGeometry = sceneView.viewpoint.targetGeometry;
-        if (isEsriPoint(targetGeometry)) {
-          // lock the globe to always maintain a constant orientation
-          const { longitude, latitude } = targetGeometry;
-          if (!isDefined(longitude) || !isDefined(latitude)) {
-            return;
-          }
-
-          //only correct the heading if the mapview is a polar projection
-          if (isPolarProjection(mapView.spatialReference.wkid)) {
-            const camera = sceneView?.viewpoint.camera.clone();
-            const headingCorrection = latitude < 0 ? -longitude : longitude;
-            camera.heading = headingCorrection;
-            sceneView.set('camera', camera);
-          }
+        sceneView.set('viewpoint', newViewPoint);
+        //only correct the heading if the mapview is a polar projection
+        if (isPolarProjection(mapView.spatialReference.wkid)) {
+          const camera = sceneView?.viewpoint.camera.clone();
+          const headingCorrection = latitude < 0 ? -longitude : longitude;
+          camera.heading = headingCorrection;
+          console.log('camera', camera);
+          sceneView.set('camera', camera);
         }
       } catch {
         // swallow error
-      } finally {
-        console.error = originalConsoleError;
       }
     },
     [mapView],
@@ -117,7 +136,6 @@ export function Globe({ initialAssetId, initialBbox }: GlobeProps) {
         <ArcSceneView
           id="ref-globe"
           map={map}
-          center={mapView.center}
           alphaCompositingEnabled={true}
           camera={{
             fov: 10,

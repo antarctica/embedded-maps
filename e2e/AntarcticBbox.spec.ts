@@ -40,3 +40,21 @@ test.describe.parallel('Antarctic Bounding Boxes', () => {
     });
   }
 });
+
+test.describe('Antarctic Bounding Box with globe overview', () => {
+  test('should not have any automatically detectable accessibility issues', async ({ page }) => {
+    await page.goto('/?bbox=[-180,-90,180,-60]&globe-overview=true');
+
+    await page.waitForSelector('arcgis-map', { state: 'visible' });
+
+    await page.waitForSelector('arcgis-map:not([updating])', {
+      state: 'visible',
+      timeout: 5000,
+    });
+
+    await expect(page).toHaveScreenshot('bbox-antarctic-globe-overview.png', { fullPage: true });
+
+    const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
+    expect(accessibilityScanResults.violations).toEqual([]);
+  });
+});

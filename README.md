@@ -107,25 +107,6 @@ npm run dev
 
 **Note:** Node.js is required to run the project.
 
-## Testing
-
-A simple page embedding maps for each supported [Well Known Extent](#well-known-extents) is provided for manual testing:
-
-- `tests/local-dev.html` (for local development)
-- `tests/integration.html` (for integration/testing)
-- `tests/production.html` (for production)
-
-To test an environment locally:
-
-- run the app running locally
-- in a separate terminal, run `python -m http.server 9001 --directory tests`
-- visit: http://localhost:9001/{environment}
-
-For remote testing, visit:
-
-- https://embedded-maps-testing.data.bas.ac.uk/tests/v1/integration.html
-- https://embedded-maps.data.bas.ac.uk/tests/v1/production.html
-
 ### Health monitoring
 
 `$ENDPOINT/meta/health.json` provides service health information formatted according to the 

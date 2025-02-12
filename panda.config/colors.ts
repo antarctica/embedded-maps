@@ -153,4 +153,9 @@ export const semanticColorTokens = defineSemanticTokens.colors({
       _osDark: '{colors.grayscale.200}',
     },
   },
+  scaleBar: {
+    value: {
+      base: '{colors.grayscale.700}',
+    },
+  },
 });

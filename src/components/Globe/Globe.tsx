@@ -1,6 +1,6 @@
 import { css } from '@styled-system/css';
 import { Box, Circle } from '@styled-system/jsx';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { ArcSceneView } from '@/arcgis/components/ArcView/ArcSceneView';
 import { useCurrentMapView, useWatchEffect } from '@/arcgis/hooks';
@@ -15,6 +15,28 @@ export function Globe({ initialAssetId }: GlobeProps) {
   const mapView = useCurrentMapView();
   const [sceneView, setSceneView] = useState<__esri.SceneView>();
 
+  const synchroniseSceneView = useCallback(
+    (sceneView: __esri.SceneView | undefined) => {
+      if (!sceneView) {
+        return;
+      }
+
+      try {
+        sceneView.set('viewpoint', mapView.viewpoint);
+
+        // lock the globe to always maintain a constant orientation
+        const { longitude, latitude } = sceneView.viewpoint.targetGeometry as __esri.Point;
+        const camera = sceneView?.viewpoint.camera.clone();
+        const headingCorrection = latitude < 0 ? -longitude : longitude;
+        camera.heading = headingCorrection;
+        sceneView.set('camera', camera);
+      } catch {
+        // swallow error
+      }
+    },
+    [mapView],
+  );
+
   const { map } = useMapInitialization({
     initialAssetId,
   });
@@ -23,11 +45,7 @@ export function Globe({ initialAssetId }: GlobeProps) {
     () => mapView.viewpoint,
     () => {
       if (mapView.interacting || mapView.animation) {
-        try {
-          sceneView?.set('viewpoint', mapView.viewpoint);
-        } catch {
-          // swallow error
-        }
+        synchroniseSceneView(sceneView);
       }
     },
     {
@@ -85,6 +103,7 @@ export function Globe({ initialAssetId }: GlobeProps) {
           }}
           onarcgisViewReadyChange={(event) => {
             setSceneView(event.target.view);
+            synchroniseSceneView(event.target.view);
           }}
           environment={{
             lighting: { type: 'virtual' },

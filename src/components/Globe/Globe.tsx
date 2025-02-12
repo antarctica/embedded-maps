@@ -1,33 +1,72 @@
 import { css } from '@styled-system/css';
 import { Box, Circle } from '@styled-system/jsx';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { ArcSceneView } from '@/arcgis/components/ArcView/ArcSceneView';
 import { useCurrentMapView, useWatchEffect } from '@/arcgis/hooks';
+import { isEsriPoint } from '@/arcgis/typings/typeGuards';
+import { isPolarProjection } from '@/config/basemap';
+import { isDefined } from '@/utils/typeGuards';
 
 import { useMapInitialization } from './hooks/useMapInitialization';
 
 interface GlobeProps {
   initialAssetId?: string;
+  initialBbox?: [number, number, number, number];
 }
 
-export function Globe({ initialAssetId }: GlobeProps) {
+export function Globe({ initialAssetId, initialBbox }: GlobeProps) {
   const mapView = useCurrentMapView();
   const [sceneView, setSceneView] = useState<__esri.SceneView>();
 
+  const synchroniseSceneView = useCallback(
+    (sceneView: __esri.SceneView | undefined) => {
+      if (!sceneView) {
+        return;
+      }
+      // ***HACK***
+      // Suppress console.error to arcgis internal logging when an error that we don't
+      // care about is logged by esri internal code.
+      const originalConsoleError = console.error;
+      console.error = () => {}; // temporarily suppress console.error
+      try {
+        sceneView.set('viewpoint', mapView.viewpoint);
+
+        const targetGeometry = sceneView.viewpoint.targetGeometry;
+        if (isEsriPoint(targetGeometry)) {
+          // lock the globe to always maintain a constant orientation
+          const { longitude, latitude } = targetGeometry;
+          if (!isDefined(longitude) || !isDefined(latitude)) {
+            return;
+          }
+
+          //only correct the heading if the mapview is a polar projection
+          if (isPolarProjection(mapView.spatialReference.wkid)) {
+            const camera = sceneView?.viewpoint.camera.clone();
+            const headingCorrection = latitude < 0 ? -longitude : longitude;
+            camera.heading = headingCorrection;
+            sceneView.set('camera', camera);
+          }
+        }
+      } catch {
+        // swallow error
+      } finally {
+        console.error = originalConsoleError;
+      }
+    },
+    [mapView],
+  );
+
   const { map } = useMapInitialization({
     initialAssetId,
+    initialBbox,
   });
 
   useWatchEffect(
     () => mapView.viewpoint,
     () => {
       if (mapView.interacting || mapView.animation) {
-        try {
-          sceneView?.set('viewpoint', mapView.viewpoint);
-        } catch {
-          // swallow error
-        }
+        synchroniseSceneView(sceneView);
       }
     },
     {
@@ -85,6 +124,7 @@ export function Globe({ initialAssetId }: GlobeProps) {
           }}
           onarcgisViewReadyChange={(event) => {
             setSceneView(event.target.view);
+            synchroniseSceneView(event.target.view);
           }}
           environment={{
             lighting: { type: 'virtual' },

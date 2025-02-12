@@ -14,14 +14,14 @@ const standardTestCases = [
   },
   {
     name: 'hidden UI',
-    params: '?center=[-180,-90]&zoom=6&hide_ui=true',
+    params: '?center=[-180,-90]&zoom=6&hide-ui=true',
     expectedControls: false,
   },
 ];
 
 const globeTestCase = {
   name: 'globe overview',
-  params: '?center=[-180,-90]&zoom=6&globe_overview=true',
+  params: '?center=[-180,-90]&zoom=6&globe-overview=true',
   expectedControls: true,
   expectGlobe: true,
 };

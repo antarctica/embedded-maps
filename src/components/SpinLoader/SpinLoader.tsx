@@ -10,11 +10,11 @@ function SpinLoader({ className, size }: { className?: string; size?: number }) 
       <defs>
         <pattern id="gridPattern" width="5" height="5" patternUnits="userSpaceOnUse">
           <g transform="translate(2,2)">
-            <rect width="1" height="1" fill="white"></rect>
+            <rect width="1" height="1" fill="currentColor"></rect>
           </g>
         </pattern>
         <clipPath id="clipCircle">
-          <circle cx="50%" cy="50%" r="50%"></circle>
+          <circle cx="50%" cy="50%" r="50%" fill="currentColor" stroke="currentColor"></circle>
         </clipPath>
       </defs>
       <rect
@@ -25,7 +25,7 @@ function SpinLoader({ className, size }: { className?: string; size?: number }) 
         fill="url(#gridPattern)"
         clipPath="url(#clipCircle)"
       ></rect>
-      <g fill="white" transform="translate(-12.5,2.5)" id="AntarcticPixels">
+      <g fill="currentColor" transform="translate(-12.5,2.5)" id="AntarcticPixels">
         <rect x="48.5" y="18.5" width="3" height="3"></rect>
         <rect x="53.5" y="18.5" width="3" height="3"></rect>
         <rect x="58.5" y="18.5" width="3" height="3"></rect>
@@ -102,7 +102,7 @@ function SpinLoader({ className, size }: { className?: string; size?: number }) 
         cy="50%"
         r="49%"
         fill="none"
-        stroke="white"
+        stroke="currentColor"
         strokeWidth="2"
       ></circle>
     </svg>

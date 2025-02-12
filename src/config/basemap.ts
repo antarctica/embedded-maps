@@ -165,3 +165,10 @@ export const SOUTH_GEORGIA_BASEMAP_CONFIG: BasemapConfig = {
   }),
   spatialReference: new SpatialReference({ wkid: 3762 }),
 };
+
+export function isPolarProjection(wkid: number): boolean {
+  return (
+    wkid === ARCTIC_BASEMAP_CONFIG.spatialReference.wkid ||
+    wkid === ANTARCTIC_BASEMAP_CONFIG.spatialReference.wkid
+  );
+}

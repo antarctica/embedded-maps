@@ -26,14 +26,20 @@ The service supports four map projections that are automatically selected based 
 
 Maps can be configured using the following query parameters:
 
+**View Configuration:**
 - `center`: Initial center coordinates [longitude, latitude] `array[number, number]`
 - `zoom`: Initial zoom level `number`
 - `scale`: Initial scale level `number`
 - `bbox`: Bounding box coordinates [minX, minY, maxX, maxY] `array[number, number, number, number]`
-- `globe_overview`: Whether to show a globe overview `boolean`
-- `asset_id`: Asset ID to display on the map `string`
-- `hide_ui`: Whether to hide the map controls `boolean`
-- `show_region`: Whether to zoom to the basemap region or not `boolean`
+- `show-region`: Whether to zoom to the basemap region `boolean`
+
+**Asset Display:**
+- `asset-id`: Asset ID to display on the map `string`
+- `show-asset-popup`: Whether to show the asset popup `boolean`
+
+**UI Controls:**
+- `globe-overview`: Whether to show a globe overview `boolean`
+- `hide-ui`: Whether to hide the map controls `boolean`
 
 For an Antarctic map:
 
@@ -105,25 +111,6 @@ npm run dev
 ```
 
 **Note:** Node.js is required to run the project.
-
-## Testing
-
-A simple page embedding maps for each supported [Well Known Extent](#well-known-extents) is provided for manual testing:
-
-- `tests/local-dev.html` (for local development)
-- `tests/integration.html` (for integration/testing)
-- `tests/production.html` (for production)
-
-To test an environment locally:
-
-- run the app running locally
-- in a separate terminal, run `python -m http.server 9001 --directory tests`
-- visit: http://localhost:9001/{environment}
-
-For remote testing, visit:
-
-- https://embedded-maps-testing.data.bas.ac.uk/tests/v1/integration.html
-- https://embedded-maps.data.bas.ac.uk/tests/v1/production.html
 
 ### Health monitoring
 

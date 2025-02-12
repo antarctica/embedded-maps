@@ -13,6 +13,7 @@ interface UseMapInitializationProps {
   initialCenter?: [number, number];
   initialBbox?: [number, number, number, number];
   showRegion?: boolean;
+  showAssetPopup?: boolean;
   onViewReady?: (view: __esri.MapView) => void;
 }
 
@@ -28,6 +29,7 @@ export function useMapInitialization({
   initialCenter,
   initialBbox,
   showRegion,
+  showAssetPopup,
 }: UseMapInitializationProps): UseMapInitializationResult {
   const { map, setMap, error, isExecuting, executeCommands } = useMapCommandExecuter();
   const postInitCommandsRef = useRef<ViewCommand[]>([]);
@@ -42,7 +44,7 @@ export function useMapInitialization({
         commands.push(new MapCenterCommand(initialCenter));
       }
       if (initialAssetId && !initialBbox) {
-        commands.push(new FindAssetCommand(initialAssetId));
+        commands.push(new FindAssetCommand(initialAssetId, showAssetPopup));
       }
       if (initialBbox) {
         commands.push(new AddBboxCommand(initialBbox, showRegion));
@@ -53,7 +55,16 @@ export function useMapInitialization({
         postInitCommandsRef.current = postInitCommands;
       });
     }
-  }, [map, initialCenter, initialAssetId, initialBbox, showRegion, executeCommands, setMap]);
+  }, [
+    map,
+    initialCenter,
+    initialAssetId,
+    initialBbox,
+    showRegion,
+    showAssetPopup,
+    executeCommands,
+    setMap,
+  ]);
 
   const handleViewReady = async (view: __esri.MapView) => {
     // Execute any pending post-init commands

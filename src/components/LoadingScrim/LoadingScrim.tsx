@@ -10,7 +10,7 @@ const loadingScrim = cva({
     inset: '0',
     width: 'full',
     height: 'full',
-    color: 'aircraftRed',
+    color: 'fg',
     bg: 'htmlBackground',
     opacity: 0,
     transition: 'all',

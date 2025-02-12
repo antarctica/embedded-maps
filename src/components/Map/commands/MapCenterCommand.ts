@@ -13,9 +13,19 @@ export class MapCenterCommand implements MapCommand {
     const basemapConfig = getBasemapConfigForMapProjection(mapProjection);
     map.basemap = basemapConfig.basemap;
 
+    let [longitude, latitude] = this.center;
+    if (latitude === 90 || latitude === -90) {
+      // bump the latitude by a tiny amount to prevent polar projection issues
+      latitude += 0.1;
+    }
+    if (longitude === 180 || longitude === -180) {
+      // bump the longitude by a tiny amount to prevent polar projection issues
+      longitude += 0.1;
+    }
+
     const mapCenter = new Point({
-      longitude: this.center[0],
-      latitude: this.center[1],
+      longitude,
+      latitude,
     });
     return {
       executeOnView: (mapView: __esri.MapView) => {

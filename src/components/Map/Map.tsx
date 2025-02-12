@@ -9,9 +9,9 @@ import { ArcMapView } from '@/arcgis/components/ArcView/ArcMapView';
 import { Globe } from '../Globe';
 import LoadingScrim from '../LoadingScrim';
 import HomeControl from '../map-controls/HomeControl';
+import ScaleControl from '../map-controls/ScaleControl/ScaleControl';
 import ZoomControl from '../map-controls/ZoomControl';
 import { useMapInitialization } from './hooks/useMapInitialization';
-
 interface MapProps {
   initialAssetId?: string;
   initialCenter?: [number, number];
@@ -21,6 +21,7 @@ interface MapProps {
   includeGlobeOverview?: boolean;
   hideUI?: boolean;
   showRegion?: boolean;
+  showAssetPopup?: boolean;
 }
 
 const viewPadding = {
@@ -62,6 +63,7 @@ export function Map({
   includeGlobeOverview,
   hideUI,
   showRegion,
+  showAssetPopup,
 }: MapProps) {
   const [viewPoint, setViewPoint] = React.useState<__esri.Viewpoint | undefined>(undefined);
 
@@ -70,6 +72,7 @@ export function Map({
     initialCenter,
     initialBbox,
     showRegion,
+    showAssetPopup,
   });
 
   if (!map || isLoading || error) {
@@ -98,9 +101,12 @@ export function Map({
                 <HomeControl viewPoint={viewPoint} />
               </Flex>
             </arcgis-placement>
+            <arcgis-placement position="bottom-left">
+              <ScaleControl />
+            </arcgis-placement>
             {includeGlobeOverview && (
               <arcgis-placement position="top-right">
-                <Globe initialAssetId={initialAssetId} />
+                <Globe initialAssetId={initialAssetId} initialBbox={initialBbox} />
               </arcgis-placement>
             )}
           </>

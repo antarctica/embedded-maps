@@ -26,14 +26,15 @@ The service supports four map projections that are automatically selected based 
 
 Maps can be configured using the following query parameters:
 
+- `asset-id`: Asset ID to display on the map `string`
+- `globe-overview`: Whether to show a globe overview `boolean`
 - `center`: Initial center coordinates [longitude, latitude] `array[number, number]`
 - `zoom`: Initial zoom level `number`
 - `scale`: Initial scale level `number`
 - `bbox`: Bounding box coordinates [minX, minY, maxX, maxY] `array[number, number, number, number]`
-- `globe_overview`: Whether to show a globe overview `boolean`
-- `asset_id`: Asset ID to display on the map `string`
-- `hide_ui`: Whether to hide the map controls `boolean`
-- `show_region`: Whether to zoom to the basemap region or not `boolean`
+- `hide-ui`: Whether to hide the map controls `boolean`
+- `show-region`: Whether to zoom to the basemap region `boolean`
+- `show-asset-popup`: Whether to show the asset popup `boolean`
 
 For an Antarctic map:
 

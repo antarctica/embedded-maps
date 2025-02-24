@@ -23,11 +23,14 @@ services:
       - TZ=UTC
       - LANG=en_US.UTF-8
       - HOST=0.0.0.0
+      - DEBUG=pw:api*
+      - TEST_GREP=${TEST_GREP:-}
+      - UPDATE_SNAPSHOTS=${UPDATE_SNAPSHOTS:-false}
     command: >
       /bin/bash -c "
         set -ex
         echo '🚀 Starting test process...'
-        apt-get update && apt-get install -y rsync
+        apt-get update && apt-get install -y rsync xvfb
         cd /tmp
         echo '📁 Syncing project files...'
         rsync -av --exclude='package-lock.json' --exclude='node_modules' --exclude-from=/app/.gitignore /app/ .
@@ -49,45 +52,18 @@ services:
         npx playwright install --with-deps
         mkdir -p .test/spec/output .test/spec/ci-snaps .test/spec/local-snaps out/report
         echo '🧪 Running tests...'
-        npx playwright test --workers="75%"
-      "
+        if [ -z \"$TEST_GREP\" ]; then
+          UPDATE_FLAGS=$([ \"$UPDATE_SNAPSHOTS\" = \"true\" ] && echo \"--update-snapshots\" || echo \"\")
+          xvfb-run --auto-servernum --server-args='-screen 0 1280x720x24' npx playwright test --workers="75%" $UPDATE_FLAGS
+        else
+          UPDATE_FLAGS=$([ \"$UPDATE_SNAPSHOTS\" = \"true\" ] && echo \"--update-snapshots\" || echo \"\")
+          xvfb-run --auto-servernum --server-args='-screen 0 1280x720x24' npx playwright test --workers="75%" $UPDATE_FLAGS --grep \"$TEST_GREP\"
+        fi"
 
   update-screenshots:
     extends: test
-    init: true
     environment:
-      - TEST_GREP=${TEST_GREP:-}
-    command: >
-      /bin/bash -c "
-        set -ex;
-        echo '🚀 Starting screenshot update process...';
-        apt-get update && apt-get install -y rsync xvfb;
-        cd /tmp;
-        echo '📁 Syncing project files...';
-        rsync -av --exclude='package-lock.json' --exclude='node_modules' --exclude-from=/app/.gitignore /app/ .;
-        echo '📦 Installing dependencies if needed...';
-        if [ -f "/docker_cache/package-lock.json" ] && [ -d "/docker_cache/node_modules" ]; then
-          echo 'Using cached dependencies...';
-          cp /docker_cache/package-lock.json .;
-          cp -r /docker_cache/node_modules .;
-          npm run prepare;
-        else
-          echo 'Fresh install needed...';
-          npm install;
-          npm run prepare;
-          mkdir -p /docker_cache;
-          cp package-lock.json /docker_cache/;
-          cp -r node_modules /docker_cache/;
-        fi;
-        echo '🎭 Installing Playwright browsers...';
-        npx playwright install --with-deps;
-        mkdir -p .test/spec/output .test/spec/ci-snaps .test/spec/local-snaps out/report;
-        echo '🧪 Updating screenshots...';
-        if [ -z \"$TEST_GREP\" ]; then
-          xvfb-run --auto-servernum --server-args='-screen 0 1280x720x24' npx playwright test --update-snapshots --workers="75%";
-        else
-          xvfb-run --auto-servernum --server-args='-screen 0 1280x720x24' npx playwright test --update-snapshots --grep \"$TEST_GREP\" --workers="75%";
-        fi"
+      - UPDATE_SNAPSHOTS=true
 
 volumes:
   docker_deps:

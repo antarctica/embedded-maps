@@ -19,7 +19,7 @@ services:
       # Cache Playwright browsers
       - playwright_cache:/root/.cache/ms-playwright
     environment:
-      - CI=true
+      - CI=false
       - TZ=UTC
       - LANG=en_US.UTF-8
       - HOST=0.0.0.0
@@ -49,7 +49,7 @@ services:
         npx playwright install --with-deps
         mkdir -p .test/spec/output .test/spec/ci-snaps .test/spec/local-snaps out/report
         echo '🧪 Running tests...'
-        npx playwright test
+        npx playwright test --workers="75%"
       "
 
   update-screenshots:
@@ -84,9 +84,9 @@ services:
         mkdir -p .test/spec/output .test/spec/ci-snaps .test/spec/local-snaps out/report;
         echo '🧪 Updating screenshots...';
         if [ -z \"$TEST_GREP\" ]; then
-          xvfb-run --auto-servernum --server-args='-screen 0 1280x720x24' npx playwright test --update-snapshots;
+          xvfb-run --auto-servernum --server-args='-screen 0 1280x720x24' npx playwright test --update-snapshots --workers="75%";
         else
-          xvfb-run --auto-servernum --server-args='-screen 0 1280x720x24' npx playwright test --update-snapshots --grep \"$TEST_GREP\";
+          xvfb-run --auto-servernum --server-args='-screen 0 1280x720x24' npx playwright test --update-snapshots --grep \"$TEST_GREP\" --workers="75%";
         fi"
 
 volumes:

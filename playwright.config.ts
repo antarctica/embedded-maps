@@ -27,16 +27,26 @@ export default defineConfig({
   workers: isCI ? 1 : '75%',
 
   /* Reporter configuration */
-  reporter: [
-    [
-      'html',
-      {
-        outputFolder: 'out/report',
-        open: 'never',
-      },
-    ],
-    ['list'], // Keep list reporter for CI console output
-  ],
+  reporter: isCI
+    ? [
+        ['list'], // Console output
+        ['junit', { outputFile: 'test-results/junit.xml' }], // GitLab integration
+      ]
+    : [
+        [
+          'html',
+          {
+            // Local development gets full HTML report
+            outputFolder: 'out/report',
+            open: 'on-failure',
+            attachments: true,
+            screenshots: true,
+            video: 'off',
+            trace: 'retain-on-failure',
+            theme: 'dark',
+          },
+        ],
+      ],
 
   /* Organize test outputs and snapshots */
   outputDir: '.test/spec/output',

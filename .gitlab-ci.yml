@@ -39,8 +39,11 @@ cache:
 test:e2e:
   stage: 🧪 test
   image: mcr.microsoft.com/playwright:v1.50.1-noble
+  services:
+    - name: mcr.microsoft.com/playwright:v1.50.1-noble
+      command: ["init"]
   script:
-    - apt-get update && apt-get install -y rsync
+    - apt-get update && apt-get install -y rsync xvfb
     - echo '📦 Installing dependencies...'
     - npm ci
     - npm run prepare
@@ -48,7 +51,7 @@ test:e2e:
     - npx playwright install --with-deps
     - mkdir -p .test/spec/output .test/spec/ci-snaps .test/spec/local-snaps out/report
     - echo '🧪 Running tests...'
-    - npx playwright test
+    - xvfb-run --auto-servernum --server-args='-screen 0 1280x720x24' npx playwright test
   after_script:
     - echo "Test report will be available at https://$CI_PROJECT_ROOT_NAMESPACE.$CI_PAGES_DOMAIN/-/$CI_PROJECT_NAME/-/jobs/$CI_JOB_ID/artifacts/out/report/index.html"
   artifacts:

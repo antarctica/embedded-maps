@@ -1,4 +1,4 @@
-import FullScreenVM from '@arcgis/core/widgets/FullScreen/FullScreenViewModel';
+import FullscreenVM from '@arcgis/core/widgets/Fullscreen/FullscreenViewModel.js';
 import * as React from 'react';
 
 import { useCurrentMapView, useWatchState } from '@/arcgis/hooks';
@@ -8,7 +8,7 @@ import SvgIcon from '../../SvgIcon';
 
 function FullScreenControl() {
   const mapView = useCurrentMapView();
-  const widget = React.useMemo(() => new FullScreenVM({ view: mapView }), [mapView]);
+  const widget = React.useMemo(() => new FullscreenVM({ view: mapView }), [mapView]);
   const isDisabled = useWatchState(() => widget.state === 'disabled') ?? false;
   return (
     <MapButton

@@ -30,6 +30,6 @@
       "@components/*": ["./src/components/*"],
     }
   },
-  "include": ["src","__mocks__", "postcss.config.cjs", "panda.config.ts"],
+  "include": ["src","__mocks__", "postcss.config.cjs", "panda.config.ts", "scripts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

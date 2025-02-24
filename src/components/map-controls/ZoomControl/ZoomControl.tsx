@@ -26,14 +26,14 @@ function ZoomControl() {
       direction="column"
     >
       <MapButton
-        icon={<SvgIcon name="icon-add" size={12} />}
+        icon={<SvgIcon name="icon-add" size={14} />}
         aria-label="Zoom In"
         isDisabled={canZoomIn ? undefined : true}
         onPress={() => widget.zoomIn()}
       />
       <Divider thickness={'thin'} w="full" color="grayscale.400"></Divider>
       <MapButton
-        icon={<SvgIcon name="icon-subtract" size={12} />}
+        icon={<SvgIcon name="icon-subtract" size={14} />}
         aria-label="Zoom Out"
         isDisabled={canZoomOut ? undefined : true}
         onPress={() => widget.zoomOut()}

@@ -1,50 +1,36 @@
+import { css, cx } from '@styled-system/css';
 import React from 'react';
 
-type IconName =
-  | 'icon-add'
-  | 'icon-calendar'
-  | 'icon-chevron-down'
-  | 'icon-chevron-up'
-  | 'icon-chevron-right'
-  | 'icon-chevron-left'
-  | 'icon-circle'
-  | 'icon-double-left-arrow'
-  | 'icon-double-right-arrow'
-  | 'icon-download'
-  | 'icon-filter'
-  | 'icon-home'
-  | 'icon-icechart'
-  | 'icon-image'
-  | 'icon-menu'
-  | 'icon-more'
-  | 'icon-search-globe'
-  | 'icon-subtract'
-  | 'icon-x'
-  | 'icon-antarctic-globe'
-  | 'icon-arctic-globe'
-  | 'icon-hamburger'
-  | 'icon-met-globe'
-  | 'icon-navigate'
-  | 'icon-no-navigate'
-  | 'icon-layers'
-  | 'icon-properties'
-  | 'icon-add-layer'
-  | 'icon-page-share'
-  | 'icon-zoom-to'
-  | 'icon-check-circle';
+import { IconName } from '@/types/Icons';
 
-interface IconProps {
+interface IconProps extends React.SVGProps<SVGSVGElement> {
   name: IconName;
   size?: number | string;
   color?: string;
-  className?: string;
-  style?: React.CSSProperties;
+  inline?: boolean;
 }
 
 const SvgIcon: React.FC<IconProps> = React.forwardRef<SVGSVGElement, IconProps>(
-  ({ name, size = 12, color = 'currentColor', className, style }, ref) => (
-    <svg ref={ref} className={className} width={size} height={size} fill={color} style={style}>
-      <use xlinkHref={`${import.meta.env.VITE_BASE_PATH}/svg/sprites.svg#${name}`} />
+  (
+    { name, size = 12, color = 'currentColor', className, style, inline = false, ...props },
+    ref,
+  ) => (
+    <svg
+      aria-hidden
+      ref={ref}
+      className={cx(css({ userSelect: 'none' }), className)}
+      width={size}
+      height={size}
+      fill={color}
+      style={{
+        ...style,
+        display: inline ? 'inline-block' : 'block',
+        verticalAlign: 'middle',
+        marginInlineEnd: inline ? '0.25rem' : '0',
+      }}
+      {...props}
+    >
+      <use xlinkHref={`/svg/sprites.svg#${name}`} />
     </svg>
   ),
 );

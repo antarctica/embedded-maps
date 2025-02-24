@@ -16,7 +16,7 @@ function HomeControl({ viewPoint }: { viewPoint?: __esri.Viewpoint }) {
   return (
     <MapButton
       includeBorder
-      icon={<SvgIcon name="icon-home" size={12} />}
+      icon={<SvgIcon name="icon-home" size={14} />}
       aria-label="Home"
       isDisabled={isDisabled}
       onPress={() => widget.go()}

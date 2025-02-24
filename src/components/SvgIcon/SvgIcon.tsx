@@ -30,7 +30,7 @@ const SvgIcon: React.FC<IconProps> = React.forwardRef<SVGSVGElement, IconProps>(
       }}
       {...props}
     >
-      <use xlinkHref={`/svg/sprites.svg#${name}`} />
+      <use xlinkHref={`${import.meta.env.VITE_BASE_PATH}/svg/sprites.svg#${name}`} />
     </svg>
   ),
 );

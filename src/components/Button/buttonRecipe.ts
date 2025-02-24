@@ -3,7 +3,7 @@ import { cva } from '@styled-system/css';
 export const buttonRecipe = cva({
   base: {
     color: 'grayscale.700',
-    bg: 'grayscale.200',
+    bg: 'aircraftRed.base',
     _hover: {
       bg: 'grayscale.300',
       cursor: 'pointer',

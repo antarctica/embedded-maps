@@ -58,9 +58,6 @@ test:e2e:
     expire_in: 1 week
     reports:
       junit: test-results/**/junit.xml
-    paths:
-      - test-results/**/*.png
-      - test-results/**/junit.xml
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       changes:

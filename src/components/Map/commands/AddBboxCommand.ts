@@ -37,13 +37,13 @@ export class AddBboxCommand implements MapCommand {
     map.add(bboxGraphicsLayer);
 
     return {
-      executeOnView: (mapView: __esri.MapView) => {
+      executeOnView: async (mapView: __esri.MapView) => {
         mapView.set('rotation', basemapConfig.rotation);
         applyBasemapConstraints(mapView, basemapConfig);
         if (this.showRegion) {
-          mapView.goTo({ target: basemapConfig.viewExtent }, { animate: false });
+          await mapView.goTo({ target: basemapConfig.viewExtent }, { animate: false });
         } else {
-          mapView.goTo({ target: bboxGraphic.geometry }, { animate: false });
+          await mapView.goTo({ target: bboxGraphic.geometry }, { animate: false });
         }
       },
     };

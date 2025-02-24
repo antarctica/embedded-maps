@@ -4,6 +4,7 @@ include:
   - template: 'Workflows/MergeRequest-Pipelines.gitlab-ci.yml'
 
 stages:
+  - 🧪 test
   - 🏗️ build
   - 🚚 publish
   - 📣 release
@@ -31,8 +32,37 @@ image:
 cache:
   paths:
     - node_modules/
+    - /root/.cache/ms-playwright/
 
 # Jobs
+
+test:e2e:
+  stage: 🧪 test
+  image: mcr.microsoft.com/playwright:v1.50.1-noble
+  script:
+    - apt-get update && apt-get install -y rsync
+    - echo '📦 Installing dependencies...'
+    - npm ci
+    - npm run prepare
+    - echo '🎭 Installing Playwright browsers...'
+    - npx playwright install --with-deps
+    - mkdir -p .test/spec/output .test/spec/ci-snaps .test/spec/local-snaps out/report
+    - echo '🧪 Running tests...'
+    - npx playwright test
+  after_script:
+    - echo "Test report will be available at https://$CI_PROJECT_ROOT_NAMESPACE.$CI_PAGES_DOMAIN/-/$CI_PROJECT_NAME/-/jobs/$CI_JOB_ID/artifacts/out/report/index.html"
+  artifacts:
+    when: always
+    paths:
+      - out/report/
+      - test-results/
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_TAG || $CI_PIPELINE_SOURCE == "merge_request_event"'
+  variables:
+    CI: 'true'
+    TZ: 'UTC'
+    LANG: 'en_US.UTF-8'
+    DEBUG: 'pw:browser'
 
 build:
   stage: 🏗️ build

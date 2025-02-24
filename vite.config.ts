@@ -15,5 +15,9 @@ export default ({ mode }: { mode: string }) => {
       environment: 'jsdom',
     },
     base: env.VITE_BASE_PATH,
+    server: {
+      host: true, // needed for docker
+      port: 5173,
+    },
   });
 };

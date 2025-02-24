@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  test:
+    image: mcr.microsoft.com/playwright:v1.50.1-noble
+    working_dir: /app
+    ports:
+      - "5173:5173"
+    volumes:
+      # Mount source code as read-only
+      - .:/app:ro
+      # Cache node_modules
+      - docker_deps:/docker_cache
+      # Match playwright.config.ts output locations
+      - ./.test/spec/output:/tmp/.test/spec/output
+      - ./.test/spec/ci-snaps:/tmp/.test/spec/ci-snaps
+      - ./.test/spec/local-snaps:/tmp/.test/spec/local-snaps
+      - ./out/report:/tmp/out/report
+      # Cache Playwright browsers
+      - playwright_cache:/root/.cache/ms-playwright
+    environment:
+      - CI=true
+      - TZ=UTC
+      - LANG=en_US.UTF-8
+      - HOST=0.0.0.0
+    command: >
+      /bin/bash -c "
+        set -ex
+        echo '🚀 Starting test process...'
+        apt-get update && apt-get install -y rsync
+        cd /tmp
+        echo '📁 Syncing project files...'
+        rsync -av --exclude='package-lock.json' --exclude='node_modules' --exclude-from=/app/.gitignore /app/ .
+        echo '📦 Installing dependencies if needed...'
+        if [ -f "/docker_cache/package-lock.json" ] && [ -d "/docker_cache/node_modules" ]; then
+          echo 'Using cached dependencies...'
+          cp /docker_cache/package-lock.json .
+          cp -r /docker_cache/node_modules .
+          npm run prepare
+        else
+          echo 'Fresh install needed...'
+          npm install
+          npm run prepare
+          mkdir -p /docker_cache
+          cp package-lock.json /docker_cache/
+          cp -r node_modules /docker_cache/
+        fi
+        echo '🎭 Installing Playwright browsers...'
+        npx playwright install --with-deps
+        mkdir -p .test/spec/output .test/spec/ci-snaps .test/spec/local-snaps out/report
+        echo '🧪 Running tests...'
+        npx playwright test
+      "
+
+  update-screenshots:
+    extends: test
+    init: true
+    environment:
+      - TEST_GREP=${TEST_GREP:-}
+    command: >
+      /bin/bash -c "
+        set -ex;
+        echo '🚀 Starting screenshot update process...';
+        apt-get update && apt-get install -y rsync xvfb;
+        cd /tmp;
+        echo '📁 Syncing project files...';
+        rsync -av --exclude='package-lock.json' --exclude='node_modules' --exclude-from=/app/.gitignore /app/ .;
+        echo '📦 Installing dependencies if needed...';
+        if [ -f "/docker_cache/package-lock.json" ] && [ -d "/docker_cache/node_modules" ]; then
+          echo 'Using cached dependencies...';
+          cp /docker_cache/package-lock.json .;
+          cp -r /docker_cache/node_modules .;
+          npm run prepare;
+        else
+          echo 'Fresh install needed...';
+          npm install;
+          npm run prepare;
+          mkdir -p /docker_cache;
+          cp package-lock.json /docker_cache/;
+          cp -r node_modules /docker_cache/;
+        fi;
+        echo '🎭 Installing Playwright browsers...';
+        npx playwright install --with-deps;
+        mkdir -p .test/spec/output .test/spec/ci-snaps .test/spec/local-snaps out/report;
+        echo '🧪 Updating screenshots...';
+        if [ -z \"$TEST_GREP\" ]; then
+          xvfb-run --auto-servernum --server-args='-screen 0 1280x720x24' npx playwright test --update-snapshots;
+        else
+          xvfb-run --auto-servernum --server-args='-screen 0 1280x720x24' npx playwright test --update-snapshots --grep \"$TEST_GREP\";
+        fi"
+
+volumes:
+  docker_deps:
+  playwright_cache:

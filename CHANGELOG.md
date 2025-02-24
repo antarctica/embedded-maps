@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 * Scale bar control [#10](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/10)
 * Theme support based on user OS preferences [#14](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/14)
+* Fullscreen map control [#11](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/11)
 * Parameter for showing asset popup [#25](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/25)
 
 ### Changed

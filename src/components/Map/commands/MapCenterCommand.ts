@@ -13,10 +13,10 @@ export class MapCenterCommand implements MapCommand {
     map.basemap = basemapConfig.basemap;
 
     return {
-      executeOnView: (mapView: __esri.MapView) => {
+      executeOnView: async (mapView: __esri.MapView) => {
         mapView.set('rotation', basemapConfig.rotation);
         applyBasemapConstraints(mapView, basemapConfig);
-        mapView.goTo({ target: this.center }, { animate: false });
+        await mapView.goTo({ target: this.center }, { animate: false });
       },
     };
   }

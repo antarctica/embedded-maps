@@ -8,6 +8,7 @@ import { ArcMapView } from '@/arcgis/components/ArcView/ArcMapView';
 
 import { Globe } from '../Globe';
 import LoadingScrim from '../LoadingScrim';
+import FullScreenControl from '../map-controls/FullScreenControl/FullScreenControl';
 import HomeControl from '../map-controls/HomeControl';
 import ScaleControl from '../map-controls/ScaleControl/ScaleControl';
 import ZoomControl from '../map-controls/ZoomControl';
@@ -22,6 +23,7 @@ interface MapProps {
   hideUI?: boolean;
   showRegion?: boolean;
   showAssetPopup?: boolean;
+  showFullScreen?: boolean;
 }
 
 const viewPadding = {
@@ -64,6 +66,7 @@ export function Map({
   hideUI,
   showRegion,
   showAssetPopup,
+  showFullScreen,
 }: MapProps) {
   const [viewPoint, setViewPoint] = React.useState<__esri.Viewpoint | undefined>(undefined);
 
@@ -99,6 +102,7 @@ export function Map({
               <Flex gap={'4'} direction="column">
                 <ZoomControl />
                 <HomeControl viewPoint={viewPoint} />
+                {showFullScreen && <FullScreenControl />}
               </Flex>
             </arcgis-placement>
             <arcgis-placement position="bottom-left">

@@ -40,12 +40,20 @@ Maps can be configured using the following query parameters:
 **UI Controls:**
 - `globe-overview`: Whether to show a globe overview `boolean`
 - `hide-ui`: Whether to hide the map controls `boolean`
+- `show-full-screen`: Whether to enable fullscreen mode `boolean`
 
 For an Antarctic map:
 
 ```html
-<iframe src="https://embedded-maps.data.bas.ac.uk/v1/?center=[-180, -90]&zoom=6&globe_overview=true" style="border:none;"></iframe>
+<iframe 
+  src="https://embedded-maps.data.bas.ac.uk/v1/?center=[-180, -90]&zoom=6&globe_overview=true" 
+  style="border:none;"
+  allowfullscreen="true"
+  allow="fullscreen">
+</iframe>
 ```
+
+**Note:** To enable fullscreen functionality, the `allowfullscreen` and `allow="fullscreen"` attributes must be added to the iframe element.
 
 ## Implementation
 

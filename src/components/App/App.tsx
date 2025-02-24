@@ -15,6 +15,7 @@ export function App() {
     'hide-ui': hideUI,
     'show-region': showRegion,
     'show-asset-popup': showAssetPopup,
+    'show-full-screen': showFullScreen,
   } = Route.useSearch();
 
   return (
@@ -28,6 +29,7 @@ export function App() {
       hideUI={hideUI}
       showRegion={showRegion}
       showAssetPopup={showAssetPopup}
+      showFullScreen={showFullScreen}
     />
   );
 }

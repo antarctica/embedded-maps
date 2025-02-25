@@ -1,4 +1,4 @@
-import '@arcgis/map-components/dist/components/arcgis-scene';
+import '@arcgis/map-components/components/arcgis-scene';
 
 import { ArcgisSceneCustomEvent } from '@arcgis/map-components';
 import React, { JSX } from 'react';

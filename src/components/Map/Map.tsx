@@ -1,4 +1,4 @@
-import '@arcgis/map-components/dist/components/arcgis-placement';
+import '@arcgis/map-components/components/arcgis-placement';
 
 import { css, cva } from '@styled-system/css';
 import { Flex } from '@styled-system/jsx';

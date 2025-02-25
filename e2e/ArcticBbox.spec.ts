@@ -25,7 +25,7 @@ test.describe.parallel('Arctic Bounding Boxes', () => {
         // Wait for the map to finish updating
         await page.waitForSelector('arcgis-map:not([updating])', {
           state: 'visible',
-          timeout: 5000,
+          timeout: 20000,
         });
 
         await expect(page).toHaveScreenshot(`bbox-${bbox.join('-')}.png`, { fullPage: true });

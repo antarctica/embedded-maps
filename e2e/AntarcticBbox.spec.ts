@@ -25,7 +25,7 @@ test.describe.parallel('Antarctic Bounding Boxes', () => {
         // Wait for the map to finish updating
         await page.waitForSelector('arcgis-map:not([updating])', {
           state: 'visible',
-          timeout: 5000,
+          timeout: 20000,
         });
 
         await expect(page).toHaveScreenshot(`bbox-${bbox.join('-')}.png`, { fullPage: true });
@@ -49,8 +49,11 @@ test.describe('Antarctic Bounding Box with globe overview', () => {
 
     await page.waitForSelector('arcgis-map:not([updating])', {
       state: 'visible',
-      timeout: 5000,
+      timeout: 20000,
     });
+
+    // wait 5 seconds
+    await page.waitForTimeout(5000);
 
     await expect(page).toHaveScreenshot('bbox-antarctic-globe-overview.png', { fullPage: true });
 

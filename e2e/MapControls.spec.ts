@@ -36,7 +36,7 @@ test.describe.parallel('Map Controls and Parameters', () => {
         await page.waitForSelector('arcgis-map', { state: 'visible' });
         await page.waitForSelector('arcgis-map:not([updating])', {
           state: 'visible',
-          timeout: 5000,
+          timeout: 20000,
         });
       });
 
@@ -77,15 +77,18 @@ test.describe.parallel('Map Controls and Parameters', () => {
       await page.waitForSelector('arcgis-map', { state: 'visible' });
       await page.waitForSelector('arcgis-map:not([updating])', {
         state: 'visible',
-        timeout: 5000,
+        timeout: 20000,
       });
 
       // Wait for the scene to be ready
       await page.waitForSelector('arcgis-scene', { state: 'visible' });
       await page.waitForSelector('arcgis-scene:not([updating])', {
         state: 'visible',
-        timeout: 5000,
+        timeout: 20000,
       });
+
+      // wait 5 seconds
+      await page.waitForTimeout(5000);
     });
 
     test('snapshot', async ({ page }) => {

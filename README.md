@@ -120,6 +120,33 @@ npm run dev
 
 **Note:** Node.js is required to run the project.
 
+### Testing
+
+This project uses Playwright for end-to-end testing, including visual regression testing. Tests run in a containerized environment that includes a virtual framebuffer (xvfb) to support WebGL for ArcGIS map testing.
+
+#### Running Tests
+
+```shell
+# Run all tests
+npm run test:e2e
+
+# Update snapshots when UI changes are expected
+npm run test:e2e:update
+```
+
+#### Visual Regression Testing
+
+The project includes visual regression testing where screenshots are compared against stored snapshots. When making UI changes:
+
+1. Make your UI changes
+2. Run tests (`npm run test:e2e`)
+3. If tests fail due to visual differences:
+   - Review the differences in the test report
+   - If changes are expected, update snapshots: `npm run test:e2e:update`
+   - If changes are unexpected, fix the UI issues
+
+Snapshots are stored in `.test/spec/snapshots` and must be explicitly updated when UI changes are intended.
+
 ### Health monitoring
 
 `$ENDPOINT/meta/health.json` provides service health information formatted according to the 

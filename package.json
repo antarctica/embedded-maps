@@ -13,7 +13,7 @@
     "new-component": "new-component",
     "check-types": "tsc --noemit -p tsconfig.json",
     "test:e2e": "docker compose run --rm test",
-    "test:e2e:update": "docker compose run --rm update-screenshots",
+    "test:e2e:update": "UPDATE_SNAPSHOTS=true docker compose run --rm test",
     "extract-sprites": "tsx scripts/extract-sprites.ts",
     "generate-sprites": "tsx scripts/generate-sprites.ts"
   },
@@ -21,8 +21,8 @@
     "src/**/*.{js,jsx,ts,tsx}": "eslint --fix"
   },
   "dependencies": {
-    "@arcgis/core": "^4.31.6",
-    "@arcgis/map-components": "^4.31.6",
+    "@arcgis/core": "~4.31.6",
+    "@arcgis/map-components": "~4.31.6",
     "@tanstack/react-router": "^1.97.3",
     "@tanstack/zod-adapter": "^1.97.3",
     "new-component": "^6.0.0",
@@ -42,6 +42,8 @@
     "@pandacss/eslint-plugin": "^0.2.4",
     "@pandacss/studio": "^0.51.1",
     "@playwright/test": "^1.50.1",
+    "@swc/cli": "^0.6.0",
+    "@swc/core": "^1.11.1",
     "@tanstack/router-devtools": "^1.97.3",
     "@tanstack/router-plugin": "^1.97.3",
     "@testing-library/jest-dom": "^6.6.3",
@@ -75,6 +77,7 @@
     "wait-on": "^7.2.0"
   },
   "optionalDependencies": {
+    "@rollup/rollup-linux-arm64-gnu": "^4.34.8",
     "@rollup/rollup-linux-x64-gnu": "^4.31.0"
   }
 }

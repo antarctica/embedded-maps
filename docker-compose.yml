@@ -4,67 +4,46 @@ services:
   test:
     image: mcr.microsoft.com/playwright:v1.50.1-noble
     working_dir: /app
+    init: true # This is needed for xvfb-run to work
     ports:
-      - "5173:5173"
+      - "5173:5173"  # Vite dev server port
+      - "9323:9323"  # Playwright debug port
     volumes:
-      # Mount source code as read-only
-      - .:/app:ro
-      # Cache node_modules
-      - docker_deps:/docker_cache
-      # Match playwright.config.ts output locations
-      - ./.test/spec/output:/tmp/.test/spec/output
-      - ./.test/spec/ci-snaps:/tmp/.test/spec/ci-snaps
-      - ./.test/spec/local-snaps:/tmp/.test/spec/local-snaps
-      - ./out/report:/tmp/out/report
-      # Cache Playwright browsers
+      # Mount source code (node_modules and package-lock.json excluded via .dockerignore)
+      # this is because the install is specific to the OS.
+      - .:/app
+      # Cache layers to improve performance
       - playwright_cache:/root/.cache/ms-playwright
+      - node_modules:/app/node_modules:delegated
+      # Test artifacts with explicit permissions
+      - ./test-results:/app/test-results:rw,delegated
+      - ./.test/spec:/app/.test/spec
     environment:
-      - CI=false
       - TZ=UTC
       - LANG=en_US.UTF-8
       - HOST=0.0.0.0
-      - DEBUG=pw:api*
+      - DEBUG=pw:browser*:error
       - TEST_GREP=${TEST_GREP:-}
+      - PW_SERVER_HOST=0.0.0.0
+      - PW_SERVER_PORT=9323
+      - CI=
       - UPDATE_SNAPSHOTS=${UPDATE_SNAPSHOTS:-false}
+    # Using xvfb-run to create a virtual framebuffer, enabling WebGL support
+    # This is crucial for ArcGIS WebScene tests that require GPU acceleration
     command: >
-      /bin/bash -c "
+      /bin/bash -c '
         set -ex
-        echo '🚀 Starting test process...'
-        apt-get update && apt-get install -y rsync xvfb
-        cd /tmp
-        echo '📁 Syncing project files...'
-        rsync -av --exclude='package-lock.json' --exclude='node_modules' --exclude-from=/app/.gitignore /app/ .
-        echo '📦 Installing dependencies if needed...'
-        if [ -f "/docker_cache/package-lock.json" ] && [ -d "/docker_cache/node_modules" ]; then
-          echo 'Using cached dependencies...'
-          cp /docker_cache/package-lock.json .
-          cp -r /docker_cache/node_modules .
-          npm run prepare
-        else
-          echo 'Fresh install needed...'
-          npm install
-          npm run prepare
-          mkdir -p /docker_cache
-          cp package-lock.json /docker_cache/
-          cp -r node_modules /docker_cache/
-        fi
-        echo '🎭 Installing Playwright browsers...'
+        echo "📦 Installing dependencies and setting up environment..."
+        npm install
+        apt-get update && apt-get install -y xvfb
         npx playwright install --with-deps
-        mkdir -p .test/spec/output .test/spec/ci-snaps .test/spec/local-snaps out/report
-        echo '🧪 Running tests...'
-        if [ -z \"$TEST_GREP\" ]; then
-          UPDATE_FLAGS=$([ \"$UPDATE_SNAPSHOTS\" = \"true\" ] && echo \"--update-snapshots\" || echo \"\")
-          xvfb-run --auto-servernum --server-args='-screen 0 1280x720x24' npx playwright test --workers="75%" $UPDATE_FLAGS
-        else
-          UPDATE_FLAGS=$([ \"$UPDATE_SNAPSHOTS\" = \"true\" ] && echo \"--update-snapshots\" || echo \"\")
-          xvfb-run --auto-servernum --server-args='-screen 0 1280x720x24' npx playwright test --workers="75%" $UPDATE_FLAGS --grep \"$TEST_GREP\"
-        fi"
 
-  update-screenshots:
-    extends: test
-    environment:
-      - UPDATE_SNAPSHOTS=true
-
+        echo "🧪 Running tests..."
+        xvfb-run --auto-servernum npx playwright test --workers=75% \
+          $([ "$UPDATE_SNAPSHOTS" = "true" ] && echo "--update-snapshots") \
+          $([ ! -z "$TEST_GREP" ] && echo "--grep \"$TEST_GREP\"")
+      '
+        
 volumes:
-  docker_deps:
   playwright_cache:
+  node_modules:

@@ -36,21 +36,21 @@ export default defineConfig({
         [
           'html',
           {
-            // Local development gets full HTML report
-            outputFolder: 'out/report',
-            open: 'on-failure',
+            open: 'never',
             attachments: true,
             screenshots: true,
             video: 'off',
             trace: 'retain-on-failure',
             theme: 'dark',
+            host: process.env.PW_SERVER_HOST || 'localhost',
+            port: parseInt(process.env.PW_SERVER_PORT || '9323'),
           },
         ],
       ],
 
   /* Organize test outputs and snapshots */
   outputDir: '.test/spec/output',
-  snapshotDir: isCI ? '.test/spec/ci-snaps' : '.test/spec/local-snaps',
+  snapshotDir: '.test/spec/snapshots',
   snapshotPathTemplate: '{snapshotDir}/{projectName}/{testFilePath}/{arg}{ext}',
 
   /* Shared settings for all the projects below. */
@@ -58,11 +58,10 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: 'http://127.0.0.1:5173',
 
-    /* Collect trace when retrying the failed test. */
-    trace: isCI ? 'retain-on-failure' : 'on-first-retry',
+    trace: 'retain-on-failure',
 
     /* Only screenshot on failure to speed up tests */
-    screenshot: 'only-on-failure',
+    screenshot: isCI ? 'only-on-failure' : 'on',
 
     /* Visual test specific settings */
     viewport: { width: 1280, height: 720 },
@@ -78,6 +77,7 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         launchOptions: {
+          headless: true,
           args: ['--ignore-gpu-blocklist', '--use-gl=angle'],
         },
       },

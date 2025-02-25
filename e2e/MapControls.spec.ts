@@ -86,6 +86,9 @@ test.describe.parallel('Map Controls and Parameters', () => {
         state: 'visible',
         timeout: 20000,
       });
+
+      // wait 5 seconds
+      await page.waitForTimeout(5000);
     });
 
     test('snapshot', async ({ page }) => {

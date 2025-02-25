@@ -52,6 +52,9 @@ test.describe('Antarctic Bounding Box with globe overview', () => {
       timeout: 20000,
     });
 
+    // wait 5 seconds
+    await page.waitForTimeout(5000);
+
     await expect(page).toHaveScreenshot('bbox-antarctic-globe-overview.png', { fullPage: true });
 
     const accessibilityScanResults = await new AxeBuilder({ page }).analyze();

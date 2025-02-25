@@ -44,15 +44,14 @@ test:e2e:
     - name: mcr.microsoft.com/playwright:v1.50.1-noble
       command: ["init"]
   script:
-    - apt-get update && apt-get install -y rsync xvfb
+    - apt-get update && apt-get install -y xvfb
     - echo '📦 Installing dependencies...'
     - npm ci
     - npm run prepare
     - echo '🎭 Installing Playwright browsers...'
     - npx playwright install --with-deps
-    - mkdir -p .test/spec/output .test/spec/ci-snaps .test/spec/local-snaps out/report
     - echo '🧪 Running tests...'
-    - xvfb-run --auto-servernum --server-args='-screen 0 1280x720x24' npx playwright test --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
+    - xvfb-run --auto-servernum npx playwright test --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
   artifacts:
     when: always
     expire_in: 1 week

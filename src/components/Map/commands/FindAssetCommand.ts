@@ -4,7 +4,7 @@ import FeatureFilter from '@arcgis/core/layers/support/FeatureFilter';
 import EsriMap from '@arcgis/core/Map';
 
 import { MapCommand, ViewCommand } from '@/arcgis/typings/commandtypes';
-import { isEsriPoint } from '@/arcgis/typings/typeGuards';
+import { isEsriPoint, isValid2DCoordinate } from '@/arcgis/typings/typeGuards';
 import { ASSETFIELDNAME, ASSETLAYERMAPID, ASSETLAYERPORTALID } from '@/config/assetLayer';
 import { getBasemapConfigForMapProjection, getMapProjectionFromPosition } from '@/config/basemap';
 
@@ -56,11 +56,15 @@ export class FindAssetCommand implements MapCommand {
     const asset = await this.getAsset();
     if (asset) {
       const geometry = asset.geometry;
-      if (!isEsriPoint(geometry)) {
+      if (!geometry || !isEsriPoint(geometry)) {
         return;
       }
       const { longitude, latitude } = geometry;
-      const mapProjection = getMapProjectionFromPosition([longitude, latitude]);
+      const coordinate = [longitude, latitude];
+      if (!isValid2DCoordinate(coordinate)) {
+        return;
+      }
+      const mapProjection = getMapProjectionFromPosition(coordinate);
       const basemapConfig = getBasemapConfigForMapProjection(mapProjection);
       map.basemap = basemapConfig.basemap;
       return {
@@ -71,7 +75,7 @@ export class FindAssetCommand implements MapCommand {
           await mapView.when();
 
           await mapView.goTo({ target: geometry }, { animate: false });
-          if (this.showAssetPopup) {
+          if (this.showAssetPopup && mapView.popup) {
             mapView.popup.dockOptions = {
               buttonEnabled: false,
               position: 'top-right',

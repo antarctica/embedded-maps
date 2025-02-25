@@ -1,5 +1,6 @@
 import '@arcgis/core/assets/esri/themes/light/main.css?inline';
 
+import GeometryToolsLoader from '@/arcgis/components/GeometryToolsLoader';
 import { Route } from '@/routes/__root';
 
 import { Map } from '../Map/Map';
@@ -19,17 +20,19 @@ export function App() {
   } = Route.useSearch();
 
   return (
-    <Map
-      initialAssetId={assetId}
-      initialCenter={center as [number, number]}
-      initialZoom={zoom}
-      initialBbox={bbox as [number, number, number, number]}
-      initialScale={scale}
-      includeGlobeOverview={globeOverview}
-      hideUI={hideUI}
-      showRegion={showRegion}
-      showAssetPopup={showAssetPopup}
-      showFullScreen={showFullScreen}
-    />
+    <GeometryToolsLoader>
+      <Map
+        initialAssetId={assetId}
+        initialCenter={center as [number, number]}
+        initialZoom={zoom}
+        initialBbox={bbox as [number, number, number, number]}
+        initialScale={scale}
+        includeGlobeOverview={globeOverview}
+        hideUI={hideUI}
+        showRegion={showRegion}
+        showAssetPopup={showAssetPopup}
+        showFullScreen={showFullScreen}
+      />
+    </GeometryToolsLoader>
   );
 }

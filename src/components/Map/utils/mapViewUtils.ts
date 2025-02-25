@@ -55,7 +55,7 @@ async function applyRotationToRenderer(
 ): Promise<void> {
   const { renderer } = featureLayerView.layer as __esri.FeatureLayer;
 
-  if (!isCompatibleRenderer(renderer)) {
+  if (!renderer || !isCompatibleRenderer(renderer)) {
     return;
   }
 
@@ -102,6 +102,10 @@ function updateRotationSettings(
 }
 
 export function applyBasemapConstraints(mapView: __esri.MapView, basemapConfig: BasemapConfig) {
+  if (!mapView.map.basemap) {
+    return;
+  }
+
   // turn on resampling for basemap layers
   for (const layer of mapView.map.basemap.baseLayers) {
     if (layer instanceof TileLayer) {

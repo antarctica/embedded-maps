@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 export function useWatchEffect<T>(
   getValue: () => T,
-  callback: (newValue: T, oldValue: T) => void,
+  callback: (newValue: T, oldValue: T | nullish) => void,
   options?: __esri.ReactiveWatchOptions,
 ) {
   useEffect(() => {
@@ -19,7 +19,7 @@ export function useWatchEffect<T>(
 
 export function useWhenEffect<T>(
   getValue: () => T,
-  callback: (newValue: T, oldValue: T | null) => void,
+  callback: (newValue: T, oldValue: T | nullish) => void,
   options?: __esri.ReactiveWatchOptions,
 ) {
   useEffect(() => {

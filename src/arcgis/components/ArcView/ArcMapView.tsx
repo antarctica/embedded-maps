@@ -1,4 +1,4 @@
-import '@arcgis/map-components/dist/components/arcgis-map';
+import '@arcgis/map-components/components/arcgis-map';
 
 import { ArcgisMapCustomEvent } from '@arcgis/map-components';
 import React, { JSX } from 'react';

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Theme support based on user OS preferences [#14](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/14)
 * Fullscreen map control [#11](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/11)
 * Parameter for showing asset popup [#25](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/25)
+* Added end-to-end tests for map [#12](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/12)
 
 ### Changed
 * Refactored query parameters to use kebab-case

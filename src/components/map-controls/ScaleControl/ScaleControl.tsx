@@ -1,5 +1,5 @@
 /* eslint-disable @pandacss/no-hardcoded-color */
-import '@arcgis/map-components/dist/components/arcgis-scale-bar';
+import '@arcgis/map-components/components/arcgis-scale-bar';
 
 import { cva } from '@styled-system/css';
 

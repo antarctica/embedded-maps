@@ -11,14 +11,14 @@ services:
     volumes:
       # Mount source code (node_modules and package-lock.json excluded via .dockerignore)
       # this is because the install is specific to the OS.
-      - ../..:/app
+      - ../../.:/app
       # Cache layers to improve performance
       - playwright_cache:/root/.cache/ms-playwright
       - node_modules:/app/node_modules:delegated
-      # Test artifacts with explicit permissions
-      - ../results:/app/e2e/results:rw,delegated
-      - ../output:/app/e2e/output
-      - ../snapshots:/app/e2e/snapshots
+      # Test artifacts with permissions matching playwright.config.ts paths
+      - ../../e2e/results:/app/e2e/results:rw,delegated
+      - ../../e2e/output:/app/e2e/output
+      - ../../e2e/snapshots:/app/e2e/snapshots
     environment:
       - TZ=UTC
       - LANG=en_US.UTF-8
@@ -31,7 +31,7 @@ services:
       - UPDATE_SNAPSHOTS=${UPDATE_SNAPSHOTS:-false}
     # Using xvfb-run to create a virtual framebuffer, enabling WebGL support
     # This is crucial for ArcGIS WebScene tests that require GPU acceleration
-    command: >
+    command: |
       /bin/bash -c '
         set -ex
         echo "📦 Installing dependencies and setting up environment..."
@@ -40,11 +40,12 @@ services:
         npx playwright install --with-deps
 
         echo "🧪 Running tests..."
-        cd e2e/config && xvfb-run --auto-servernum npx playwright test --workers=75% \
+        xvfb-run --auto-servernum \
+          npx playwright test \
+          --config e2e/config/playwright.config.ts \
+          --workers=75% \
           $([ "$UPDATE_SNAPSHOTS" = "true" ] && echo "--update-snapshots") \
-          $([ ! -z "$TEST_GREP" ] && echo "--grep \"$TEST_GREP\"")
-      '
-        
+          $([ ! -z "$TEST_GREP" ] && echo "--grep=$TEST_GREP")'        
 volumes:
   playwright_cache:
   node_modules:

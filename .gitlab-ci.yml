@@ -51,12 +51,15 @@ test:e2e:
     - echo '🎭 Installing Playwright browsers...'
     - npx playwright install --with-deps
     - echo '🧪 Running tests...'
-    - xvfb-run --auto-servernum npx playwright test --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
+    - cd e2e/config && xvfb-run --auto-servernum npx playwright test --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
   artifacts:
     when: always
     expire_in: 1 week
     reports:
-      junit: test-results/**/junit.xml
+      junit: e2e/results/junit.xml
+    paths:
+      - e2e/results/
+      - e2e/output/
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       changes:
@@ -64,7 +67,6 @@ test:e2e:
         - panda.config.ts
         - panda.config/**/*
         - e2e/**/*
-        - playwright.config.ts
     - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_TAG'
   variables:
     CI: 'true'

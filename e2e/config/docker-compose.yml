@@ -11,13 +11,14 @@ services:
     volumes:
       # Mount source code (node_modules and package-lock.json excluded via .dockerignore)
       # this is because the install is specific to the OS.
-      - .:/app
+      - ../..:/app
       # Cache layers to improve performance
       - playwright_cache:/root/.cache/ms-playwright
       - node_modules:/app/node_modules:delegated
       # Test artifacts with explicit permissions
-      - ./test-results:/app/test-results:rw,delegated
-      - ./.test/spec:/app/.test/spec
+      - ../results:/app/e2e/results:rw,delegated
+      - ../output:/app/e2e/output
+      - ../snapshots:/app/e2e/snapshots
     environment:
       - TZ=UTC
       - LANG=en_US.UTF-8
@@ -39,7 +40,7 @@ services:
         npx playwright install --with-deps
 
         echo "🧪 Running tests..."
-        xvfb-run --auto-servernum npx playwright test --workers=75% \
+        cd e2e/config && xvfb-run --auto-servernum npx playwright test --workers=75% \
           $([ "$UPDATE_SNAPSHOTS" = "true" ] && echo "--update-snapshots") \
           $([ ! -z "$TEST_GREP" ] && echo "--grep \"$TEST_GREP\"")
       '

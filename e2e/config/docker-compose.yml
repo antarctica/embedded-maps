@@ -2,8 +2,9 @@ version: '3.8'
 
 services:
   test:
-    image: mcr.microsoft.com/playwright:v1.50.1-noble
-    working_dir: /app
+    build:
+      context: ../../
+      dockerfile: e2e/config/Dockerfile.e2e
     init: true # This is needed for xvfb-run to work
     ports:
       - "5173:5173"  # Vite dev server port

@@ -1,0 +1,6 @@
+FROM mcr.microsoft.com/playwright:v1.50.1-noble
+
+WORKDIR /app
+
+# We'll handle the rest of the setup in docker-compose command
+# to keep the development workflow flexible 

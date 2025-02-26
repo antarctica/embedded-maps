@@ -1,0 +1,21 @@
+# Exclude development and build artifacts
+node_modules/
+package-lock.json
+dist/
+coverage/
+
+# Exclude test results and reports
+test-results/
+playwright-report/
+blob-report/
+artifacts/
+e2e/results/
+e2e/output/
+
+# Exclude git and cache directories
+.git/
+.cache/
+playwright/.cache/
+
+# Exclude logs
+*.log 

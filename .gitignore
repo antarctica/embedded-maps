@@ -30,21 +30,20 @@ styled-system-studio
 # Terraform
 .terraform
 
-# Playwright
-/test-results/
-/playwright-report/
+# Playwright and E2E Testing
+/e2e/results/
+/e2e/output/
 /blob-report/
 /playwright/.cache/
 
-# Playwright
+# Legacy test directories (to be removed)
+/.test/
 /test-results/
 /playwright-report/
-/blob-report/
-/playwright/.cache/
-/out/
-/.test/spec/output/
+
 # Keep CI snapshots for visual regression testing
-!.test/spec/ci-snaps/
+!/e2e/snapshots/ci/
 # Keep local snapshots if needed for development
-!.test/spec/local-snaps/
+!/e2e/snapshots/local/
+
 

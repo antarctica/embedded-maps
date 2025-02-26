@@ -132,7 +132,22 @@ npm run test:e2e
 
 # Update snapshots when UI changes are expected
 npm run test:e2e:update
+
+# Run specific tests using grep patterns
+TEST_GREP="Map Controls and Parameters" npm run test:e2e    # Run a test suite
+TEST_GREP="globe overview" npm run test:e2e                 # Run a specific test
+TEST_GREP="MapControls.spec" npm run test:e2e              # Run a specific file
+TEST_GREP="@accessibility" npm run test:e2e                 # Run tests with a specific tag
 ```
+
+The `TEST_GREP` environment variable supports:
+- Test suite names (e.g., "Map Controls and Parameters")
+- Individual test names (e.g., "globe overview")
+- Test file names (e.g., "MapControls.spec")
+- Test tags (e.g., "@accessibility")
+- Regular expressions for more complex patterns
+
+All these patterns can also be used with `npm run test:e2e:update` to update snapshots for specific tests.
 
 #### Visual Regression Testing
 

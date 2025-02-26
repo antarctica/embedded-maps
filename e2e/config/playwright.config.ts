@@ -14,7 +14,7 @@ const isCI = !!process.env.CI;
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './e2e',
+  testDir: '../specs',
   /* Set appropriate timeouts for local and CI environments */
   timeout: isCI ? 60000 : 30000, // 60s for CI, 30s for local
   /* Run tests in files in parallel */
@@ -30,13 +30,14 @@ export default defineConfig({
   reporter: isCI
     ? [
         ['list'], // Console output
-        ['junit', { outputFile: 'test-results/junit.xml' }], // GitLab integration
+        ['junit', { outputFile: '../results/junit.xml' }], // GitLab integration
       ]
     : [
         [
           'html',
           {
             open: 'never',
+            outputDir: '../results/html-report',
             attachments: true,
             screenshots: true,
             video: 'off',
@@ -49,8 +50,8 @@ export default defineConfig({
       ],
 
   /* Organize test outputs and snapshots */
-  outputDir: '.test/spec/output',
-  snapshotDir: '.test/spec/snapshots',
+  outputDir: '../output',
+  snapshotDir: '../snapshots',
   snapshotPathTemplate: '{snapshotDir}/{projectName}/{testFilePath}/{arg}{ext}',
 
   /* Shared settings for all the projects below. */

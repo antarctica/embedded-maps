@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 * Refactored query parameters to use kebab-case
 * Enabled resampling on basemap layers to prevent disappearing from view [#17](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/17)
+* Using profiles for passing AWS credentials in Terraform
+  [#29](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/29)
 
 ### Fixed
 * Globe overview now matches basemap rotation for polar coordinate systems [#15](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/15)

@@ -8,21 +8,32 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Added
-* Scale bar control [#10](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/10)
-* Theme support based on user OS preferences [#14](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/14)
-* Fullscreen map control [#11](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/11)
-* Parameter for showing asset popup [#25](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/25)
-* Added end-to-end tests for map [#12](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/12)
+
+* Scale bar control 
+  [#10](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/10)
+* Theme support based on user OS preferences 
+  [#14](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/14)
+* Fullscreen map control 
+  [#11](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/11)
+* Parameter for showing asset popup 
+  [#25](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/25)
+* Added end-to-end tests for map 
+  [#12](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/12)
 
 ### Changed
+
 * Refactored query parameters to use kebab-case
-* Enabled resampling on basemap layers to prevent disappearing from view [#17](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/17)
+* Enabled resampling on basemap layers to prevent disappearing from view 
+  [#17](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/17)
 * Using profiles for passing AWS credentials in Terraform
   [#29](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/29)
 
 ### Fixed
-* Globe overview now matches basemap rotation for polar coordinate systems [#15](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/15)
-* Support for bounding box marker on globe overview [#16](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/16)
+
+* Globe overview now matches basemap rotation for polar coordinate systems 
+  [#15](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/15)
+* Support for bounding box marker on globe overview 
+  [#16](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/16)
 * S3 CORS configuration
   [#28](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/28)
 

@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 * Globe overview now matches basemap rotation for polar coordinate systems [#15](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/15)
 * Support for bounding box marker on globe overview [#16](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/16)
+* S3 CORS configuration
+  [#28](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/28)
 
 ### Removed
 * Outdated testing documentation

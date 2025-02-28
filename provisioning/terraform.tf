@@ -101,6 +101,18 @@ resource "aws_s3_bucket_website_configuration" "testing" {
   }
 }
 
+resource "aws_s3_bucket_cors_configuration" "testing" {
+  bucket = aws_s3_bucket.testing.bucket
+
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = ["GET"]
+    allowed_origins = ["*"]
+    expose_headers  = ["ETag"]
+    max_age_seconds = 3000
+  }
+}
+
 resource "aws_s3_bucket" "production" {
   bucket = "embedded-maps.data.bas.ac.uk"
 
@@ -143,6 +155,18 @@ resource "aws_s3_bucket_website_configuration" "production" {
   }
   error_document {
     key = "index.html"
+  }
+}
+
+resource "aws_s3_bucket_cors_configuration" "production" {
+  bucket = aws_s3_bucket.production.bucket
+
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = ["GET"]
+    allowed_origins = ["*"]
+    expose_headers  = ["ETag"]
+    max_age_seconds = 3000
   }
 }
 

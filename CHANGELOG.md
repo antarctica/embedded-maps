@@ -27,7 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   [#17](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/17)
 * Using profiles for passing AWS credentials in Terraform
   [#29](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/29)
-* Switching to staging assets layer
+* Switching to production assets layer
   [#20](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/20)
 
 ### Fixed

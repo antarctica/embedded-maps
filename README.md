@@ -159,12 +159,6 @@ The project includes visual regression testing where screenshots are compared ag
 
 Snapshots are stored in `.test/spec/snapshots` and must be explicitly updated when UI changes are intended.
 
-### Health monitoring
-
-`$ENDPOINT/meta/health.json` provides service health information formatted according to the 
-[api-health-check](https://inadarei.github.io/rfc-healthcheck/) specification. This endpoint should be used to monitor
-the health of this service.
-
 ## Deployment
 
 The application will be automatically deployed to S3 using [Continuous Deployment](#continuous-deployment).
@@ -172,6 +166,12 @@ The application will be automatically deployed to S3 using [Continuous Deploymen
 ### Continuous Deployment
 
 A Continuous Deployment process using GitLab's CI/CD platform is configured in [`.gitlab-ci.yml`](/.gitlab-ci.yml). 
+
+### Health monitoring
+
+`$ENDPOINT/meta/health.json` provides service health information formatted according to the 
+[api-health-check](https://inadarei.github.io/rfc-healthcheck/) specification. This endpoint should be used to monitor
+the health of this service.
 
 ## Project maintainer
 

@@ -31,6 +31,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   [#20](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/20)
 * Hiding non-selected assets when filtering rather than showing as faded
   [#30](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/30)
+* Reimplementing health check within React app
+  [#7](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/7)
 
 ### Fixed
 

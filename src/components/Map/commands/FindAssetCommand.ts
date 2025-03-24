@@ -26,7 +26,7 @@ export class FindAssetCommand implements MapCommand {
         filter: new FeatureFilter({
           where: `${ASSETFIELDNAME} = '${this.assetId}'`,
         }),
-        excludedEffect: 'opacity(40%) grayscale(50%)',
+        excludedEffect: 'opacity(0%)',
       }),
     });
   }

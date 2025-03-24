@@ -1,0 +1,9 @@
+{
+  "status": "pass",
+  "version": "0.2.0",
+  "releaseId": "-",
+  "description": "Embeddable maps for visualising simple features on a suitable basemap.",
+  "links": {
+    "about": "https://gitlab.data.bas.ac.uk/magic/embedded-maps"
+  }
+}

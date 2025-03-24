@@ -29,6 +29,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   [#29](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/29)
 * Switching to production assets layer
   [#20](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/20)
+* Hiding non-selected assets when filtering rather than showing as faded
+  [#30](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/30)
 
 ### Fixed
 

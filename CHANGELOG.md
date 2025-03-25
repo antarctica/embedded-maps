@@ -33,6 +33,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   [#30](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/30)
 * Reimplementing health check within React app
   [#7](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/7)
+* Updating dependencies
+  [#32](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/32)
 
 ### Fixed
 

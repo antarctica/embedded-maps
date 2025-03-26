@@ -23,7 +23,7 @@ export const Route = createRootRoute({
     <React.Fragment>
       <main className={css({ w: 'full', h: 'full' })}>
         <VisuallyHidden>
-          <h1>British Antarctic Survey Embedded Map</h1>
+          <h1>British Antarctic Survey Embedded Map Service</h1>
         </VisuallyHidden>
         <Outlet />
       </main>

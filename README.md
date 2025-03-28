@@ -4,21 +4,24 @@ Embeddable maps for visualising simple features on a suitable basemap.
 
 ## Overview
 
-This service allows basic maps to be created using URL parameters. These maps:
+This service allows basic maps to be created using URL parameters.
 
-- can include a 3D locator globe
-- can include optional UI controls (such as full-screen mode)
-- can be focused on a given point, bounding box, or latest position of a BAS asset (ship, plane, etc.)
-- will use a suitable basemap for the map extent (e.g. an Antarctic stereographic basemap if in Antarctica)
-- can be embedded within other applications or websites using an iframe (to avoid large dependencies)
+Features include:
 
-|                                            |                                               |
-|--------------------------------------------|-----------------------------------------------|
-| ![example-antarctica](/docs/example-1.png) | ![example-ship-tracking](/docs/example-2.png) |
+- an optional 3D locator globe
+- optional interactive controls (such as toggling full-screen mode)
+- focusing on a given point, bounding box, or latest position of a BAS asset (ship, plane, etc.)
+- using suitable basemap and projection for the map extent (e.g. an Antarctic stereographic basemap if in Antarctica)
+- support for embedding within other applications or websites using an iframe (to avoid large dependencies)
 
-> [!TIP]
-> This service is operated by the [Mapping and Geographic Information Centre](https://www.bas.ac.uk/teams/magic) (MAGIC),
-> who provide geospatial resources, expertise and support to the [British Antarctic Survey](https://www.bas.ac.uk) (BAS).
+Examples:
+
+| ![example-antarctica](/docs/example-1.png)                                     | ![example-ship-tracking](/docs/example-2.png)                                                                              |
+|--------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| `https://embedded-maps.data.bas.ac.uk/v1/?bbox=%5B-180.0,-90.0,180.0,-60.0%5D` | `https://embedded-maps.data.bas.ac.uk/v1/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&scale=500000&globe-overview&ctrl-fullscreen` |
+
+This service is operated by the [Mapping and Geographic Information Centre](https://www.bas.ac.uk/teams/magic) (MAGIC),
+who provide geospatial resources, expertise and support to the [British Antarctic Survey](https://www.bas.ac.uk) (BAS).
 
 > [!NOTE]
 > This project is focused on needs within the British Antarctic Survey. It has been open-sourced in case it is
@@ -28,15 +31,21 @@ project members respectively. Contact the [Project Maintainer](#project-maintain
 ### Status
 
 > [!IMPORTANT]
-> This a beta service and is available for general use but may contain bugs. 
+> This a beta service and is available for general use but may contain bugs.
+>
 > We [welcome feedback](mailto:magic@bas.ac.uk) from users on how it can be made better.
 
 ## Usage
 
-The service is accessed via a URL endpoint with one or more URL parameters to specify the target location / feature /
-asset, UI controls and any other supported options:
+This service is accessed from a base endpoint and configured using one or more [Parameters](#parameters), including the 
+target location / feature / asset for the map and which UI controls are visible.
 
 Base endpoint: https://embedded-maps.data.bas.ac.uk/v1/
+
+Base endpoint for testing: https://embedded-maps-testing.data.bas.ac.uk/v1/
+
+> [!WARNING]
+> The test endpoint is used for prototyping upcoming changes and is not stable. Do not use it unless you are told to.
 
 ### Basemaps
 
@@ -45,11 +54,11 @@ A suitable basemap and projection is used based on the map extent:
 - For latitudes ≤ -60°, an Antarctic projection
 - For latitudes ≥ 60°, an Arctic projection
 - For latitudes between -60° and 60°, a World projection
-- For latitudes between -55.200717 to -53.641972 and longitudes between -38.643677 to -35.271423: a South Georgia projection
+- For latitudes between -55.200717 to -53.641972 and longitudes between -38.643677 to -35.271423, a South Georgia projection
 
 > [!TIP]
-> The basemaps ussed for these projections are created or recommended by [MAGIC](https://www.bas.ac.uk/teams/magic) 
-> for general use.
+> The basemaps ussed for these projections are either created or recommended by 
+> [MAGIC](https://www.bas.ac.uk/teams/magic) for general use.
 
 ### Parameters
 
@@ -187,15 +196,8 @@ Maps can be embedded in other applications and websites using an iframe.
 For example:
 
 ```html
-<iframe src="https://embedded-maps.data.bas.ac.uk/v1/?center=[-180, -90]&zoom=6&globe_overview=true" style="border:none;"></iframe>
+<iframe src="https://embedded-maps.data.bas.ac.uk/v1/?center=[-180, -90]" style="border:none;"></iframe>
 ```
-
-> [!NOTE]
-> Some websites or platforms (such as SharePoint) restrict which domains can be embedded and will need adjusting.
-> We recommend allowing both `https://embedded-maps.data.bas.ac.uk` and `https://embedded-maps-testing.data.bas.ac.uk`.
-
-> [!TIP]
-> These domains are already allowed for the Iceflow SharePoint site.
 
 > [!IMPORTANT]
 > If the fullscreen UI control is enabled, the `allowfullscreen` and `allow="fullscreen"` attributes must be included 
@@ -207,6 +209,13 @@ For example:
   style="border:none;" allowfullscreen="true" allow="fullscreen"
 ></iframe>
 ```
+
+> [!NOTE]
+> Some websites or platforms (such as SharePoint) restrict which domains can be embedded and will need adjusting.
+> We recommend allowing both `https://embedded-maps.data.bas.ac.uk` and `https://embedded-maps-testing.data.bas.ac.uk`.
+
+> [!TIP]
+> These domains are already allowed for the BAS Iceflow SharePoint site [🛡️].
 
 ## Implementation
 
@@ -224,11 +233,8 @@ This service uses basemaps as determined by [MAGIC/esri#86 🛡️](https://gitl
 
 [Terraform](https://terraform.io) resources are defined in [`provisioning/terraform/`](/provisioning/terraform/).
 
-> [!IMPORTANT]
-> Access to the [BAS AWS account 🛡️](https://gitlab.data.bas.ac.uk/WSF/bas-aws) is required to provision these resources.
-
-> [!TIP]
-> Docker and Docker Compose are recommended but not required for running Terraform.
+Access to the [BAS AWS account 🛡️](https://gitlab.data.bas.ac.uk/WSF/bas-aws) is required to provision these resources.
+Docker and Docker Compose are recommended but not required for running Terraform.
 
 ```shell
 $ cd provisioning/terraform
@@ -247,15 +253,12 @@ Changes to remote state will be automatically saved to the remote backend, there
 
 ##### Remote state authentication
 
-Permission to read and/or write remote state information for this project is restricted to authorised users. Contact
-the [BAS Web & Applications Team](mailto:servicedesk@bas.ac.uk) to request access.
-
-See the [BAS Terraform Remote State 🛡️](https://gitlab.data.bas.ac.uk/WSF/terraform-remote-state) project for how these
-permissions to remote state are enforced.
+Permission to read and/or write remote state information for this project is restricted. See the 
+[BAS Terraform Remote State 🛡️](https://gitlab.data.bas.ac.uk/WSF/terraform-remote-state) project for more information.
 
 ## Developing
 
-To set a local development environment (with Node.js installed):
+To set up a local development environment (with Node.js installed):
 
 ```shell
 npm install
@@ -315,7 +318,7 @@ To update reference screenshots:
 
 ## Deployment
 
-The application will be automatically deployed to an AWS S3 bucket using [Continuous Deployment](#continuous-deployment).
+The application will be automatically deployed using [Continuous Deployment](#continuous-deployment).
 
 ### Continuous Deployment
 

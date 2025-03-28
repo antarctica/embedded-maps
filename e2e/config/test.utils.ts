@@ -29,7 +29,7 @@ export async function waitForSceneReady(page: Page) {
 export async function testSnapshot(page: Page, name: string) {
   await expect(page).toHaveScreenshot(`${name.replace(/\s+/g, '-')}.png`, {
     fullPage: true,
-    maxDiffPixelRatio: 50,
+    maxDiffPixels: 50,
   });
 }
 

@@ -72,7 +72,7 @@ test.describe.parallel('Map View Parameters', () => {
 
       await page.routeFromHAR(harPath, {
         url: '**/tPxy1hrFDhJfZ0Mf/arcgis/rest/services/ats_latest_assets_position/FeatureServer/0/*',
-        update: true,
+        update: false,
       });
       await page.goto(`/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&zoom=8`);
       await waitForMapReady(page);

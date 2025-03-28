@@ -1,5 +1,6 @@
 /// <reference types="@arcgis/map-components/types/react" />
 import { expect, test } from '@playwright/test';
+import fs from 'fs';
 
 import {
   getHarPath,
@@ -63,9 +64,15 @@ test.describe.parallel('Map View Parameters', () => {
 
   test.describe('asset-id', () => {
     test.beforeEach(async ({ page }) => {
-      await page.routeFromHAR(getHarPath('map-view-params/asset-id/asset-id.har'), {
+      // check if har file exists
+      const harPath = getHarPath('map-view-params/asset-id/asset-id.har');
+      if (!fs.existsSync(harPath)) {
+        throw new Error(`HAR file not found: ${harPath}`);
+      }
+
+      await page.routeFromHAR(harPath, {
         url: '**/tPxy1hrFDhJfZ0Mf/arcgis/rest/services/ats_latest_assets_position/FeatureServer/0/*',
-        update: false,
+        update: true,
       });
       await page.goto(`/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&zoom=8`);
       await waitForMapReady(page);

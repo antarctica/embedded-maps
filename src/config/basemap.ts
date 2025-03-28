@@ -13,7 +13,7 @@ export function getMapProjectionFromPosition([longitude, latitude]: [
   number,
 ]): MapProjection {
   switch (true) {
-    case latitude >= 50:
+    case latitude >= 60:
       return MapProjection.ARCTIC;
     case latitude <= -50:
       if (

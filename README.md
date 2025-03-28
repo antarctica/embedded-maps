@@ -16,9 +16,9 @@ Features include:
 
 Examples:
 
-| ![example-antarctica](/docs/example-1.png)                                     | ![example-ship-tracking](/docs/example-2.png)                                                                              |
-|--------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| `https://embedded-maps.data.bas.ac.uk/v1/?bbox=%5B-180.0,-90.0,180.0,-60.0%5D` | `https://embedded-maps.data.bas.ac.uk/v1/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&scale=500000&globe-overview&ctrl-fullscreen` |
+| ![example-antarctica](/docs/example-1.png)                                     | ![example-ship-tracking](/docs/example-2.png)                                                              |
+|--------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+| `https://embedded-maps.data.bas.ac.uk/v1/?bbox=%5B-180.0,-90.0,180.0,-60.0%5D` | `https://embedded-maps.data.bas.ac.uk/v1/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&scale=500000&globe-overview` |
 
 This service is operated by the [Mapping and Geographic Information Centre](https://www.bas.ac.uk/teams/magic) (MAGIC),
 who provide geospatial resources, expertise and support to the [British Antarctic Survey](https://www.bas.ac.uk) (BAS).
@@ -41,11 +41,6 @@ This service is accessed from a base endpoint and configured using one or more [
 target location / feature / asset for the map and which UI controls are visible.
 
 Base endpoint: https://embedded-maps.data.bas.ac.uk/v1/
-
-Base endpoint for testing: https://embedded-maps-testing.data.bas.ac.uk/v1/
-
-> [!WARNING]
-> The test endpoint is used for prototyping upcoming changes and is not stable. Do not use it unless you are told to.
 
 ### Basemaps
 
@@ -315,6 +310,13 @@ To update reference screenshots:
    - review the differences in the test report
    - if changes are expected, update snapshots: `npm run test:e2e:update`
    - if changes are unexpected, fix the UI issues
+
+### Testing environment
+
+Base endpoint for testing: https://embedded-maps-testing.data.bas.ac.uk/v1/
+
+> [!WARNING]
+> The test endpoint is used for prototyping upcoming changes and is not stable. Do not use it unless you are told to.
 
 ## Deployment
 

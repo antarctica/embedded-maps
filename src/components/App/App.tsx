@@ -1,17 +1,16 @@
 import '@arcgis/core/assets/esri/themes/light/main.css?inline';
 
 import GeometryToolsLoader from '@/arcgis/components/GeometryToolsLoader';
-import {
-  DEFAULT_REGIONAL_EXTENT,
-  DEFAULT_SHOW_ASSET_POPUP,
-  DEFAULT_SHOW_FULLSCREEN_BUTTON,
-  DEFAULT_SHOW_GLOBE_OVERVIEW,
-  DEFAULT_SHOW_RESET_BUTTON,
-  DEFAULT_SHOW_ZOOM_BUTTON,
-} from '@/config/mapParamDefaults';
-import { Route } from '@/routes/__root';
+import { useMapParams } from '@/hooks/useMapParams';
 
 import { Map } from '../Map/Map';
+
+function convertEmptyStringToBooleanPresence(
+  value: string | boolean | undefined,
+): boolean | undefined {
+  if (value === '' || typeof value === 'string') return true;
+  return value;
+}
 
 export function App() {
   const {
@@ -20,20 +19,20 @@ export function App() {
     scale,
     centre,
     bbox,
-    'bbox-force-regional-extent': bboxForceRegionalExtent = DEFAULT_REGIONAL_EXTENT,
+    bboxForceRegionalExtent,
 
     // UI Controls
-    'ctrl-zoom': showZoomButton = DEFAULT_SHOW_ZOOM_BUTTON,
-    'ctrl-reset': showResetButton = DEFAULT_SHOW_RESET_BUTTON,
-    'ctrl-fullscreen': showFullscreenButton = DEFAULT_SHOW_FULLSCREEN_BUTTON,
+    showZoomButton,
+    showResetButton,
+    showFullscreenButton,
 
     // Globe overview
-    'globe-overview': showGlobeOverview = DEFAULT_SHOW_GLOBE_OVERVIEW,
+    showGlobeOverview,
 
     // Asset parameters
-    'asset-id': assetId,
-    'asset-force-popup': assetForcePopup = DEFAULT_SHOW_ASSET_POPUP,
-  } = Route.useSearch();
+    assetId,
+    assetForcePopup,
+  } = useMapParams();
   return (
     <GeometryToolsLoader>
       <Map
@@ -41,13 +40,13 @@ export function App() {
         initialCenter={centre}
         initialZoom={zoom}
         initialBbox={bbox as [number, number, number, number]}
-        bboxForceRegionalExtent={bboxForceRegionalExtent}
+        bboxForceRegionalExtent={convertEmptyStringToBooleanPresence(bboxForceRegionalExtent)}
         initialScale={scale}
-        showGlobeOverview={showGlobeOverview}
-        showZoomButton={showZoomButton}
-        showResetButton={showResetButton}
-        showFullscreenButton={showFullscreenButton}
-        initialShowAssetPopup={assetForcePopup}
+        showGlobeOverview={convertEmptyStringToBooleanPresence(showGlobeOverview)}
+        showZoomButton={convertEmptyStringToBooleanPresence(showZoomButton)}
+        showResetButton={convertEmptyStringToBooleanPresence(showResetButton)}
+        showFullscreenButton={convertEmptyStringToBooleanPresence(showFullscreenButton)}
+        initialShowAssetPopup={convertEmptyStringToBooleanPresence(assetForcePopup)}
       />
     </GeometryToolsLoader>
   );

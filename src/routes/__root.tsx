@@ -10,25 +10,27 @@ import { DEFAULT_CENTER } from '@/config/mapParamDefaults';
 export const CoordinatePair = z.tuple([z.number(), z.number()]);
 export const BBox = z.tuple([z.number(), z.number(), z.number(), z.number()]);
 
+const booleanWithoutValue = () => z.union([z.literal(''), z.boolean()]);
+
 const baseSearchSchema = z.object({
   // View parameters
   zoom: fallback(z.number().optional(), undefined),
   scale: fallback(z.number().optional(), undefined),
   centre: fallback(CoordinatePair.optional(), undefined),
   bbox: fallback(BBox.optional(), undefined),
-  'bbox-force-regional-extent': fallback(z.boolean().optional(), undefined),
+  'bbox-force-regional-extent': fallback(booleanWithoutValue().optional(), undefined),
 
   // UI Controls
-  'ctrl-zoom': fallback(z.boolean().optional(), undefined),
-  'ctrl-reset': fallback(z.boolean().optional(), undefined),
-  'ctrl-fullscreen': fallback(z.boolean().optional(), undefined),
+  'ctrl-zoom': fallback(booleanWithoutValue().optional(), undefined),
+  'ctrl-reset': fallback(booleanWithoutValue().optional(), undefined),
+  'ctrl-fullscreen': fallback(booleanWithoutValue().optional(), undefined),
 
   // Globe overview
-  'globe-overview': fallback(z.boolean().optional(), undefined),
+  'globe-overview': fallback(booleanWithoutValue().optional(), undefined),
 
   // Asset parameters
   'asset-id': fallback(z.string().optional(), undefined),
-  'asset-force-popup': fallback(z.boolean().optional(), undefined),
+  'asset-force-popup': fallback(booleanWithoutValue().optional(), undefined),
 });
 
 type SearchParams = z.infer<typeof baseSearchSchema>;

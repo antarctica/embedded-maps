@@ -79,6 +79,7 @@ test.describe.parallel('Map View Parameters', () => {
     });
 
     test('snapshot', async ({ page }) => {
+      await page.waitForTimeout(5000);
       await testSnapshot(page, 'asset-id');
     });
 

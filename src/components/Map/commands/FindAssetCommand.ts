@@ -66,6 +66,7 @@ export class FindAssetCommand implements MapCommand {
       }
       const mapProjection = getMapProjectionFromPosition(coordinate);
       const basemapConfig = getBasemapConfigForMapProjection(mapProjection);
+      applyPolarHeadingCorrection(this.assetLayer, mapProjection);
       map.basemap = basemapConfig.basemap;
       return {
         executeOnView: async (mapView: __esri.MapView) => {
@@ -89,8 +90,6 @@ export class FindAssetCommand implements MapCommand {
               updateLocationEnabled: true,
             });
           }
-
-          applyPolarHeadingCorrection(mapView, mapProjection);
         },
       };
     }

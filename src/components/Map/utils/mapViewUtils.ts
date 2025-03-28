@@ -1,23 +1,22 @@
 import TileLayer from '@arcgis/core/layers/TileLayer';
 
-import { ASSETHEADINGFIELD, ASSETLAYERMAPID, ASSETLONGITUDEFIELD } from '@/config/assetLayer';
+import { ASSETHEADINGFIELD, ASSETLONGITUDEFIELD } from '@/config/assetLayer';
 import { BasemapConfig, MapProjection } from '@/config/basemap';
 import { generateArcadeHeadingScript } from '@/config/generateArcadeHeadingScript';
 /**
  * Applies heading correction for assets in polar map projections
- * @param mapView - The ESRI MapView instance
+ * @param featureLayer - The ESRI FeatureLayer instance
  * @param mapProjection - The current map projection
  * @throws {Error} If feature layer is not found
  */
 export async function applyPolarHeadingCorrection(
-  mapView: __esri.MapView,
+  featureLayer: __esri.FeatureLayer,
   mapProjection: MapProjection,
 ): Promise<void> {
   if (!requiresHeadingCorrection(mapProjection)) {
     return;
   }
 
-  const featureLayer = await getFeatureLayer(mapView);
   await applyRotationToRenderer(featureLayer, mapProjection);
 }
 
@@ -33,27 +32,13 @@ function requiresHeadingCorrection(
 }
 
 /**
- * Retrieves and validates the feature layer from the map
- * @throws {Error} If feature layer is not found
- */
-async function getFeatureLayer(mapView: __esri.MapView): Promise<__esri.LayerView> {
-  const featureLayer = mapView.map.findLayerById(ASSETLAYERMAPID) as __esri.FeatureLayer;
-
-  if (!featureLayer) {
-    throw new Error(`Feature layer ${ASSETLAYERMAPID} not found`);
-  }
-
-  return await mapView.whenLayerView(featureLayer);
-}
-
-/**
  * Applies rotation settings to the renderer if applicable
  */
 async function applyRotationToRenderer(
-  featureLayerView: __esri.LayerView,
+  featureLayer: __esri.FeatureLayer,
   mapProjection: MapProjection.ANTARCTIC | MapProjection.ARCTIC,
 ): Promise<void> {
-  const { renderer } = featureLayerView.layer as __esri.FeatureLayer;
+  const { renderer } = featureLayer;
 
   if (!renderer || !isCompatibleRenderer(renderer)) {
     return;

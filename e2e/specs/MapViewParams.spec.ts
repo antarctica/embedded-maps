@@ -1,5 +1,6 @@
 /// <reference types="@arcgis/map-components/types/react" />
 import { expect, test } from '@playwright/test';
+import fs from 'fs';
 
 import { runAccessibilityCheck, testSnapshot, waitForMapReady } from '../config/test.utils';
 
@@ -58,7 +59,18 @@ test.describe.parallel('Map View Parameters', () => {
 
   test.describe('asset-id', () => {
     test.beforeEach(async ({ page }) => {
-      await page.routeFromHAR(`./e2e/hars/map-view-params/asset-id/asset-id.har`, {
+      const harPath = './e2e/hars/map-view-params/asset-id/asset-id.har';
+      console.log('Current working directory:', process.cwd());
+      console.log('Looking for HAR file at:', harPath);
+
+      try {
+        const exists = fs.existsSync(harPath);
+        console.log('HAR file exists:', exists);
+      } catch (error) {
+        console.error('Error checking file:', error);
+      }
+
+      await page.routeFromHAR(harPath, {
         url: '**/tPxy1hrFDhJfZ0Mf/arcgis/rest/services/ats_latest_assets_position/FeatureServer/0/*',
         update: false,
       });

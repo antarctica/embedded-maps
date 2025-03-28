@@ -58,7 +58,7 @@ test.describe.parallel('Map View Parameters', () => {
 
   test.describe('asset-id', () => {
     test.beforeEach(async ({ page }) => {
-      await page.routeFromHAR(`e2e/hars/map-view-params/asset-id/asset-id.har`, {
+      await page.routeFromHAR(`./e2e/hars/map-view-params/asset-id/asset-id.har`, {
         url: '**/tPxy1hrFDhJfZ0Mf/arcgis/rest/services/ats_latest_assets_position/FeatureServer/0/*',
         update: false,
       });

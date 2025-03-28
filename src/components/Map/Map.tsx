@@ -14,16 +14,24 @@ import ScaleControl from '../map-controls/ScaleControl/ScaleControl';
 import ZoomControl from '../map-controls/ZoomControl';
 import { useMapInitialization } from './hooks/useMapInitialization';
 interface MapProps {
-  initialAssetId?: string;
-  initialCenter?: [number, number];
+  // View parameters
   initialZoom?: number;
-  initialBbox?: [number, number, number, number];
   initialScale?: number;
-  includeGlobeOverview?: boolean;
-  hideUI?: boolean;
-  showRegion?: boolean;
-  showAssetPopup?: boolean;
-  showFullScreen?: boolean;
+  initialCenter?: [number, number];
+  initialBbox?: [number, number, number, number];
+  bboxForceRegionalExtent?: boolean;
+
+  // UI Controls
+  showZoomButton?: boolean;
+  showResetButton?: boolean;
+  showFullscreenButton?: boolean;
+
+  // Globe overview
+  showGlobeOverview?: boolean;
+
+  // Asset parameters
+  initialAssetId?: string;
+  initialShowAssetPopup?: boolean;
 }
 
 const viewPadding = {
@@ -61,12 +69,13 @@ export function Map({
   initialCenter,
   initialZoom,
   initialBbox,
+  bboxForceRegionalExtent,
   initialScale,
-  includeGlobeOverview,
-  hideUI,
-  showRegion,
-  showAssetPopup,
-  showFullScreen,
+  showGlobeOverview,
+  showZoomButton,
+  showResetButton,
+  showFullscreenButton,
+  initialShowAssetPopup,
 }: MapProps) {
   const [viewPoint, setViewPoint] = React.useState<__esri.Viewpoint | undefined>(undefined);
 
@@ -74,8 +83,8 @@ export function Map({
     initialAssetId,
     initialCenter,
     initialBbox,
-    showRegion,
-    showAssetPopup,
+    bboxForceRegionalExtent,
+    initialShowAssetPopup,
   });
 
   if (!map || isLoading || error) {
@@ -96,24 +105,20 @@ export function Map({
         padding={viewPadding}
         zoom={initialZoom}
       >
-        {!hideUI && (
-          <>
-            <arcgis-placement position="top-left">
-              <Flex gap={'4'} direction="column">
-                <ZoomControl />
-                <HomeControl viewPoint={viewPoint} />
-                {showFullScreen && <FullScreenControl />}
-              </Flex>
-            </arcgis-placement>
-            <arcgis-placement position="bottom-left">
-              <ScaleControl />
-            </arcgis-placement>
-            {includeGlobeOverview && (
-              <arcgis-placement position="top-right">
-                <Globe initialAssetId={initialAssetId} initialBbox={initialBbox} />
-              </arcgis-placement>
-            )}
-          </>
+        <arcgis-placement position="top-left">
+          <Flex gap={'4'} direction="column">
+            {showZoomButton && <ZoomControl />}
+            {showResetButton && <HomeControl viewPoint={viewPoint} />}
+            {showFullscreenButton && <FullScreenControl />}
+          </Flex>
+        </arcgis-placement>
+        <arcgis-placement position="bottom-left">
+          <ScaleControl />
+        </arcgis-placement>
+        {showGlobeOverview && (
+          <arcgis-placement position="top-right">
+            <Globe initialAssetId={initialAssetId} initialBbox={initialBbox} />
+          </arcgis-placement>
         )}
       </ArcMapView>
     </div>

@@ -1,37 +1,53 @@
 import '@arcgis/core/assets/esri/themes/light/main.css?inline';
 
 import GeometryToolsLoader from '@/arcgis/components/GeometryToolsLoader';
+import {
+  DEFAULT_REGIONAL_EXTENT,
+  DEFAULT_SHOW_ASSET_POPUP,
+  DEFAULT_SHOW_FULLSCREEN_BUTTON,
+  DEFAULT_SHOW_GLOBE_OVERVIEW,
+  DEFAULT_SHOW_RESET_BUTTON,
+  DEFAULT_SHOW_ZOOM_BUTTON,
+} from '@/config/mapParamDefaults';
 import { Route } from '@/routes/__root';
 
 import { Map } from '../Map/Map';
 
 export function App() {
   const {
-    'asset-id': assetId,
-    center,
+    // View parameters
     zoom,
-    bbox,
-    'globe-overview': globeOverview,
     scale,
-    'hide-ui': hideUI,
-    'show-region': showRegion,
-    'show-asset-popup': showAssetPopup,
-    'show-full-screen': showFullScreen,
-  } = Route.useSearch();
+    centre,
+    bbox,
+    'bbox-force-regional-extent': bboxForceRegionalExtent = DEFAULT_REGIONAL_EXTENT,
 
+    // UI Controls
+    'ctrl-zoom': showZoomButton = DEFAULT_SHOW_ZOOM_BUTTON,
+    'ctrl-reset': showResetButton = DEFAULT_SHOW_RESET_BUTTON,
+    'ctrl-fullscreen': showFullscreenButton = DEFAULT_SHOW_FULLSCREEN_BUTTON,
+
+    // Globe overview
+    'globe-overview': showGlobeOverview = DEFAULT_SHOW_GLOBE_OVERVIEW,
+
+    // Asset parameters
+    'asset-id': assetId,
+    'asset-force-popup': assetForcePopup = DEFAULT_SHOW_ASSET_POPUP,
+  } = Route.useSearch();
   return (
     <GeometryToolsLoader>
       <Map
         initialAssetId={assetId}
-        initialCenter={center as [number, number]}
+        initialCenter={centre}
         initialZoom={zoom}
         initialBbox={bbox as [number, number, number, number]}
+        bboxForceRegionalExtent={bboxForceRegionalExtent}
         initialScale={scale}
-        includeGlobeOverview={globeOverview}
-        hideUI={hideUI}
-        showRegion={showRegion}
-        showAssetPopup={showAssetPopup}
-        showFullScreen={showFullScreen}
+        showGlobeOverview={showGlobeOverview}
+        showZoomButton={showZoomButton}
+        showResetButton={showResetButton}
+        showFullscreenButton={showFullscreenButton}
+        initialShowAssetPopup={assetForcePopup}
       />
     </GeometryToolsLoader>
   );

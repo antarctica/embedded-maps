@@ -1,5 +1,6 @@
-import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { test } from '@playwright/test';
+
+import { runAccessibilityCheck, testSnapshot, waitForMapReady } from '../config/test.utils';
 
 const bboxes = [
   [-180.0, 60.0, 180.0, 90.0],
@@ -16,26 +17,17 @@ test.describe.parallel('Arctic Bounding Boxes', () => {
     test.describe(`bbox=${bbox}`, () => {
       test.beforeEach(async ({ page }) => {
         await page.goto(`/?bbox=[${bbox.join(',')}]`);
+        await waitForMapReady(page);
       });
 
       test('snapshot', async ({ page }) => {
-        // Wait for the ArcGIS map view to be ready
-        await page.waitForSelector('arcgis-map', { state: 'visible' });
-
-        // Wait for the map to finish updating
-        await page.waitForSelector('arcgis-map:not([updating])', {
-          state: 'visible',
-          timeout: 20000,
-        });
-
-        await expect(page).toHaveScreenshot(`bbox-${bbox.join('-')}.png`, { fullPage: true });
+        await testSnapshot(page, `bbox-${bbox.join('-')}`);
       });
 
       test('should not have any automatically detectable accessibility issues', async ({
         page,
       }) => {
-        const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
-        expect(accessibilityScanResults.violations).toEqual([]);
+        await runAccessibilityCheck(page);
       });
     });
   }

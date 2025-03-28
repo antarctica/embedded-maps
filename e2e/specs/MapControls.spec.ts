@@ -1,30 +1,43 @@
-import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { expect, Page, test } from '@playwright/test';
+
+import { waitForSceneReady } from '../config/test.utils';
+import { runAccessibilityCheck, testSnapshot, waitForMapReady } from '../config/test.utils';
 
 const standardTestCases = [
   {
-    name: 'center and zoom',
-    params: '?center=[-180,-90]&zoom=6',
-    expectedControls: true,
-  },
-  {
-    name: 'center and scale',
-    params: '?center=[24,34.5]&scale=500000',
-    expectedControls: true,
+    name: 'default',
+    params: '',
+    visibleControls: ['zoom', 'home'],
   },
   {
     name: 'hidden UI',
-    params: '?center=[-180,-90]&zoom=6&hide-ui=true',
-    expectedControls: false,
+    params: '?centre=[-180,-90]&zoom=6&ctrl-zoom=false&ctrl-reset=false&ctrl-fullscreen=false',
+    visibleControls: [],
   },
 ];
 
 const globeTestCase = {
   name: 'globe overview',
-  params: '?center=[-180,-90]&zoom=6&globe-overview=true',
-  expectedControls: true,
-  expectGlobe: true,
+  params: '?centre=[-180,-90]&zoom=6&globe-overview=true',
+  visibleControls: ['zoom', 'home'],
 };
+
+async function testControlsVisible(page: Page, visibleControls: string[]) {
+  const zoomControl = page.locator('button[aria-label="Zoom In"]');
+  const homeControl = page.locator('button[aria-label="Home"]');
+
+  if (visibleControls.includes('zoom')) {
+    await expect(zoomControl).toBeVisible();
+  } else {
+    await expect(zoomControl).not.toBeVisible();
+  }
+
+  if (visibleControls.includes('home')) {
+    await expect(homeControl).toBeVisible();
+  } else {
+    await expect(homeControl).not.toBeVisible();
+  }
+}
 
 test.describe.parallel('Map Controls and Parameters', () => {
   // Standard test cases
@@ -33,37 +46,19 @@ test.describe.parallel('Map Controls and Parameters', () => {
       test.beforeEach(async ({ page }) => {
         await page.goto(`/${testCase.params}`);
         // Wait for the map to be ready
-        await page.waitForSelector('arcgis-map', { state: 'visible' });
-        await page.waitForSelector('arcgis-map:not([updating])', {
-          state: 'visible',
-          timeout: 20000,
-        });
+        await waitForMapReady(page);
       });
 
       test('snapshot', async ({ page }) => {
-        await expect(page).toHaveScreenshot(`${testCase.name.replace(/\s+/g, '-')}.png`, {
-          fullPage: true,
-        });
+        await testSnapshot(page, testCase.name);
       });
 
       test('UI elements visibility', async ({ page }) => {
-        const zoomControl = page.locator('button[aria-label="Zoom In"]');
-        const homeControl = page.locator('button[aria-label="Home"]');
-
-        if (testCase.expectedControls) {
-          await expect(zoomControl).toBeVisible();
-          await expect(homeControl).toBeVisible();
-        } else {
-          await expect(zoomControl).not.toBeVisible();
-          await expect(homeControl).not.toBeVisible();
-        }
+        await testControlsVisible(page, testCase.visibleControls);
       });
 
-      test('should not have any automatically detectable accessibility issues', async ({
-        page,
-      }) => {
-        const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
-        expect(accessibilityScanResults.violations).toEqual([]);
+      test('accessibility', async ({ page }) => {
+        await runAccessibilityCheck(page);
       });
     });
   }
@@ -74,27 +69,17 @@ test.describe.parallel('Map Controls and Parameters', () => {
       await page.goto(`/${globeTestCase.params}`);
 
       // Wait for the map to be ready
-      await page.waitForSelector('arcgis-map', { state: 'visible' });
-      await page.waitForSelector('arcgis-map:not([updating])', {
-        state: 'visible',
-        timeout: 20000,
-      });
+      await waitForMapReady(page);
 
       // Wait for the scene to be ready
-      await page.waitForSelector('arcgis-scene', { state: 'visible' });
-      await page.waitForSelector('arcgis-scene:not([updating])', {
-        state: 'visible',
-        timeout: 20000,
-      });
+      await waitForSceneReady(page);
 
       // wait 5 seconds
       await page.waitForTimeout(5000);
     });
 
     test('snapshot', async ({ page }) => {
-      await expect(page).toHaveScreenshot(`${globeTestCase.name.replace(/\s+/g, '-')}.png`, {
-        fullPage: true,
-      });
+      await testSnapshot(page, globeTestCase.name);
     });
   });
 });

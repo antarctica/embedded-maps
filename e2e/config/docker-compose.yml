@@ -20,6 +20,7 @@ services:
       - ../../e2e/results:/app/e2e/results:rw,delegated
       - ../../e2e/output:/app/e2e/output
       - ../../e2e/snapshots:/app/e2e/snapshots
+      - ../../e2e/hars:/app/e2e/hars
     environment:
       - TZ=UTC
       - LANG=en_US.UTF-8

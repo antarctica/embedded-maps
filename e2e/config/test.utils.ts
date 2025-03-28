@@ -4,8 +4,15 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 export async function waitForMapReady(page: Page) {
-  await page.waitForSelector('arcgis-map', { state: 'visible' });
+  // Wait for the map container to be present
+  await page.waitForSelector('[data-testid="map-container"]', { state: 'visible' });
   await page.waitForSelector('arcgis-map:not([updating])', {
+    state: 'visible',
+    timeout: 20000,
+  });
+
+  // Wait for the map to signal it's ready via React state
+  await page.waitForSelector('[data-testid="map-container"][data-ready="true"]', {
     state: 'visible',
     timeout: 20000,
   });

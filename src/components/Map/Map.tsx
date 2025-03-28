@@ -78,6 +78,7 @@ export function Map({
   initialShowAssetPopup,
 }: MapProps) {
   const [viewPoint, setViewPoint] = React.useState<__esri.Viewpoint | undefined>(undefined);
+  const [isViewReady, setIsViewReady] = React.useState(false);
 
   const { map, error, isLoading, handleViewReady } = useMapInitialization({
     initialAssetId,
@@ -92,13 +93,14 @@ export function Map({
   }
 
   return (
-    <div className={mapViewContainerRecipe()}>
+    <div className={mapViewContainerRecipe()} data-testid="map-container" data-ready={isViewReady}>
       <ArcMapView
         className={css({ w: 'full', h: 'full', pointerEvents: 'auto' })}
         map={map}
         onarcgisViewReadyChange={(event) => {
           handleViewReady(event.target.view).then(() => {
             setViewPoint(event.target.view.viewpoint);
+            setIsViewReady(true);
           });
         }}
         scale={initialScale}

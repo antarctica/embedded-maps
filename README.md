@@ -11,7 +11,7 @@ Features include:
 - an optional 3D locator globe
 - optional interactive controls (such as toggling full-screen mode)
 - focusing on a given point, bounding box, or latest position of a BAS asset (ship, plane, etc.)
-- using suitable basemap and projection for the map extent (e.g. an Antarctic stereographic basemap if in Antarctica)
+- using a suitable basemap and projection for the map extent (e.g. an Antarctic stereographic basemap if in Antarctica)
 - support for embedding within other applications or websites using an iframe (to avoid large dependencies)
 
 Examples:

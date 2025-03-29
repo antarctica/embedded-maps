@@ -1,0 +1,122 @@
+openapi: 3.0.3
+info:
+  title: BAS Embedded Maps Service
+  description: |-
+    Embeddable maps for visualising simple features on a suitable basemap.
+  contact:
+    email: magic@bas.ac.uk
+  version: '1'
+externalDocs:
+  description: Documentation
+  url: https://github.com/antarctica/embedded-maps
+servers:
+  - url: https://embedded-maps.data.bas.ac.uk/v1
+  - url: https://embedded-maps-testing.data.bas.ac.uk/v1
+tags:
+  - name: maps
+paths:
+  /:
+    get:
+      tags:
+        - maps
+      summary: Render a map
+      description: Render a map with a choosen focus point, boundinging box, or tracked asset.
+      operationId: mapsRender
+      parameters:
+        - name: centre
+          in: query
+          description: View centre as a cordinate in the form [lon, lat]
+          required: false
+          schema:
+            type: array
+            items: {
+              type: number,
+              minimum: -180,
+              maximum: 180
+            }
+            minItems: 2
+            maxItems: 2
+            example: [-180, -90]
+        - name: zoom
+          in: query
+          description: View zoom level as a number between 0 and 23. Overrides scale if set.
+          required: false
+          schema: {
+            type: integer,
+            minimum: 0,
+            maximum: 23,
+            example: 6
+          }
+        - name: scale
+          in: query
+          description: View scale as a dominator in metres. Overriden by zoom if set.
+          required: false
+          schema: {
+            type: integer,
+            minimum: 0,
+            example: 500000
+          }
+        - name: bbox
+          in: query
+          description: Bounding box in the form [minX, minY, maxX, maxY] based [OGC bbox parameter](https://docs.ogc.org/is/17-069r4/17-069r4.html#_parameter_bbox).
+          required: false
+          schema:
+            type: array
+            items: {
+              type: number,
+              minimum: -180,
+              maximum: 180
+            }
+            minItems: 4
+            maxItems: 4
+            example: [10.0,74.0,35.0,81.0]
+        - name: bbox-force-regional-extent
+          in: query
+          description: Use with the `bbox` parameter to ensure it is shown at he full basemap extent.
+          required: false
+          schema:
+            type: boolean
+        - name: ctrl-zoom
+          in: query
+          description: Show zoom in/out control
+          required: false
+          schema:
+            type: boolean
+        - name: ctrl-reset
+          in: query
+          description: Show reset (home) control
+          required: false
+          schema:
+            type: boolean
+        - name: ctrl-fullscreen
+          in: query
+          description: Show fullscreen view control
+          required: false
+          schema:
+            type: boolean
+        - name: globe-overview
+          in: query
+          description: Show 3D locator scene
+          required: false
+          schema:
+            type: boolean
+        - name: asset-id
+          in: query
+          description: ID of an asset from the [Assets Tracking Service](https://github.com/antarctica/assets-tracking-service) to visualise.
+          required: false
+          schema:
+            type: string
+        - name: show-asset-popup
+          in: query
+          description: Open popup for the `asset-id` parameter by default 
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: successful operation
+          content:
+            text/html:
+              schema: {
+                type: string
+              }

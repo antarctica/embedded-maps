@@ -16,9 +16,9 @@ Features include:
 
 Examples:
 
-| ![example-antarctica](/docs/example-1.png)                                     | ![example-ship-tracking](/docs/example-2.png)                                                              |
-|--------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
-| `https://embedded-maps.data.bas.ac.uk/v1/?bbox=%5B-180.0,-90.0,180.0,-60.0%5D` | `https://embedded-maps.data.bas.ac.uk/v1/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&scale=500000&globe-overview` |
+| ![example-antarctica](/docs/example-1.png)                  | ![example-ship-tracking](/docs/example-2.png)                                                              |
+|-------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+| `https://embedded-maps.data.bas.ac.uk/v1/?bbox=[-180, -90]` | `https://embedded-maps.data.bas.ac.uk/v1/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&scale=500000&globe-overview` |
 
 This service is operated by the [Mapping and Geographic Information Centre](https://www.bas.ac.uk/teams/magic) (MAGIC),
 who provide geospatial resources, expertise and support to the [British Antarctic Survey](https://www.bas.ac.uk) (BAS).
@@ -134,7 +134,7 @@ Set these parameters to visualise the last known position of an asset tracked by
 > [!NOTE]
 > Setting `asset-force-popup` without a value evaluates to true. Use `asset-force-popup=false` to override.
 
-#### Examples
+### Examples
 
 Centre map at a specific location and zoom level:
 
@@ -142,19 +142,19 @@ Centre map at a specific location and zoom level:
 https://embedded-maps.data.bas.ac.uk/v1/?centre=[0.1218,52.2053]&zoom=4
 ```
 
-Show a bounding box:
+Show a bounding box with a globe overview for orientation:
 
 ```
-https://embedded-maps.data.bas.ac.uk/v1/?bbox=[10.0, 74.0, 35.0, 81.0]
+https://embedded-maps.data.bas.ac.uk/v1/?bbox=[-68.3359,-67.5894,-68.0677,-67.4869]&globe-overview
 ```
 
-Show a bounding box, ensuring the surrounding region is show (useful for bounding boxes covering small areas):
+Show a bounding box, zoomed out to show the full basemap:
 
 ```
-https://embedded-maps.data.bas.ac.uk/v1/?bbox=[-68.3359,-67.5894,-68.0677,-67.4869]&ensure-regional-extent
+https://embedded-maps.data.bas.ac.uk/v1/?bbox=[10.0,74.0,35.0,81.0]&bbox-force-regional-extent
 ```
 
-Enable all optional map controls:
+Enable all available map controls (zoom and reset are also shown by default):
 
 ```
 https://embedded-maps.data.bas.ac.uk/v1/?ctrl-zoom&ctrl-reset&ctrl-fullscreen
@@ -166,12 +166,6 @@ Disable all optional map controls:
 https://embedded-maps.data.bas.ac.uk/v1/?ctrl-zoom=false&ctrl-reset=false&ctrl-fullscreen=false
 ```
 
-Enable globe overview:
-
-```
-https://embedded-maps.data.bas.ac.uk/v1/?bbox=[-69.36,-67.84,-66.72,-66.56]&globe-overview
-```
-
 Show the latest position of the SDA:
 
 ```
@@ -181,7 +175,7 @@ https://embedded-maps.data.bas.ac.uk/v1/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&sca
 Show the latest position of the SDA on a non-interactive display:
 
 ```
-https://embedded-maps.data.bas.ac.uk/v1/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&globe-overview&ctrl-zoom=false&ctrl-reset=false&ctrl-fullscreen=false
+https://embedded-maps.data.bas.ac.uk/v1/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&asset-force-popup&scale=500000&globe-overview&ctrl-zoom=false&ctrl-reset=false&ctrl-fullscreen=false
 ```
 
 ### Embedding

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.2.0] 2025-03-29
+
 ### Added
 
 * Scale bar control 
@@ -37,6 +39,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   [#32](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/32)
 * Updating documentation
   [#26](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/26)
+* Refactoring URL parameters
+  [#34](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/34)
 
 ### Fixed
 
@@ -46,6 +50,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   [#16](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/16)
 * S3 CORS configuration
   [#28](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/28)
+* Bounds for using Arctic basemap/projection
+  [#33](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/33)
 
 ### Removed
 * Outdated testing documentation

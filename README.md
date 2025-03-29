@@ -42,6 +42,8 @@ target location / feature / asset for the map and which UI controls are visible.
 
 Base endpoint: https://embedded-maps.data.bas.ac.uk/v1/
 
+[OpenAPI schema](/docs/openapi.yml).
+
 ### Basemaps
 
 A suitable basemap and projection is used based on the map extent:
@@ -81,10 +83,10 @@ Set these parameters to show a specific location:
 
 Set these parameters to visualise a 2D bounding box:
 
-| Parameter                    | Description                                  | Default     | Example                    |
-|------------------------------|----------------------------------------------|-------------|----------------------------|
-| `bbox`                       | Bounding box [minX, minY, maxX, maxY]        | -           | [-180.0,-90.0,180.0,-60.0] |
-| `bbox-force-regional-extent` | Ensure `bbox` is shown in a regional context | false       | true                       |
+| Parameter                    | Description                                      | Default     | Example                    |
+|------------------------------|--------------------------------------------------|-------------|----------------------------|
+| `bbox`                       | Bounding box [minX, minY, maxX, maxY]            | -           | [-180.0,-90.0,180.0,-60.0] |
+| `bbox-force-regional-extent` | Ensure `bbox` is shown at he full basemap extent | false       | true                       |
 
 > [!NOTE]
 > A `bbox` value will override the `centre`, `scale` and `zoom`  parameters if set.

@@ -21,7 +21,8 @@ Examples:
 | `https://embedded-maps.data.bas.ac.uk/v1/?bbox=[-180, -90]` | `https://embedded-maps.data.bas.ac.uk/v1/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&scale=500000&globe-overview` |
 
 This service is operated by the [Mapping and Geographic Information Centre](https://www.bas.ac.uk/teams/magic) (MAGIC),
-who provide geospatial resources, expertise and support to the [British Antarctic Survey](https://www.bas.ac.uk) (BAS).
+who provide geospatial information, expertise and services to the [British Antarctic Survey](https://www.bas.ac.uk) 
+(BAS) and wider UK activity in the polar regions.
 
 > [!NOTE]
 > This project is focused on needs within the British Antarctic Survey. It has been open-sourced in case it is

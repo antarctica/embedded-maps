@@ -1,7 +1,8 @@
 import EsriMap from '@arcgis/core/Map';
 import { useEffect } from 'react';
 
-import { useMapCommandExecuter } from '../../../arcgis/hooks/useMapCommandExecuter';
+import { useMapCommandExecuter } from '@/lib/arcgis/hooks/useMapCommandExecuter';
+
 import { AddAssetLayerCommand } from '../commands/AddAssetLayerCommand';
 import { AddBboxVisualizationCommand } from '../commands/AddBboxVisualizationCommand';
 import { SetupGlobeMapCommand } from '../commands/SetupGlobeMapCommand';

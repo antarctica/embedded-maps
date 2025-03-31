@@ -5,7 +5,7 @@ import {
   DEFAULT_SHOW_GLOBE_OVERVIEW,
   DEFAULT_SHOW_RESET_BUTTON,
   DEFAULT_SHOW_ZOOM_BUTTON,
-} from '@/config/mapParamDefaults';
+} from '@/lib/config/mapParamDefaults';
 import { Route } from '@/routes/__root';
 
 function convertEmptyStringParamToBooleanPresence(

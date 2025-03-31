@@ -1,8 +1,8 @@
 import TileLayer from '@arcgis/core/layers/TileLayer';
 
-import { ASSETHEADINGFIELD, ASSETLONGITUDEFIELD } from '@/config/assetLayer';
-import { BasemapConfig, MapProjection } from '@/config/basemap';
-import { generateArcadeHeadingScript } from '@/config/generateArcadeHeadingScript';
+import { ASSETHEADINGFIELD, ASSETLONGITUDEFIELD } from '@/lib/config/assetLayer';
+import { BasemapConfig, MapProjection } from '@/lib/config/basemap';
+import { generateArcadeHeadingScript } from '@/lib/config/generateArcadeHeadingScript';
 /**
  * Applies heading correction for assets in polar map projections
  * @param featureLayer - The ESRI FeatureLayer instance

@@ -3,8 +3,8 @@ import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import EsriMap from '@arcgis/core/Map';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
 
-import { MapCommand, ViewCommand } from '@/arcgis/typings/commandtypes';
-import { getBasemapConfigForMapProjection, getMapProjectionFromBbox } from '@/config/basemap';
+import { MapCommand, ViewCommand } from '@/lib/arcgis/typings/commandtypes';
+import { getBasemapConfigForMapProjection, getMapProjectionFromBbox } from '@/lib/config/basemap';
 
 import { createGeometryFromBBox } from '../utils/bboxUtils';
 import { applyBasemapConstraints } from '../utils/mapViewUtils';

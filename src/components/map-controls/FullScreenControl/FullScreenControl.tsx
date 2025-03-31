@@ -1,7 +1,7 @@
 import FullscreenVM from '@arcgis/core/widgets/Fullscreen/FullscreenViewModel.js';
 import * as React from 'react';
 
-import { useCurrentMapView, useWatchState } from '@/arcgis/hooks';
+import { useCurrentMapView, useWatchState } from '@/lib/arcgis/hooks';
 
 import { MapButton } from '../../Button/MapButton';
 import SvgIcon from '../../SvgIcon';

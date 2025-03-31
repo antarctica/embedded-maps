@@ -1,11 +1,11 @@
 import EsriMap from '@arcgis/core/Map';
 import React from 'react';
 
-import { MapCommand, ViewCommand } from '@/arcgis/typings/commandtypes';
 import { FindAssetCommand } from '@/components/Map/commands/FindAssetCommand';
 import { MapCenterCommand } from '@/components/Map/commands/MapCenterCommand';
+import { useMapCommandExecuter } from '@/lib/arcgis/hooks/useMapCommandExecuter';
+import { MapCommand, ViewCommand } from '@/lib/arcgis/typings/commandtypes';
 
-import { useMapCommandExecuter } from '../../../arcgis/hooks/useMapCommandExecuter';
 import { AddBboxCommand } from '../commands/AddBboxCommand';
 
 interface UseMapInitializationProps {

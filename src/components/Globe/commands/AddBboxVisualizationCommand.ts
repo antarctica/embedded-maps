@@ -5,9 +5,9 @@ import EsriMap from '@arcgis/core/Map';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 
-import { MapCommand } from '@/arcgis/typings/commandtypes';
 import { createGeometryFromBBox } from '@/components/Map/utils/bboxUtils';
-import { MapProjection } from '@/config/basemap';
+import { MapCommand } from '@/lib/arcgis/typings/commandtypes';
+import { MapProjection } from '@/lib/config/basemap';
 
 // Below this threshold, we use a point to represent the bbox
 const AREA_THRESHOLD = 20; // Square degrees

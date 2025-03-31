@@ -6,11 +6,11 @@ import { css } from '@styled-system/css';
 import { Box, Circle } from '@styled-system/jsx';
 import React, { useCallback, useState } from 'react';
 
-import { ArcSceneView } from '@/arcgis/components/ArcView/ArcSceneView';
-import { useCurrentMapView, useWatchEffect } from '@/arcgis/hooks';
-import { isEsriPoint } from '@/arcgis/typings/typeGuards';
-import { isPolarProjection } from '@/config/basemap';
-import { isDefined } from '@/utils/typeGuards';
+import { ArcSceneView } from '@/lib/arcgis/components/ArcView/ArcSceneView';
+import { useCurrentMapView, useWatchEffect } from '@/lib/arcgis/hooks';
+import { isEsriPoint } from '@/lib/arcgis/typings/typeGuards';
+import { isPolarProjection } from '@/lib/config/basemap';
+import { isDefined } from '@/lib/helpers/typeGuards';
 
 import { useMapInitialization } from './hooks/useMapInitialization';
 

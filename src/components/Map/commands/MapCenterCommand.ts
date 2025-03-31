@@ -1,7 +1,10 @@
 import EsriMap from '@arcgis/core/Map';
 
-import { MapCommand, ViewCommand } from '@/arcgis/typings/commandtypes';
-import { getBasemapConfigForMapProjection, getMapProjectionFromPosition } from '@/config/basemap';
+import { MapCommand, ViewCommand } from '@/lib/arcgis/typings/commandtypes';
+import {
+  getBasemapConfigForMapProjection,
+  getMapProjectionFromPosition,
+} from '@/lib/config/basemap';
 
 import { applyBasemapConstraints } from '../utils/mapViewUtils';
 export class MapCenterCommand implements MapCommand {

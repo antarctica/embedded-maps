@@ -34,13 +34,6 @@ interface MapProps {
   initialShowAssetPopup?: boolean;
 }
 
-const viewPadding = {
-  top: 10,
-  left: 10,
-  right: 10,
-  bottom: 10,
-};
-
 const mapViewContainerRecipe = cva({
   base: {
     position: 'relative',
@@ -101,7 +94,6 @@ export function Map({
           });
         }}
         scale={initialScale}
-        padding={viewPadding}
         zoom={initialZoom}
       >
         <arcgis-placement position="top-left">

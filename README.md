@@ -50,8 +50,8 @@ Base endpoint: https://embedded-maps.data.bas.ac.uk/v1/
 A suitable basemap and projection is used based on the map extent:
 
 - For latitudes ≤ -60°, an Antarctic projection
-- For latitudes ≥ 60°, an Arctic projection
-- For latitudes between -60° and 60°, a World projection
+- For latitudes ≥ 50°, an Arctic projection
+- For latitudes between -60° and 50°, a World projection
 - For latitudes between -55.200717 to -53.641972 and longitudes between -38.643677 to -35.271423, a South Georgia projection
 
 > [!TIP]

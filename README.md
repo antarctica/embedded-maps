@@ -89,6 +89,15 @@ Set these parameters to visualise a 2D bounding box:
 | `bbox`                       | Bounding box [minX, minY, maxX, maxY]            | -           | [-180.0,-90.0,180.0,-60.0] |
 | `bbox-force-regional-extent` | Ensure `bbox` is shown at he full basemap extent | false       | true                       |
 
+When defining a bounding box that crosses the antimeridian (180°/-180° longitude), use a larger value for the western edge (minX) than the eastern edge (maxX). For example:
+
+```
+[170.0, -70.0, -170.0, -60.0]  # Crosses antimeridian (valid)
+[-170.0, -70.0, 170.0, -60.0]  # Does not cross antimeridian (valid)
+```
+
+This follows the OGC API Features specification for handling bounding boxes that cross the antimeridian.
+
 > [!NOTE]
 > A `bbox` value will override the `centre`, `scale` and `zoom`  parameters if set.
 >

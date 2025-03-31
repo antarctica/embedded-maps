@@ -62,7 +62,6 @@ test.describe.parallel('Map View Parameters', () => {
 
   test.describe('asset-id', () => {
     test.beforeEach(async ({ page }) => {
-      // check if har file exists
       const harPath = getHarPath('map-view-params/asset-id/asset-id.har');
       await page.routeFromHAR(harPath, {
         url: '**/tPxy1hrFDhJfZ0Mf/arcgis/rest/services/ats_latest_assets_position/FeatureServer/0/*',

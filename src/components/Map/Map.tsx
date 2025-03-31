@@ -78,9 +78,7 @@ export function Map({
   initialShowAssetPopup,
 }: MapProps) {
   const [viewPoint, setViewPoint] = React.useState<__esri.Viewpoint | undefined>(undefined);
-  const [isViewReady, setIsViewReady] = React.useState(false);
-
-  const { map, error, isLoading, handleViewReady } = useMapInitialization({
+  const { map, error, isMapLoading, isViewReady, handleViewReady } = useMapInitialization({
     initialAssetId,
     initialCenter,
     initialBbox,
@@ -88,7 +86,7 @@ export function Map({
     initialShowAssetPopup,
   });
 
-  if (!map || isLoading || error) {
+  if (!map || isMapLoading || error) {
     return <LoadingScrim isLoading={true} error={error?.message} />;
   }
 
@@ -100,7 +98,6 @@ export function Map({
         onarcgisViewReadyChange={(event) => {
           handleViewReady(event.target.view).then(() => {
             setViewPoint(event.target.view.viewpoint);
-            setIsViewReady(true);
           });
         }}
         scale={initialScale}

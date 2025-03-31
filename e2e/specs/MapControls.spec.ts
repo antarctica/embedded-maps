@@ -18,7 +18,7 @@ const standardTestCases = [
 
 const globeTestCase = {
   name: 'globe overview',
-  params: '?centre=[-180,-90]&zoom=6&globe-overview=true',
+  params: '?centre=[-180,-90]&zoom=6&globe-overview',
   visibleControls: ['zoom', 'home'],
 };
 
@@ -71,11 +71,8 @@ test.describe.parallel('Map Controls and Parameters', () => {
       // Wait for the map to be ready
       await waitForMapReady(page);
 
-      // Wait for the scene to be ready
-      await waitForSceneReady(page);
-
-      // wait 5 seconds
-      await page.waitForTimeout(5000);
+      // Wait for the scene to be ready - additional delay to wait for layer to fully render
+      await waitForSceneReady(page, { additionalDelay: 5000 });
     });
 
     test('snapshot', async ({ page }) => {

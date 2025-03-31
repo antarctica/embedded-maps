@@ -1,5 +1,5 @@
 import EsriMap from '@arcgis/core/Map';
-import { useEffect, useRef } from 'react';
+import React from 'react';
 
 import { MapCommand, ViewCommand } from '@/arcgis/typings/commandtypes';
 import { FindAssetCommand } from '@/components/Map/commands/FindAssetCommand';
@@ -20,7 +20,8 @@ interface UseMapInitializationProps {
 interface UseMapInitializationResult {
   map: EsriMap | null;
   error: Error | null;
-  isLoading: boolean;
+  isMapLoading: boolean;
+  isViewReady: boolean;
   handleViewReady: (view: __esri.MapView) => Promise<void>;
 }
 
@@ -32,9 +33,10 @@ export function useMapInitialization({
   initialShowAssetPopup,
 }: UseMapInitializationProps): UseMapInitializationResult {
   const { map, setMap, error, isExecuting, executeCommands } = useMapCommandExecuter();
-  const postInitCommandsRef = useRef<ViewCommand[]>([]);
+  const postInitCommandsRef = React.useRef<ViewCommand[]>([]);
+  const [isViewReady, setIsViewReady] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!map) {
       const mapInstance = new EsriMap();
       setMap(mapInstance);
@@ -66,15 +68,17 @@ export function useMapInitialization({
     setMap,
   ]);
 
-  const handleViewReady = async (view: __esri.MapView) => {
+  const handleViewReady = React.useCallback(async (view: __esri.MapView) => {
     // Execute any pending post-init commands
     await Promise.all(postInitCommandsRef.current.map((cmd) => cmd.executeOnView(view)));
-  };
+    setIsViewReady(true);
+  }, []);
 
   return {
     map,
     error,
-    isLoading: isExecuting,
+    isMapLoading: isExecuting,
+    isViewReady,
     handleViewReady,
   };
 }

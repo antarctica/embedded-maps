@@ -36,7 +36,7 @@ export class FindAssetCommand implements MapCommand {
       const query = this.assetLayer.createQuery();
       query.where = `${ASSETFIELDNAME} = '${this.assetId}'`;
       query.returnGeometry = true;
-      query.outFields = [ASSETFIELDNAME];
+      query.outFields = ['*'];
       const result = await this.assetLayer.queryFeatures(query);
 
       if (result.features.length === 0) {
@@ -85,6 +85,7 @@ export class FindAssetCommand implements MapCommand {
                 height: Infinity,
               },
             };
+            mapView.popup.highlightEnabled = false;
             mapView.openPopup({
               features: [asset],
               updateLocationEnabled: true,

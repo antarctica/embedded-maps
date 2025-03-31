@@ -69,7 +69,7 @@ test.describe.parallel('Map View Parameters', () => {
         update: false,
       });
       await page.goto(`/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&zoom=8`);
-      await waitForMapReady(page, { additionalDelay: 2000 });
+      await waitForMapReady(page, { additionalDelay: 4000 });
     });
 
     test('snapshot', async ({ page }) => {
@@ -83,13 +83,16 @@ test.describe.parallel('Map View Parameters', () => {
 
   test.describe('asset-force-popup', () => {
     test.beforeEach(async ({ page }) => {
+      // Set a fixed time for consistent testing (31st March 2025, 10:45 GMT+1)
+      await page.clock.setFixedTime(new Date('2025-03-31T09:45:00Z'));
+
       const harPath = getHarPath('map-view-params/asset-force-popup/asset-force-popup.har');
       await page.routeFromHAR(harPath, {
         url: '**/tPxy1hrFDhJfZ0Mf/arcgis/rest/services/ats_latest_assets_position/FeatureServer/0/*',
         update: false,
       });
       await page.goto(`/?asset-id=01JDRYA33CJZ8FQGAJBTFJS4P7&zoom=8&asset-force-popup`);
-      await waitForMapReady(page, { additionalDelay: 2000 });
+      await waitForMapReady(page, { additionalDelay: 4000 });
     });
 
     test('snapshot', async ({ page }) => {

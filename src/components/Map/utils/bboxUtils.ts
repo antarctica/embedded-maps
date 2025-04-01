@@ -3,7 +3,7 @@ import Extent from '@arcgis/core/geometry/Extent';
 import * as shapePreservingProjectOperator from '@arcgis/core/geometry/operators/shapePreservingProjectOperator.js';
 import Polygon from '@arcgis/core/geometry/Polygon';
 
-import { getBasemapConfigForMapProjection, MapProjection } from '@/config/basemap';
+import { getBasemapConfigForMapProjection, MapProjection } from '@/lib/config/basemap';
 
 /**
  * Reference the BBOX spec to understand the behavior around the antimeridian:

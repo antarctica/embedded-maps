@@ -5,7 +5,7 @@ import { fallback, zodValidator } from '@tanstack/zod-adapter';
 import * as React from 'react';
 import { z } from 'zod';
 
-import { DEFAULT_CENTER } from '@/config/mapParamDefaults';
+import { DEFAULT_CENTER } from '@/lib/config/mapParamDefaults';
 
 export const CoordinatePair = z.tuple([z.number(), z.number()]);
 export const BBox = z.tuple([z.number(), z.number(), z.number(), z.number()]);

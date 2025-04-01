@@ -4,7 +4,7 @@ import { css, cva } from '@styled-system/css';
 import { Flex } from '@styled-system/jsx';
 import React from 'react';
 
-import { ArcMapView } from '@/arcgis/components/ArcView/ArcMapView';
+import { ArcMapView } from '@/lib/arcgis/components/ArcView/ArcMapView';
 
 import { Globe } from '../Globe';
 import LoadingScrim from '../LoadingScrim';
@@ -33,13 +33,6 @@ interface MapProps {
   initialAssetId?: string;
   initialShowAssetPopup?: boolean;
 }
-
-const viewPadding = {
-  top: 10,
-  left: 10,
-  right: 10,
-  bottom: 10,
-};
 
 const mapViewContainerRecipe = cva({
   base: {
@@ -101,7 +94,6 @@ export function Map({
           });
         }}
         scale={initialScale}
-        padding={viewPadding}
         zoom={initialZoom}
       >
         <arcgis-placement position="top-left">

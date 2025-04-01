@@ -3,8 +3,8 @@ import EsriMap from '@arcgis/core/Map';
 import UniqueValueRenderer from '@arcgis/core/renderers/UniqueValueRenderer';
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 
-import { MapCommand } from '@/arcgis/typings/commandtypes';
-import { ASSETFIELDNAME, ASSETLAYERMAPID, ASSETLAYERPORTALID } from '@/config/assetLayer';
+import { MapCommand } from '@/lib/arcgis/typings/commandtypes';
+import { ASSETFIELDNAME, ASSETLAYERMAPID, ASSETLAYERPORTALID } from '@/lib/config/assetLayer';
 
 export class AddAssetLayerCommand implements MapCommand {
   constructor(private assetId: string) {}

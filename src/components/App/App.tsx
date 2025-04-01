@@ -1,7 +1,7 @@
 import '@arcgis/core/assets/esri/themes/light/main.css?inline';
 
-import GeometryToolsLoader from '@/arcgis/components/GeometryToolsLoader';
-import { useMapParams } from '@/hooks/useMapParams';
+import GeometryToolsLoader from '@/lib/arcgis/components/GeometryToolsLoader';
+import { useMapParams } from '@/lib/hooks/useMapParams';
 
 import { Map } from '../Map/Map';
 

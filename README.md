@@ -50,8 +50,8 @@ Base endpoint: https://embedded-maps.data.bas.ac.uk/v1/
 A suitable basemap and projection is used based on the map extent:
 
 - For latitudes ≤ -60°, an Antarctic projection
-- For latitudes ≥ 60°, an Arctic projection
-- For latitudes between -60° and 60°, a World projection
+- For latitudes ≥ 50°, an Arctic projection
+- For latitudes between -60° and 50°, a World projection
 - For latitudes between -55.200717 to -53.641972 and longitudes between -38.643677 to -35.271423, a South Georgia projection
 
 > [!TIP]
@@ -88,6 +88,15 @@ Set these parameters to visualise a 2D bounding box:
 |------------------------------|--------------------------------------------------|-------------|----------------------------|
 | `bbox`                       | Bounding box [minX, minY, maxX, maxY]            | -           | [-180.0,-90.0,180.0,-60.0] |
 | `bbox-force-regional-extent` | Ensure `bbox` is shown at he full basemap extent | false       | true                       |
+
+When defining a bounding box that crosses the antimeridian (180°/-180° longitude), use a larger value for the western edge (minX) than the eastern edge (maxX). For example:
+
+```
+[170.0, -70.0, -170.0, -60.0]  # Crosses antimeridian (valid)
+[-170.0, -70.0, 170.0, -60.0]  # Does not cross antimeridian (valid)
+```
+
+This follows the OGC API Features specification for handling bounding boxes that cross the antimeridian.
 
 > [!NOTE]
 > A `bbox` value will override the `centre`, `scale` and `zoom`  parameters if set.

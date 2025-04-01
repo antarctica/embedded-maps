@@ -116,7 +116,7 @@ export const ARCTIC_BASEMAP_CONFIG: BasemapConfig = {
   }),
   rotation: 150,
   viewExtent: new Polygon({
-    rings: [generateCircleRings(64, 5000000, [2000000, 2000000])],
+    rings: [generateCircleRings(64, 4500000, [2000000, 2000000])],
     spatialReference: new SpatialReference({ wkid: 5936 }),
   }),
   spatialReference: new SpatialReference({ wkid: 5936 }),

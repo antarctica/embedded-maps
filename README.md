@@ -16,9 +16,27 @@ Features include:
 
 Examples:
 
-| ![example-antarctica](/docs/example-1.png)                  | ![example-ship-tracking](/docs/example-2.png)                                                              |
-|-------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
-| `https://embedded-maps.data.bas.ac.uk/v1/?bbox=[-180.0,-90.0,180.0,-60.0]` | `https://embedded-maps.data.bas.ac.uk/v1/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&scale=500000&globe-overview` |
+<table style="width: 100%; table-layout: fixed; border-collapse: collapse;">
+  <tr>
+    <td style="width: 50%; text-align: center;">
+      <img src="https://github.com/antarctica/embedded-maps/blob/v0.2.0/docs/example-1.png" alt="example-antarctica" style="width: 100%; height: auto;" />
+    </td>
+    <td style="width: 50%; text-align: center;">
+      <img src="https://github.com/antarctica/embedded-maps/blob/v0.2.0/docs/example-2.png" alt="example-ship-tracking" style="width: 100%; height: auto;" />
+    </td>
+  </tr>
+  <tr>
+    <td style="width: 50%; text-align: center; word-wrap: break-word;">
+      <code>https://embedded-maps.data.bas.ac.uk/v1/?bbox=[-180, -90]</code>
+    </td>
+    <td style="width: 50%; text-align: center; word-wrap: break-word;">
+      <code>https://embedded-maps.data.bas.ac.uk/v1/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&amp;scale=500000&amp;globe-overview</code>
+    </td>
+  </tr>
+</table>
+
+> [!TIP]
+> See the [Examples](#examples) section for additional examples.
 
 This service is operated by the [Mapping and Geographic Information Centre](https://www.bas.ac.uk/teams/magic) (MAGIC),
 who provide geospatial information, expertise and services to the [British Antarctic Survey](https://www.bas.ac.uk) 

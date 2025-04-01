@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.2.1] 2025-04-01
+
+### Added
+
+* Clarifying bounding box handling across the antimeridian
+  [#44](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/44)
+
+### Fixed
+
+* README typos
+  [#44](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/44)
+* Improved display of arctic projection when show regional/basemap extent enabled
+  [#42](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/42)
+* Asset popup not showing selected feature
+  [#41](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/41)
+
+
 ## [0.2.0] 2025-03-29
 
 ### Added

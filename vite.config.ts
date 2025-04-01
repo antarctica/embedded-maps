@@ -8,7 +8,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 export default ({ mode }: { mode: string }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return defineConfig({
-    plugins: [react(), tsconfigPaths(), TanStackRouterVite()],
+    plugins: [react({ tsDecorators: true }), tsconfigPaths(), TanStackRouterVite()],
     test: {
       globals: true,
       setupFiles: './src/test/setup.tsx',

@@ -32,7 +32,7 @@ project members respectively. Contact the [Project Maintainer](#project-maintain
 ### Status
 
 > [!IMPORTANT]
-> This a beta service and is available for general use but may contain bugs.
+> This is a beta service and is available for general use but may contain bugs.
 >
 > We [welcome feedback](mailto:magic@bas.ac.uk) from users on how it can be made better.
 
@@ -49,13 +49,13 @@ Base endpoint: https://embedded-maps.data.bas.ac.uk/v1/
 
 A suitable basemap and projection is used based on the map extent:
 
-- For latitudes ≤ -60°, an Antarctic projection
-- For latitudes ≥ 50°, an Arctic projection
-- For latitudes between -60° and 50°, a World projection
+- For latitudes ≤ -50°, an Antarctic projection
+- For latitudes ≥ 60°, an Arctic projection
+- For latitudes between -50° and 60°, a World projection
 - For latitudes between -55.200717 to -53.641972 and longitudes between -38.643677 to -35.271423, a South Georgia projection
 
 > [!TIP]
-> The basemaps ussed for these projections are either created or recommended by 
+> The basemaps used for these projections are either created or recommended by 
 > [MAGIC](https://www.bas.ac.uk/teams/magic) for general use.
 
 ### Parameters

@@ -18,7 +18,7 @@ Examples:
 
 | ![example-antarctica](/docs/example-1.png)                  | ![example-ship-tracking](/docs/example-2.png)                                                              |
 |-------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
-| `https://embedded-maps.data.bas.ac.uk/v1/?bbox=[-180, -90]` | `https://embedded-maps.data.bas.ac.uk/v1/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&scale=500000&globe-overview` |
+| `https://embedded-maps.data.bas.ac.uk/v1/?bbox=[-180.0,-90.0,180.0,-60.0]` | `https://embedded-maps.data.bas.ac.uk/v1/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&scale=500000&globe-overview` |
 
 This service is operated by the [Mapping and Geographic Information Centre](https://www.bas.ac.uk/teams/magic) (MAGIC),
 who provide geospatial information, expertise and services to the [British Antarctic Survey](https://www.bas.ac.uk) 

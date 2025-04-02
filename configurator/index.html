@@ -36,6 +36,25 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 10px;
+            }
+
+            .configurator,
+            .preview-section {
+                padding: 15px;
+            }
+
+            #preview-frame {
+                height: 300px;
+            }
+        }
+
         h1 {
             grid-column: 1 / -1;
             color: var(--primary-color);

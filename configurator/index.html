@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAS Embedded Maps Configurator</title>
+    <style>
+        :root {
+            --primary-color: #003A5D;
+            --border-color: #ddd;
+            --bg-color: #f5f5f5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            background-color: var(--bg-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 10px;
+            }
+
+            .configurator,
+            .preview-section {
+                padding: 15px;
+            }
+
+            #preview-frame {
+                height: 300px;
+            }
+        }
+
+        h1 {
+            grid-column: 1 / -1;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .configurator {
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        .preview-section {
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        .checkbox-group {
+            margin-top: 5px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: normal;
+        }
+
+        .output-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--bg-color);
+            border-radius: 4px;
+        }
+
+        .output-section h3 {
+            margin-bottom: 10px;
+        }
+
+        .output-box {
+            background: white;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            word-break: break-all;
+            margin-bottom: 10px;
+        }
+
+        #preview-frame {
+            width: 100%;
+            height: 400px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BAS Embedded Maps Configurator</h1>
+        
+        <div class="configurator">
+            <h2>Parameters</h2>
+            
+            <div class="form-group">
+                <label for="centre">Centre [longitude, latitude]:</label>
+                <input type="text" id="centre" placeholder="e.g. [-180, -90]">
+            </div>
+
+            <div class="form-group">
+                <label for="zoom">Zoom Level:</label>
+                <input type="number" id="zoom" min="0" max="20" value="0">
+            </div>
+
+            <div class="form-group">
+                <label for="scale">Scale:</label>
+                <input type="number" id="scale" placeholder="e.g. 500000" value="50000000">
+            </div>
+
+            <div class="form-group">
+                <label for="bbox">Bounding Box [minX, minY, maxX, maxY]:</label>
+                <input type="text" id="bbox" placeholder="e.g. [-180.0,-90.0,180.0,-60.0]">
+            </div>
+
+            <div class="form-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="bbox-force-regional-extent">
+                    Force Regional Extent
+                </label>
+            </div>
+
+            <h3>UI Controls</h3>
+            <div class="checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="ctrl-zoom" checked>
+                    Show Zoom Controls
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="ctrl-reset" checked>
+                    Show Reset Control
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="ctrl-fullscreen">
+                    Show Fullscreen Control
+                </label>
+            </div>
+
+            <h3>Overview</h3>
+            <div class="checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="globe-overview">
+                    Show 3D Locator Globe
+                </label>
+            </div>
+
+            <h3>Asset Tracking</h3>
+            <div class="form-group">
+                <label for="asset-id">Asset:</label>
+                <select id="asset-id" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px;">
+                    <option value="">Select an asset...</option>
+                </select>
+            </div>
+            <div class="checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="asset-force-popup">
+                    Force Asset Popup
+                </label>
+            </div>
+        </div>
+
+        <div class="preview-section">
+            <h2>Preview</h2>
+            <iframe id="preview-frame" allowfullscreen="true" allow="fullscreen"></iframe>
+            
+            <div class="output-section">
+                <h3>URL</h3>
+                <div id="url-output" class="output-box"></div>
+                
+                <h3>Embed Code</h3>
+                <div id="embed-output" class="output-box"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const BASE_URL = 'https://embedded-maps.data.bas.ac.uk/v1/';
+        const ARCGIS_URL = 'https://services7.arcgis.com/tPxy1hrFDhJfZ0Mf/arcgis/rest/services/ats_latest_assets_position/FeatureServer/0/query';
+        const form = document.querySelector('.configurator');
+        const urlOutput = document.getElementById('url-output');
+        const embedOutput = document.getElementById('embed-output');
+        const previewFrame = document.getElementById('preview-frame');
+        const assetSelect = document.getElementById('asset-id');
+
+        // Fetch asset data from ArcGIS
+        async function fetchAssets() {
+            try {
+                const params = new URLSearchParams({
+                    where: '1=1',
+                    outFields: 'asset_id,name,type_label',
+                    returnGeometry: 'false',
+                    f: 'json'
+                });
+
+                const response = await fetch(`${ARCGIS_URL}?${params}`);
+                const data = await response.json();
+
+                if (data.features) {
+                    const assets = data.features
+                        .map(feature => ({
+                            id: feature.attributes.asset_id,
+                            name: feature.attributes.name,
+                            type: feature.attributes.type_label
+                        }))
+                        .sort((a, b) => a.name.localeCompare(b.name));
+
+                    // Clear existing options except the first one
+                    while (assetSelect.options.length > 1) {
+                        assetSelect.remove(1);
+                    }
+
+                    // Add assets to select
+                    assets.forEach(asset => {
+                        const option = document.createElement('option');
+                        option.value = asset.id;
+                        option.textContent = `${asset.name} (${asset.type})`;
+                        assetSelect.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching assets:', error);
+            }
+        }
+
+        function updateOutputs() {
+            const params = new URLSearchParams();
+            
+            // Handle centre
+            const centre = document.getElementById('centre').value;
+            if (centre) params.append('centre', centre);
+
+            // Handle zoom
+            const zoom = document.getElementById('zoom').value;
+            if (zoom !== '0') params.append('zoom', zoom);
+
+            // Handle scale
+            const scale = document.getElementById('scale').value;
+            if (scale) params.append('scale', scale);
+
+            // Handle bbox
+            const bbox = document.getElementById('bbox').value;
+            if (bbox) params.append('bbox', bbox);
+
+            // Handle bbox-force-regional-extent
+            if (document.getElementById('bbox-force-regional-extent').checked) {
+                params.append('bbox-force-regional-extent', 'true');
+            }
+
+            // Handle UI controls
+            ['ctrl-zoom', 'ctrl-reset', 'ctrl-fullscreen'].forEach(ctrl => {
+                const element = document.getElementById(ctrl);
+                if (element.checked !== element.defaultChecked) {
+                    params.append(ctrl, element.checked);
+                }
+            });
+
+            // Handle globe overview
+            if (document.getElementById('globe-overview').checked) {
+                params.append('globe-overview', 'true');
+            }
+
+            // Handle asset tracking
+            const assetId = document.getElementById('asset-id').value;
+            if (assetId) params.append('asset-id', assetId);
+            
+            if (document.getElementById('asset-force-popup').checked) {
+                params.append('asset-force-popup', 'true');
+            }
+
+            // Generate URL
+            const url = `${BASE_URL}?${params.toString()}`;
+            urlOutput.textContent = url;
+
+            // Generate embed code
+            const embedCode = `<iframe src="${url}" style="border:none;" width="100%" height="400px" allowfullscreen="true" allow="fullscreen"></iframe>`;
+            embedOutput.textContent = embedCode;
+
+            // Update preview
+            previewFrame.src = url;
+        }
+
+        // Add event listeners to all form elements
+        form.querySelectorAll('input, select').forEach(input => {
+            input.addEventListener('change', updateOutputs);
+            input.addEventListener('input', updateOutputs);
+        });
+
+        // Fetch assets when the page loads
+        fetchAssets();
+
+        // Initial update
+        updateOutputs();
+    </script>
+</body>
+</html> 

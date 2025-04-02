@@ -19,6 +19,7 @@ variables:
   S3_BUCKET_STAGE: embedded-maps-testing.data.bas.ac.uk
   S3_BUCKET_PROD: embedded-maps.data.bas.ac.uk
   DEPLOY_SRC: dist
+  CONFIGURATOR_SRC: configurator
 
   # Environment test URLs
   ENV_STAGE_HREF: https://embedded-maps-testing.data.bas.ac.uk/tests/v1/integration.html
@@ -90,6 +91,7 @@ publish-stage:
   needs: ['build']
   script:
     - aws s3 sync $DEPLOY_SRC/ s3://$S3_BUCKET_STAGE/v1/
+    - aws s3 sync $CONFIGURATOR_SRC/ s3://$S3_BUCKET_STAGE/v1/configurator/
   environment:
     name: staging
     url: $ENV_STAGE_HREF
@@ -101,6 +103,7 @@ publish-prod:
   needs: ['build']
   script:
     - aws s3 sync $DEPLOY_SRC/ s3://$S3_BUCKET_PROD/v1/
+    - aws s3 sync $CONFIGURATOR_SRC/ s3://$S3_BUCKET_PROD/v1/configurator/
   environment:
     name: production
     url: $ENV_PROD_HREF

@@ -33,6 +33,7 @@ export function App() {
     assetId,
     assetForcePopup,
   } = useMapParams();
+
   return (
     <GeometryToolsLoader>
       <Map

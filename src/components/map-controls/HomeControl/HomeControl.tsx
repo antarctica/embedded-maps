@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { useCurrentMapView, useWatchState } from '@/lib/arcgis/hooks';
 
-import { MapButton } from '../../Button/MapButton';
+import { IconButton } from '../../Button/IconButton';
 import SvgIcon from '../../SvgIcon';
 
 function HomeControl({ viewPoint }: { viewPoint?: __esri.Viewpoint }) {
@@ -14,8 +14,9 @@ function HomeControl({ viewPoint }: { viewPoint?: __esri.Viewpoint }) {
   );
   const isDisabled = useWatchState(() => widget.state === 'disabled') ?? false;
   return (
-    <MapButton
-      includeBorder
+    <IconButton
+      variant="mapButton"
+      size="md"
       icon={<SvgIcon name="icon-home" size={14} />}
       aria-label="Home"
       isDisabled={isDisabled}

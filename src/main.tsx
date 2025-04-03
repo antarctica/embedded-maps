@@ -1,4 +1,6 @@
 import './index.css';
+// Supports weights 100-900
+import '@fontsource-variable/work-sans';
 
 import { createRouter, RouterProvider } from '@tanstack/react-router';
 import { StrictMode } from 'react';

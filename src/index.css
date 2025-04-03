@@ -5,8 +5,9 @@ html, body, #root {
   height: 100%;
   width: 100%;
 }
-
-
+:root {
+  --font-work-sans: 'Work Sans Variable', sans-serif;
+}
 
 
 @keyframes progress-circle {

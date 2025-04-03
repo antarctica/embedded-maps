@@ -47,6 +47,17 @@ const mapViewContainerRecipe = cva({
       display: 'none',
     },
 
+    '& .esri-attribution': {
+      // eslint-disable-next-line @pandacss/no-hardcoded-color
+      color: 'fg !important',
+
+      // eslint-disable-next-line @pandacss/no-hardcoded-color
+      bg: 'basBlue.a.4 !important',
+    },
+    '& .esri-attribution__sources': {
+      fontWeight: 'semibold !important',
+    },
+
     '& .esri-ui-inner-container .esri-component': {
       boxShadow: '[none !important]',
     },

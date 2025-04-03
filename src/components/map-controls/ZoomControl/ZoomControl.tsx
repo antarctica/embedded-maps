@@ -1,11 +1,11 @@
 import ZoomVM from '@arcgis/core/widgets/Zoom/ZoomViewModel';
 import { css } from '@styled-system/css';
-import { Divider, Flex } from '@styled-system/jsx';
+import { Divider, VStack } from '@styled-system/jsx';
 import * as React from 'react';
 
+import { IconButton } from '@/components/Button/IconButton';
 import { useCurrentMapView, useWatchState } from '@/lib/arcgis/hooks';
 
-import { MapButton } from '../../Button/MapButton';
 import SvgIcon from '../../SvgIcon';
 
 function ZoomControl() {
@@ -16,29 +16,42 @@ function ZoomControl() {
   const canZoomOut = useWatchState(() => widget.canZoomOut) ?? false;
 
   return (
-    <Flex
+    <VStack
       className={css({
-        borderColor: 'grayscale.400',
-        borderWidth: 'thin',
-        bg: 'grayscale.200',
-        boxShadow: 'md',
+        borderRadius: 'sm',
+        bg: 'basBlue.9',
+        shadow: 'sm',
+        overflow: 'hidden',
+        pointerEvents: 'auto',
       })}
-      direction="column"
+      gap={'0'}
     >
-      <MapButton
-        icon={<SvgIcon name="icon-add" size={14} />}
+      <IconButton
+        className={css({
+          borderBottomRadius: 'none',
+        })}
+        icon={<SvgIcon name="icon-add" size={16} />}
         aria-label="Zoom In"
-        isDisabled={canZoomIn ? undefined : true}
+        isDisabled={!canZoomIn}
         onPress={() => widget.zoomIn()}
+        variant="mapButton"
+        size="md"
+        contained
       />
-      <Divider thickness={'thin'} w="full" color="grayscale.400"></Divider>
-      <MapButton
-        icon={<SvgIcon name="icon-subtract" size={14} />}
+      <Divider thickness={'thin'} w="[80%]" color="white/60"></Divider>
+      <IconButton
+        className={css({
+          borderTopRadius: 'none',
+        })}
+        icon={<SvgIcon name="icon-subtract" size={16} />}
         aria-label="Zoom Out"
-        isDisabled={canZoomOut ? undefined : true}
+        isDisabled={!canZoomOut}
         onPress={() => widget.zoomOut()}
+        variant="mapButton"
+        size="md"
+        contained
       />
-    </Flex>
+    </VStack>
   );
 }
 

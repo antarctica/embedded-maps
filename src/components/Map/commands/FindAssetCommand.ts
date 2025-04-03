@@ -82,7 +82,7 @@ export class FindAssetCommand implements MapCommand {
           if (this.showAssetPopup && mapView.popup) {
             mapView.popup.dockOptions = {
               buttonEnabled: false,
-              position: 'top-right',
+              position: 'bottom-right',
               breakpoint: {
                 width: Infinity,
                 height: Infinity,

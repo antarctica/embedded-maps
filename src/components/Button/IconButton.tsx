@@ -15,16 +15,16 @@ export type IconButtonProps = React.ComponentProps<typeof ButtonPrimitive> &
   };
 
 export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(function Button(
-  { icon: Icon, className, isDisabled, size = 'lg', ...restProps }: IconButtonProps,
+  { icon: Icon, className, ...restProps }: IconButtonProps,
   ref,
 ) {
   return (
     <ButtonPrimitive
       ref={ref}
-      className={composeRenderProps(className, (className, renderProps) =>
-        cx(buttonRecipe({ ...renderProps, size, IconButton: true }), className),
-      )}
-      isDisabled={isDisabled}
+      className={composeRenderProps(className, (className, renderProps) => {
+        const [recipeProps] = buttonRecipe.splitVariantProps({ ...restProps, ...renderProps });
+        return cx(buttonRecipe(recipeProps), className);
+      })}
       {...restProps}
     >
       {Icon}

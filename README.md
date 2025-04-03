@@ -27,7 +27,7 @@ Examples:
   </tr>
   <tr>
     <td style="width: 50%; text-align: center; word-wrap: break-word;">
-      <code>https://embedded-maps.data.bas.ac.uk/v1/?bbox=[-180, -90]</code>
+      <code>https://embedded-maps.data.bas.ac.uk/v1/?bbox=[-180, -90, 180, -60]</code>
     </td>
     <td style="width: 50%; text-align: center; word-wrap: break-word;">
       <code>https://embedded-maps.data.bas.ac.uk/v1/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&amp;scale=500000&amp;globe-overview</code>

@@ -7,12 +7,19 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import globals from 'globals';
-import { config, configs as tsConfigs } from 'typescript-eslint';
+import { dirname } from 'path';
+import { configs as tsConfigs } from 'typescript-eslint';
+import { fileURLToPath } from 'url';
 
-const compat = new FlatCompat();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-export default config(
-  // ignore
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
+
+const eslintConfig = [
+  // ignore patterns
   {
     name: 'ignores',
     ignores: [
@@ -24,6 +31,7 @@ export default config(
       'public/arcgis',
     ],
   },
+
   // react
   {
     ...pluginReact.configs.flat['jsx-runtime'],
@@ -39,11 +47,9 @@ export default config(
   },
 
   // react hooks
-  {
-    extends: [...compat.config(reactHooks.configs.recommended)],
-  },
+  ...compat.config(reactHooks.configs.recommended),
 
-  // react compiler:
+  // react compiler
   {
     plugins: {
       'react-compiler': reactCompiler,
@@ -64,8 +70,8 @@ export default config(
   },
 
   // typescript
+  ...tsConfigs.recommended,
   {
-    extends: [...tsConfigs.recommended],
     languageOptions: {
       parserOptions: {
         ecmaVersion: 'latest',
@@ -80,6 +86,7 @@ export default config(
       },
     },
   },
+
   // simple import sort
   {
     plugins: {
@@ -102,10 +109,12 @@ export default config(
       ...panda.configs.recommended.rules,
       '@pandacss/no-debug': 'off',
       '@pandacss/no-margin-properties': 'off',
-      '@pandacss/no-hardcoded-color': ['error', { noOpacity: true }],
+      '@pandacss/no-hardcoded-color': ['error', { noOpacity: false }],
     },
   },
 
-  // eslint-plugin-prettier -- all prettier rules before this are ignored
+  // prettier
   eslintPluginPrettierRecommended,
-);
+];
+
+export default eslintConfig;

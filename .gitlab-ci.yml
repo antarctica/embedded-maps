@@ -69,8 +69,6 @@ test:e2e:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       changes:
         - src/**/*
-        - panda.config.ts
-        - panda.config/**/*
         - e2e/**/*
 
 build:

@@ -1,89 +1,30 @@
-import { cva } from '@styled-system/css';
+import { tv } from 'tailwind-variants';
 
-export const buttonRecipe = cva({
-  base: {
-    cursor: 'pointer',
-    display: 'inline-flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 'thin',
-    height: 'fit',
-    textDecoration: 'none',
-  },
+import { focusRing } from '@/styles/recipes/focusRing';
+
+export const buttonRecipe = tv({
+  extend: focusRing,
+  base: 'border-1px inline-flex h-fit cursor-pointer items-center justify-center no-underline',
   variants: {
     variant: {
-      mapButton: {
-        borderColor: 'transparent',
-        borderRadius: 'sm',
-        color: 'white',
-        bg: 'basBlue.9',
-        shadow: 'sm',
-        _disabled: {
-          bg: 'basBlue.a.10',
-          _hover: {
-            bg: 'basBlue.a.10',
-          },
-        },
-        _hover: {
-          bg: 'basBlue.10',
-        },
-        _active: {
-          filter: '[brightness(0.92) saturate(1.1)]',
-        },
-      },
+      mapButton:
+        'rounded-sm border-transparent bg-blue-9 text-white shadow-sm hover:bg-blue-10 active:brightness-92 active:saturate-110 disabled:bg-blue-9/70',
     },
     size: {
-      sm: {
-        gap: '1',
-        borderRadius: 'xs',
-        h: '6',
-        py: '0.5',
-        px: '1',
-        fontSize: 'xs',
-      },
-      md: {
-        gap: '2',
-        borderRadius: 'sm',
-        h: '8',
-        p: '1.5',
-        fontSize: 'md',
-      },
-      lg: {
-        gap: '2',
-        borderRadius: 'sm',
-        h: '10',
-        p: '2',
-        fontSize: 'lg',
-      },
+      sm: 'h-6 gap-1 rounded-xs px-1 py-0.5 text-xs',
+      md: 'text-md h-8 gap-2 rounded-sm px-1.5 py-1',
+      lg: 'h-10 gap-2 rounded-sm px-2 py-2 text-lg',
     },
     contained: {
-      true: {
-        borderRadius: 'none',
-      },
+      true: 'rounded-none',
     },
     isDisabled: {
-      true: {
-        color: 'grayscale.400',
-        _hover: {
-          cursor: 'not-allowed',
-        },
-      },
-    },
-    isFocusVisible: {
-      true: {
-        insetFocusRing: true,
-      },
-      false: {
-        insetFocusRing: false,
-      },
+      true: 'cursor-not-allowed hover:text-gray-4',
     },
     IconButton: {
-      true: {
-        p: '0',
-      },
+      true: 'p-0',
     },
   },
-
   defaultVariants: {
     size: 'lg',
   },
@@ -91,38 +32,17 @@ export const buttonRecipe = cva({
     {
       variant: 'mapButton',
       size: 'md',
-      css: {
-        h: '8',
-        w: '8',
-        md: {
-          h: '10',
-          w: '10',
-        },
-      },
+      className: 'h-8 w-8 md:h-10 md:w-10',
     },
     {
       variant: 'mapButton',
       size: 'lg',
-      css: {
-        h: '10',
-        w: '10',
-        md: {
-          h: '12',
-          w: '12',
-        },
-      },
+      className: 'h-10 w-10 md:h-12 md:w-12',
     },
     {
       variant: 'mapButton',
       size: 'sm',
-      css: {
-        h: '6',
-        w: '6',
-        md: {
-          h: '8',
-          w: '8',
-        },
-      },
+      className: 'h-6 w-6 md:h-8 md:w-8',
     },
   ],
 });

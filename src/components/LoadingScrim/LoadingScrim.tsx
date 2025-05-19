@@ -1,33 +1,14 @@
-import { cva } from '@styled-system/css';
-import { Box } from '@styled-system/jsx';
 import React from 'react';
+import { tv } from 'tailwind-variants';
 
 import SpinLoader from '../SpinLoader';
 
-const loadingScrim = cva({
-  base: {
-    position: 'absolute',
-    inset: '0',
-    width: 'full',
-    height: 'full',
-    color: 'fg',
-    bg: 'htmlBackground',
-    opacity: 0,
-    transition: 'all',
-    transitionDuration: '[600ms]',
-    placeContent: 'center',
-    transitionBehavior: 'allow-discrete',
-  },
+const loadingScrim = tv({
+  base: 'absolute inset-0 h-full w-full place-content-center bg-htmlBackground text-fg opacity-0 transition-[behavior:allow-discrete] duration-[600ms]',
   variants: {
     isLoading: {
-      true: {
-        display: 'grid',
-        opacity: '1',
-      },
-      false: {
-        display: 'none',
-        opacity: '0',
-      },
+      true: 'grid opacity-100',
+      false: 'hidden opacity-0',
     },
   },
 });
@@ -48,9 +29,9 @@ function LoadingScrim({ isLoading, error }: { isLoading: boolean; error?: string
   }, [isLoading]);
 
   return (
-    <Box className={loadingScrim({ isLoading: shouldShow })}>
-      {error ? <h2>{`Error initializing map: ${error}`}</h2> : <SpinLoader size={100}></SpinLoader>}
-    </Box>
+    <div className={loadingScrim({ isLoading: shouldShow })}>
+      {error ? <h2>{`Error initializing map: ${error}`}</h2> : <SpinLoader size={120}></SpinLoader>}
+    </div>
   );
 }
 

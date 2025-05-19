@@ -1,0 +1,22 @@
+.map-container {
+  .esri-ui {
+    inset: 0 !important;
+  }
+
+  .esri-attribution {
+    color: var(--color-blue-contrast) !important;
+    background-color: var(--color-blue-a9) !important;
+  }
+
+  .esri-attribution__sources {
+    font-weight: var(--font-weight-semibold) !important;
+  }
+
+  .esri-ui-inner-container .esri-component {
+    box-shadow: none !important;
+  }
+
+  .esri-component {
+    margin: 0 !important;
+  }
+}

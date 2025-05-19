@@ -5,5 +5,7 @@
   "singleQuote": true,
   "trailingComma": "all",
   "endOfLine": "auto",
-  "plugins": ["@pandabox/prettier-plugin"]
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "tailwindStylesheet": "./src/styles/index.css",
+  "tailwindFunctions": ["tv"]
 }

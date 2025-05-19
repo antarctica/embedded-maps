@@ -1,4 +1,4 @@
-import './index.css';
+import './styles/index.css';
 // Supports weights 100-900
 import '@fontsource-variable/work-sans';
 

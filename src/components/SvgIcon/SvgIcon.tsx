@@ -1,7 +1,11 @@
-import { css, cx } from '@styled-system/css';
 import React from 'react';
+import { tv } from 'tailwind-variants';
 
 import { IconName } from '@/types/Icons';
+
+const icon = tv({
+  base: 'select-none',
+});
 
 interface IconProps extends React.SVGProps<SVGSVGElement> {
   name: IconName;
@@ -18,7 +22,7 @@ const SvgIcon: React.FC<IconProps> = React.forwardRef<SVGSVGElement, IconProps>(
     <svg
       aria-hidden
       ref={ref}
-      className={cx(css({ userSelect: 'none' }), className)}
+      className={icon({ className })}
       width={size}
       height={size}
       fill={color}

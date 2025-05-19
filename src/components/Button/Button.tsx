@@ -1,13 +1,13 @@
 'use client';
 
-import { cx, RecipeVariantProps } from '@styled-system/css';
 import React from 'react';
 import { Button as ButtonPrimitive, composeRenderProps } from 'react-aria-components';
+import { type VariantProps } from 'tailwind-variants';
 
 import { buttonRecipe } from './buttonRecipe';
 
 type ButtonProps = React.ComponentProps<typeof ButtonPrimitive> &
-  RecipeVariantProps<typeof buttonRecipe> & {
+  VariantProps<typeof buttonRecipe> & {
     className?: string;
   };
 
@@ -19,7 +19,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function 
     <ButtonPrimitive
       ref={ref}
       className={composeRenderProps(className, (className, renderProps) =>
-        cx(buttonRecipe({ ...renderProps, size }), className),
+        buttonRecipe({ ...renderProps, size, className }),
       )}
       isDisabled={isDisabled}
       {...restProps}

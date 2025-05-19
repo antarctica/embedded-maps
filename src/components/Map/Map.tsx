@@ -1,7 +1,5 @@
 import '@arcgis/map-components/components/arcgis-placement';
 
-import { css, cva } from '@styled-system/css';
-import { Flex } from '@styled-system/jsx';
 import React from 'react';
 
 import { ArcMapView } from '@/lib/arcgis/components/ArcView/ArcMapView';
@@ -34,40 +32,6 @@ interface MapProps {
   initialShowAssetPopup?: boolean;
 }
 
-const mapViewContainerRecipe = cva({
-  base: {
-    position: 'relative',
-    w: 'full',
-    h: 'full',
-    '& .esri-ui': {
-      inset: '0 !important',
-    },
-
-    '& #ref-globe .esri-attribution': {
-      display: 'none',
-    },
-
-    '& .esri-attribution': {
-      // eslint-disable-next-line @pandacss/no-hardcoded-color
-      color: 'fg !important',
-
-      // eslint-disable-next-line @pandacss/no-hardcoded-color
-      bg: 'basBlue.a.4 !important',
-    },
-    '& .esri-attribution__sources': {
-      fontWeight: 'semibold !important',
-    },
-
-    '& .esri-ui-inner-container .esri-component': {
-      boxShadow: '[none !important]',
-    },
-
-    '& .esri-component': {
-      margin: '[0 !important]',
-    },
-  },
-});
-
 export function Map({
   initialAssetId,
   initialCenter,
@@ -95,9 +59,13 @@ export function Map({
   }
 
   return (
-    <div className={mapViewContainerRecipe()} data-testid="map-container" data-ready={isViewReady}>
+    <div
+      className="map-container relative h-full w-full"
+      data-testid="map-container"
+      data-ready={isViewReady}
+    >
       <ArcMapView
-        className={css({ w: 'full', h: 'full', pointerEvents: 'auto' })}
+        className="pointer-events-auto h-full w-full"
         map={map}
         onarcgisViewReadyChange={(event) => {
           handleViewReady(event.target.view).then(() => {
@@ -108,11 +76,11 @@ export function Map({
         zoom={initialZoom}
       >
         <arcgis-placement position="top-left">
-          <Flex gap={'4'} direction="column">
+          <div className="flex flex-col gap-4">
             {showZoomButton && <ZoomControl />}
             {showResetButton && <HomeControl viewPoint={viewPoint} />}
             {showFullscreenButton && <FullScreenControl />}
-          </Flex>
+          </div>
         </arcgis-placement>
         <arcgis-placement position="bottom-left">
           <ScaleControl />

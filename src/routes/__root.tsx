@@ -1,5 +1,3 @@
-import { css } from '@styled-system/css';
-import { VisuallyHidden } from '@styled-system/jsx';
 import { createRootRoute, Outlet } from '@tanstack/react-router';
 import { fallback, zodValidator } from '@tanstack/zod-adapter';
 import * as React from 'react';
@@ -68,10 +66,8 @@ const assetSearchSchema = baseSearchSchema
 export const Route = createRootRoute({
   component: () => (
     <React.Fragment>
-      <main className={css({ w: 'full', h: 'full' })}>
-        <VisuallyHidden>
-          <h1>British Antarctic Survey Embedded Map Service</h1>
-        </VisuallyHidden>
+      <main className="h-full w-full">
+        <h1 className="sr-only">British Antarctic Survey Embedded Map Service</h1>
         <Outlet />
       </main>
     </React.Fragment>

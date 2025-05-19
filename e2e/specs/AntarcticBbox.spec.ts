@@ -1,6 +1,8 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
+import { runAccessibilityCheck, waitForMapReady } from '../config/test.utils';
+
 const bboxes = [
   [-180.0, -90.0, 180.0, -60.0],
   [-68.3359, -67.5894, -68.0677, -67.4869],
@@ -16,6 +18,7 @@ test.describe.parallel('Antarctic Bounding Boxes', () => {
     test.describe(`bbox=${bbox}`, () => {
       test.beforeEach(async ({ page }) => {
         await page.goto(`/?bbox=[${bbox.join(',')}]`);
+        await waitForMapReady(page);
       });
 
       test('snapshot', async ({ page }) => {
@@ -34,8 +37,7 @@ test.describe.parallel('Antarctic Bounding Boxes', () => {
       test('should not have any automatically detectable accessibility issues', async ({
         page,
       }) => {
-        const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
-        expect(accessibilityScanResults.violations).toEqual([]);
+        await runAccessibilityCheck(page);
       });
     });
   }

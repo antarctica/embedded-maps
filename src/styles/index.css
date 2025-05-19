@@ -1,0 +1,105 @@
+@import "https://js.arcgis.com/4.32/@arcgis/core/assets/esri/themes/dark/main.css";
+
+@import "./colors.css";
+@import "./animations.css";
+@import "./esri-overides/map.css";
+@import "./esri-overides/scale-control.css";
+@import "./shadow.css";
+@import "tailwindcss";
+
+@theme {
+  /* Fonts */
+  --font-sans: 'Work Sans Variable', sans-serif;
+
+  /* Colors */
+  --color-*: initial; 
+
+  --color-white: #fff;
+  --color-black: #000;
+
+  --color-gray-1: var(--gray-1);
+  --color-gray-2: var(--gray-2);
+  --color-gray-3: var(--gray-3);
+  --color-gray-4: var(--gray-4);
+  --color-gray-5: var(--gray-5);
+  --color-gray-6: var(--gray-6);
+  --color-gray-7: var(--gray-7);
+  --color-gray-8: var(--gray-8);
+  --color-gray-9: var(--gray-9);
+  --color-gray-10: var(--gray-10);
+  --color-gray-11: var(--gray-11);
+  --color-gray-12: var(--gray-12);
+
+  --color-gray-a1: var(--gray-a1);
+  --color-gray-a2: var(--gray-a2);
+  --color-gray-a3: var(--gray-a3);
+  --color-gray-a4: var(--gray-a4);
+  --color-gray-a5: var(--gray-a5);
+  --color-gray-a6: var(--gray-a6);
+  --color-gray-a7: var(--gray-a7);
+  --color-gray-a8: var(--gray-a8);
+  --color-gray-a9: var(--gray-a9);
+  --color-gray-a10: var(--gray-a10);
+  --color-gray-a11: var(--gray-a11);
+  --color-gray-a12: var(--gray-a12);
+
+  --color-gray-contrast: var(--gray-contrast);
+  --color-gray-surface: var(--gray-surface);
+  --color-gray-indicator: var(--gray-indicator);
+  --color-gray-track: var(--gray-track);
+
+  --color-blue-1: var(--blue-1);
+  --color-blue-2: var(--blue-2);
+  --color-blue-3: var(--blue-3);
+  --color-blue-4: var(--blue-4);
+  --color-blue-5: var(--blue-5);
+  --color-blue-6: var(--blue-6);
+  --color-blue-7: var(--blue-7);
+  --color-blue-8: var(--blue-8);
+  --color-blue-9: var(--blue-9);
+  --color-blue-10: var(--blue-10);
+  --color-blue-11: var(--blue-11);
+  --color-blue-12: var(--blue-12);
+
+  --color-blue-a1: var(--blue-a1);
+  --color-blue-a2: var(--blue-a2);
+  --color-blue-a3: var(--blue-a3);
+  --color-blue-a4: var(--blue-a4);
+  --color-blue-a5: var(--blue-a5);
+  --color-blue-a6: var(--blue-a6);
+  --color-blue-a7: var(--blue-a7);
+  --color-blue-a8: var(--blue-a8);
+  --color-blue-a9: var(--blue-a9);
+  --color-blue-a10: var(--blue-a10);
+  --color-blue-a11: var(--blue-a11);
+  --color-blue-a12: var(--blue-a12);
+
+  --color-blue-contrast: var(--blue-contrast);
+  --color-blue-surface: var(--blue-surface);
+  --color-blue-indicator: var(--blue-indicator);
+  --color-blue-track: var(--blue-track);
+
+  /* shadows */
+  --shadow-sm: var(--app-shadow-sm);
+  --shadow-md: var(--app-shadow-md);
+  --shadow-lg: var(--app-shadow-lg);
+  --shadow-xl: var(--app-shadow-xl);
+
+}
+
+@theme inline {
+  /* Semantic Colors */
+  --color-htmlBackground: var(--color-gray-4);
+  --color-fg: var(--color-gray-12);
+  --color-muted: var(--color-blue-7);
+  --color-border: var(--color-blue-3);
+  --color-input: var(--color-blue-2);
+  --color-input-border: var(--color-blue-3);
+  --color-input-focus: var(--color-blue-4);
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+

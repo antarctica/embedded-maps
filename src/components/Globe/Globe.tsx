@@ -2,9 +2,8 @@ import { Point, SpatialReference } from '@arcgis/core/geometry';
 import * as projectOperator from '@arcgis/core/geometry/operators/projectOperator.js';
 import VirtualLighting from '@arcgis/core/views/3d/environment/VirtualLighting.js';
 import WebsceneColorBackground from '@arcgis/core/webscene/background/ColorBackground.js';
-import { css } from '@styled-system/css';
-import { Box, Circle } from '@styled-system/jsx';
 import React, { useCallback, useState } from 'react';
+import { tv } from 'tailwind-variants';
 
 import { ArcSceneView } from '@/lib/arcgis/components/ArcView/ArcSceneView';
 import { useCurrentMapView, useWatchEffect } from '@/lib/arcgis/hooks';
@@ -13,6 +12,17 @@ import { isPolarProjection } from '@/lib/config/basemap';
 import { isDefined } from '@/lib/helpers/typeGuards';
 
 import { useMapInitialization } from './hooks/useMapInitialization';
+
+const globe = tv({
+  slots: {
+    wrapper:
+      'd pointer-events-none absolute top-0 right-0 grid h-[10rem] w-[10rem] place-items-center overflow-hidden rounded-full border-8 border-solid border-white shadow-lg md:h-[16rem] md:w-[16rem]',
+    sceneContainer:
+      'pointer-events-none absolute h-[calc((var(--scale-factor)*101%))] w-[calc((var(--scale-factor)*101%))] pb-[2px]',
+    circleDisplayOverlay:
+      'pointer-events-auto z-1 h-full w-full rounded-full bg-[radial-gradient(circle_at_20px_20px,#ffffff8d_20%,#000_80%)] opacity-40 mix-blend-hard-light',
+  },
+});
 
 interface GlobeProps {
   initialAssetId?: string;
@@ -146,32 +156,11 @@ export function Globe({ initialAssetId, initialBbox }: GlobeProps) {
   if (!map) {
     return null;
   }
+  const { wrapper, sceneContainer, circleDisplayOverlay } = globe();
 
   return (
-    <Circle
-      className={css({
-        position: 'absolute',
-        top: '0',
-        right: '0',
-        borderColor: 'white',
-        borderWidth: 'thick',
-        shadow: 'lg',
-        overflow: 'hidden',
-        borderStyle: 'solid',
-        pointerEvents: 'none',
-      })}
-      size={{ base: '[10rem]', md: '[16rem]' }}
-    >
-      <Box
-        className={css({
-          position: 'absolute',
-          w: '[calc((var(--scale-factor)*100%))]',
-          h: '[calc((var(--scale-factor)*100%))]',
-          pb: '[2px]',
-          pointerEvents: 'none',
-        })}
-        style={{ '--scale-factor': '1.8' } as React.CSSProperties}
-      >
+    <div className={wrapper()}>
+      <div className={sceneContainer()} style={{ '--scale-factor': '1.8' } as React.CSSProperties}>
         <ArcSceneView
           id="ref-globe"
           map={map}
@@ -203,20 +192,8 @@ export function Globe({ initialAssetId, initialBbox }: GlobeProps) {
           padding={{ top: 0, right: 0, bottom: 0, left: 0 }}
           zoom={0}
         />
-      </Box>
-      <Circle
-        className={css({
-          zIndex: '1',
-          opacity: '[0.4]',
-          mixBlendMode: 'hard-light',
-          pointerEvents: 'none',
-          backgroundGradient: '[radial-gradient(circle at 20px 20px, #ffffff8d 20%, #000 80%)]',
-        })}
-        size={{
-          base: '[10rem]',
-          md: '[16rem]',
-        }}
-      ></Circle>
-    </Circle>
+      </div>
+      <div className={circleDisplayOverlay()}></div>
+    </div>
   );
 }

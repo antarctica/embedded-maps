@@ -1,12 +1,20 @@
 import ZoomVM from '@arcgis/core/widgets/Zoom/ZoomViewModel';
-import { css } from '@styled-system/css';
-import { Divider, VStack } from '@styled-system/jsx';
 import * as React from 'react';
+import { tv } from 'tailwind-variants';
 
 import { IconButton } from '@/components/Button/IconButton';
+import { Divider } from '@/components/Divider/Divider';
 import { useCurrentMapView, useWatchState } from '@/lib/arcgis/hooks';
 
 import SvgIcon from '../../SvgIcon';
+
+const zoomButton = tv({
+  slots: {
+    wrapper:
+      'pointer-events-auto flex flex-col items-center justify-center overflow-hidden rounded-sm',
+    button: 'border-bottom-none',
+  },
+});
 
 function ZoomControl() {
   const mapView = useCurrentMapView();
@@ -15,21 +23,12 @@ function ZoomControl() {
   const canZoomIn = useWatchState(() => widget.canZoomIn) ?? false;
   const canZoomOut = useWatchState(() => widget.canZoomOut) ?? false;
 
+  const { wrapper, button } = zoomButton();
+
   return (
-    <VStack
-      className={css({
-        borderRadius: 'sm',
-        bg: 'basBlue.9',
-        shadow: 'sm',
-        overflow: 'hidden',
-        pointerEvents: 'auto',
-      })}
-      gap={'0'}
-    >
+    <div className={wrapper()}>
       <IconButton
-        className={css({
-          borderBottomRadius: 'none',
-        })}
+        className={button()}
         icon={<SvgIcon name="icon-add" size={16} />}
         aria-label="Zoom In"
         isDisabled={!canZoomIn}
@@ -38,11 +37,9 @@ function ZoomControl() {
         size="md"
         contained
       />
-      <Divider thickness={'thin'} w="[80%]" color="white/60"></Divider>
+      <Divider className="bg-gray-1" orientation="horizontal" />
       <IconButton
-        className={css({
-          borderTopRadius: 'none',
-        })}
+        className={button()}
         icon={<SvgIcon name="icon-subtract" size={16} />}
         aria-label="Zoom Out"
         isDisabled={!canZoomOut}
@@ -51,7 +48,7 @@ function ZoomControl() {
         size="md"
         contained
       />
-    </VStack>
+    </div>
   );
 }
 

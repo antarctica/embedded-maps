@@ -1,5 +1,4 @@
 import { FlatCompat } from '@eslint/eslintrc';
-import panda from '@pandacss/eslint-plugin';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import pluginReact from 'eslint-plugin-react';
 import reactCompiler from 'eslint-plugin-react-compiler';
@@ -95,21 +94,6 @@ const eslintConfig = [
     rules: {
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
-    },
-  },
-
-  // pandacss rules
-  {
-    files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
-    ignores: ['**/*.d.ts', 'styled-system'],
-    plugins: {
-      '@pandacss': panda,
-    },
-    rules: {
-      ...panda.configs.recommended.rules,
-      '@pandacss/no-debug': 'off',
-      '@pandacss/no-margin-properties': 'off',
-      '@pandacss/no-hardcoded-color': ['error', { noOpacity: false }],
     },
   },
 

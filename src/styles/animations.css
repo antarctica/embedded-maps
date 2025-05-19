@@ -1,0 +1,16 @@
+@keyframes progress-circle {
+    from {
+      stroke-dashoffset: 0;
+    }
+  
+    to {
+      stroke-dashoffset: 314;
+    }
+  }
+  
+  .progress-circle {
+    animation: progress-circle 3s linear infinite;
+    stroke-dasharray: 70 87;
+  }
+  
+  

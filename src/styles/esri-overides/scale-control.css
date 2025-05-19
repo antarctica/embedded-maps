@@ -1,0 +1,36 @@
+.scale-control {
+  --scalebar-text: var(--color-blue-9);
+  --scalebar-bg: var(--color-blue-surface);
+  --scalebar-line-color: var(--color-blue-9);
+
+  .esri-scale-bar__label {
+    color: var(--scalebar-text) !important;
+  }
+
+  .esri-scale-bar__line--top {
+    border-bottom-color: var(--scalebar-line-color) !important;
+
+    &::before {
+      border-color: var(--scalebar-line-color) !important;
+    }
+
+    &::after {
+      border-color: var(--scalebar-line-color) !important;
+    }
+  }
+  .esri-scale-bar__line--bottom {
+    border-top-color: var(--scalebar-line-color) !important;
+
+    &::before {
+      border-color: var(--scalebar-line-color) !important;
+    }
+
+    &::after {
+      border-color: var(--scalebar-line-color) !important;
+    }
+  }
+
+  .esri-scale-bar__line {
+    background-color: var(--scalebar-bg) !important;
+  }
+}

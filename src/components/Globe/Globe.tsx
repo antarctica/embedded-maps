@@ -16,7 +16,7 @@ import { useMapInitialization } from './hooks/useMapInitialization';
 const globe = tv({
   slots: {
     wrapper:
-      'd pointer-events-none absolute top-0 right-0 grid h-[10rem] w-[10rem] place-items-center overflow-hidden rounded-full border-8 border-solid border-white shadow-lg md:h-[16rem] md:w-[16rem]',
+      'pointer-events-none absolute top-0 right-0 grid h-[10rem] w-[10rem] place-items-center overflow-hidden rounded-full border-8 border-solid border-white shadow-lg md:h-[16rem] md:w-[16rem] lg:h-[20rem] lg:w-[20rem]',
     sceneContainer:
       'pointer-events-none absolute h-[calc((var(--scale-factor)*101%))] w-[calc((var(--scale-factor)*101%))] pb-[2px]',
     circleDisplayOverlay:

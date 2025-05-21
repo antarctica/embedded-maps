@@ -11,9 +11,9 @@ export const buttonRecipe = tv({
         'rounded-sm border-transparent bg-blue-9 text-white shadow-sm hover:bg-blue-10 active:brightness-92 active:saturate-110 disabled:bg-blue-9/70',
     },
     size: {
-      sm: 'h-6 gap-1 rounded-xs px-1 py-0.5 text-xs',
-      md: 'text-md h-8 gap-2 rounded-sm px-1.5 py-1',
-      lg: 'h-10 gap-2 rounded-sm px-2 py-2 text-lg',
+      sm: 'h-6 gap-1 rounded-sm px-1 py-0.5 text-xs',
+      md: 'text-md h-8 gap-2 rounded-md px-1.5 py-1',
+      lg: 'h-10 gap-2 rounded-md px-2 py-2 text-lg',
     },
     contained: {
       true: 'rounded-none',

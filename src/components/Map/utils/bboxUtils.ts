@@ -3,6 +3,7 @@ import Extent from '@arcgis/core/geometry/Extent';
 import Mesh from '@arcgis/core/geometry/Mesh';
 import * as shapePreservingProjectOperator from '@arcgis/core/geometry/operators/shapePreservingProjectOperator.js';
 import Polygon from '@arcgis/core/geometry/Polygon';
+import Polyline from '@arcgis/core/geometry/Polyline';
 import MeshComponent from '@arcgis/core/geometry/support/MeshComponent';
 
 import { getBasemapConfigForMapProjection, MapProjection } from '@/lib/config/basemap';
@@ -74,13 +75,13 @@ export function createGeometryFromBBox(
  * @param bbox - Array of [minLon, minLat, maxLon, maxLat] coordinates in WGS 84
  * @param height - Height of the mesh in meters above the globe surface
  * @param segments - Number of segments to use for mesh triangulation (higher values = more detailed mesh)
- * @returns Object containing both the mesh geometry and its outline polygon
+ * @returns Object containing both the mesh geometry and its outline as a multipart polyline
  */
 export function createMeshGeometryFromBBox(
   bbox: [number, number, number, number],
   height: number = 5000,
   segments: number = 1000,
-): { mesh: __esri.Mesh; outline: __esri.Polygon } {
+): { mesh: __esri.Mesh; outline: __esri.Polyline } {
   const [minLon, minLat, maxLon, maxLat] = bbox;
   const crossesAntimeridian = minLon > maxLon;
 
@@ -141,35 +142,41 @@ export function createMeshGeometryFromBBox(
     },
   });
 
-  // Create outline polygon from the mesh vertices
-  const outlineVertices: number[][] = [];
+  // Create multipart polyline from the mesh vertices
+  const paths: number[][][] = [];
 
-  // Add top edge vertices
-  for (let i = 0; i <= lonSegments; i++) {
-    const vertexIndex = i * (latSegments + 1);
-    outlineVertices.push([vertices[vertexIndex * 3], vertices[vertexIndex * 3 + 1]]);
+  // Add top edge (constant latitude)
+  const topPath: number[][] = [
+    [minLon, maxLat],
+    [maxLon, maxLat],
+  ];
+
+  // Add right edge (constant longitude)
+  const rightPath: number[][] = [
+    [maxLon, minLat],
+    [maxLon, maxLat],
+  ];
+
+  // Add bottom edge (constant latitude)
+  const bottomPath: number[][] = [
+    [minLon, minLat],
+    [maxLon, minLat],
+  ];
+
+  // Add left edge (constant longitude)
+  const leftPath: number[][] = [
+    [minLon, minLat],
+    [minLon, maxLat],
+  ];
+
+  if (Math.abs(minLon) === 180 && Math.abs(maxLon) === 180) {
+    paths.push(topPath, bottomPath);
+  } else {
+    paths.push(topPath, rightPath, bottomPath, leftPath);
   }
 
-  // Add right edge vertices
-  for (let j = 1; j <= latSegments; j++) {
-    const vertexIndex = lonSegments * (latSegments + 1) + j;
-    outlineVertices.push([vertices[vertexIndex * 3], vertices[vertexIndex * 3 + 1]]);
-  }
-
-  // Add bottom edge vertices in reverse
-  for (let i = lonSegments - 1; i >= 0; i--) {
-    const vertexIndex = i * (latSegments + 1) + latSegments;
-    outlineVertices.push([vertices[vertexIndex * 3], vertices[vertexIndex * 3 + 1]]);
-  }
-
-  // Add left edge vertices in reverse
-  for (let j = latSegments - 1; j > 0; j--) {
-    const vertexIndex = j;
-    outlineVertices.push([vertices[vertexIndex * 3], vertices[vertexIndex * 3 + 1]]);
-  }
-
-  const outline = new Polygon({
-    rings: [outlineVertices],
+  const outline = new Polyline({
+    paths,
     spatialReference: { wkid: 4326 },
   });
 

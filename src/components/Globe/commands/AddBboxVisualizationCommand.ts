@@ -2,12 +2,13 @@ import Point from '@arcgis/core/geometry/Point';
 import Graphic from '@arcgis/core/Graphic';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import EsriMap from '@arcgis/core/Map';
-import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
+import FillSymbol3DLayer from '@arcgis/core/symbols/FillSymbol3DLayer.js';
+import MeshSymbol3D from '@arcgis/core/symbols/MeshSymbol3D.js';
+import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 
-import { createGeometryFromBBox } from '@/components/Map/utils/bboxUtils';
+import { createMeshGeometryFromBBox } from '@/components/Map/utils/bboxUtils';
 import { MapCommand } from '@/lib/arcgis/typings/commandtypes';
-import { MapProjection } from '@/lib/config/basemap';
 
 // Below this threshold, we use a point to represent the bbox
 const AREA_THRESHOLD = 20; // Square degrees
@@ -26,24 +27,36 @@ export class AddBboxVisualizationCommand implements MapCommand {
       id: 'bboxVisualizationLayer',
     });
 
-    let graphic: Graphic;
+    let meshGraphic: Graphic;
+    let outlineGraphic: Graphic;
 
     if (area > AREA_THRESHOLD) {
       // Create polygon for large areas
-      const polygon = createGeometryFromBBox(this.bbox, MapProjection.WORLD);
+      const { mesh, outline } = createMeshGeometryFromBBox(this.bbox);
 
-      const symbol = new SimpleFillSymbol({
-        color: [204, 0, 51, 0.3],
-        outline: {
-          color: [204, 0, 51, 1],
-          width: 2,
-        },
+      meshGraphic = new Graphic({
+        geometry: mesh,
+        symbol: new MeshSymbol3D({
+          symbolLayers: [
+            new FillSymbol3DLayer({
+              material: {
+                color: [255, 0, 0, 0.4],
+              },
+            }),
+          ],
+        }),
       });
 
-      graphic = new Graphic({
-        geometry: polygon,
-        symbol,
+      outlineGraphic = new Graphic({
+        geometry: outline,
+        symbol: new SimpleLineSymbol({
+          color: 'red',
+          width: 3,
+        }),
       });
+
+      graphicsLayer.add(meshGraphic);
+      graphicsLayer.add(outlineGraphic);
     } else {
       // Create center point for small areas
       const [minX, minY, maxX, maxY] = this.bbox;
@@ -64,13 +77,13 @@ export class AddBboxVisualizationCommand implements MapCommand {
         size: 6,
       });
 
-      graphic = new Graphic({
+      const pointGraphic = new Graphic({
         geometry: point,
         symbol,
       });
+      graphicsLayer.add(pointGraphic);
     }
 
-    graphicsLayer.add(graphic);
     map.add(graphicsLayer);
   }
 }

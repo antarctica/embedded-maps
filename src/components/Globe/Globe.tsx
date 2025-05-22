@@ -33,19 +33,20 @@ const correctViewpointForPoles = ([longitude, latitude]: [number, number]): Poin
   // Adjust coordinates near poles (within 0.5 degrees)
   if (Math.abs(Math.abs(latitude) - 90) < 0.5) {
     if (latitude > 0) {
-      latitude -= 0.1;
+      latitude -= 0.2;
     } else {
       latitude += 0.1;
     }
   }
   if (Math.abs(Math.abs(longitude) - 180) < 0.5) {
     if (longitude > 0) {
-      longitude -= 0.1;
+      longitude -= 0.2;
     } else {
       longitude += 0.1;
     }
   }
 
+  console.log('correctViewpointForPoles', longitude, latitude);
   return new Point({ longitude, latitude });
 };
 

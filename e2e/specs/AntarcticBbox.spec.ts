@@ -1,7 +1,6 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-import { runAccessibilityCheck, waitForMapReady } from '../config/test.utils';
+import { runAccessibilityCheck, waitForMapReady, waitForSceneReady } from '../config/test.utils';
 
 const bboxes = [
   [-180.0, -90.0, 180.0, -60.0],
@@ -22,9 +21,6 @@ test.describe.parallel('Antarctic Bounding Boxes', () => {
       });
 
       test('snapshot', async ({ page }) => {
-        // Wait for the ArcGIS map view to be ready
-        await page.waitForSelector('arcgis-map', { state: 'visible' });
-
         // Wait for the map to finish updating
         await page.waitForSelector('arcgis-map:not([updating])', {
           state: 'visible',
@@ -44,22 +40,24 @@ test.describe.parallel('Antarctic Bounding Boxes', () => {
 });
 
 test.describe('Antarctic Bounding Box with globe overview', () => {
-  test('should not have any automatically detectable accessibility issues', async ({ page }) => {
+  test.beforeEach(async ({ page }) => {
     await page.goto('/?bbox=[-180,-90,180,-60]&globe-overview=true');
+    await waitForMapReady(page);
+    await waitForSceneReady(page);
+  });
 
-    await page.waitForSelector('arcgis-map', { state: 'visible' });
-
+  test('snapshot', async ({ page }) => {
     await page.waitForSelector('arcgis-map:not([updating])', {
       state: 'visible',
       timeout: 20000,
     });
 
-    // wait 5 seconds
     await page.waitForTimeout(5000);
 
     await expect(page).toHaveScreenshot('bbox-antarctic-globe-overview.png', { fullPage: true });
+  });
 
-    const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
-    expect(accessibilityScanResults.violations).toEqual([]);
+  test('should not have any automatically detectable accessibility issues', async ({ page }) => {
+    await runAccessibilityCheck(page);
   });
 });

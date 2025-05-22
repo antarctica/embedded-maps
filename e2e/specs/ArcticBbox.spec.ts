@@ -1,6 +1,11 @@
-import { test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
-import { runAccessibilityCheck, testSnapshot, waitForMapReady } from '../config/test.utils';
+import {
+  runAccessibilityCheck,
+  testSnapshot,
+  waitForMapReady,
+  waitForSceneReady,
+} from '../config/test.utils';
 
 const bboxes = [
   [-180.0, 60.0, 180.0, 90.0],
@@ -31,4 +36,27 @@ test.describe.parallel('Arctic Bounding Boxes', () => {
       });
     });
   }
+});
+
+test.describe('Arctic Bounding Box with globe overview', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/?bbox=[-180,60,180,90]&globe-overview=true');
+    await waitForMapReady(page);
+    await waitForSceneReady(page);
+  });
+
+  test('snapshot', async ({ page }) => {
+    await page.waitForSelector('arcgis-map:not([updating])', {
+      state: 'visible',
+      timeout: 20000,
+    });
+
+    await page.waitForTimeout(5000);
+
+    await expect(page).toHaveScreenshot('bbox-arctic-globe-overview.png', { fullPage: true });
+  });
+
+  test('should not have any automatically detectable accessibility issues', async ({ page }) => {
+    await runAccessibilityCheck(page);
+  });
 });

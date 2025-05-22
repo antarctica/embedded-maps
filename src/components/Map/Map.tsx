@@ -56,8 +56,6 @@ export function Map({
     initialShowAssetPopup,
   });
 
-  console.log('error', error);
-
   if (!map || isMapLoading || error) {
     return <LoadingScrim isLoading={true} error={error?.message} />;
   }

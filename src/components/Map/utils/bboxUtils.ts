@@ -52,10 +52,7 @@ export function bboxParamToArray(bboxParam: BBoxParam): BBox[] {
  * @param projection - Target map projection for the resulting polygon
  * @returns ArcGIS Polygon geometry in the specified projection
  */
-export function createGeometryFromBBox(
-  bbox: [number, number, number, number],
-  projection: MapProjection,
-): __esri.Polygon {
+export function createGeometryFromBBox(bbox: BBox, projection: MapProjection): __esri.Polygon {
   const [minLon, minLat, maxLon, maxLat] = bbox;
   const crossesAntimeridian = minLon > maxLon;
 
@@ -93,7 +90,7 @@ export function createGeometryFromBBox(
  * @returns Object containing both the mesh geometry and its outline as a multipart polyline
  */
 export function createMeshGeometryFromBBox(
-  [minLon, minLat, maxLon, maxLat]: [number, number, number, number],
+  [minLon, minLat, maxLon, maxLat]: BBox,
   height: number = 5000,
   segments: number = 1000,
 ): { mesh: __esri.Mesh; outline: __esri.Polyline } {

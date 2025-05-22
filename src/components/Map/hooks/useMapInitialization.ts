@@ -37,8 +37,6 @@ export function useMapInitialization({
   const postInitCommandsRef = React.useRef<ViewCommand[]>([]);
   const [isViewReady, setIsViewReady] = React.useState(false);
 
-  console.log('initialBbox', initialBbox);
-
   React.useEffect(() => {
     if (!map) {
       const mapInstance = new EsriMap();

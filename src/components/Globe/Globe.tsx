@@ -46,7 +46,6 @@ const correctViewpointForPoles = ([longitude, latitude]: [number, number]): Poin
     }
   }
 
-  console.log('correctViewpointForPoles', longitude, latitude);
   return new Point({ longitude, latitude });
 };
 

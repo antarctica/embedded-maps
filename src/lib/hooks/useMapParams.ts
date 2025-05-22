@@ -38,9 +38,6 @@ export function useMapParams() {
     'asset-force-popup': assetForcePopup = DEFAULT_SHOW_ASSET_POPUP,
   } = Route.useSearch();
 
-  const bboxArray = bbox ? bboxParamToArray(bbox) : undefined;
-  console.log('bboxArray', bboxArray);
-
   return {
     // View parameters
     zoom,

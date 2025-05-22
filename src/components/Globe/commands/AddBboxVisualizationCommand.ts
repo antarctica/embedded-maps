@@ -9,24 +9,19 @@ import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 
 import { BBox, createMeshGeometryFromBBox } from '@/components/Map/utils/bboxUtils';
 import { MapCommand } from '@/lib/arcgis/typings/commandtypes';
-import { calculateEnvelopeBbox } from '@/lib/config/basemap';
 
-// Below this threshold, we use a point to represent the bbox
+// Below this threshold, we use a point to represent the bbox on the globe
 const AREA_THRESHOLD = 20; // Square degrees
 
 export class AddBboxVisualizationCommand implements MapCommand {
-  private envelopeBbox: BBox;
-  constructor(private bbox: BBox[]) {
-    this.envelopeBbox = calculateEnvelopeBbox(bbox);
-  }
+  constructor(private bbox: BBox[]) {}
 
-  private calculateArea(): number {
-    const [minX, minY, maxX, maxY] = this.envelopeBbox;
+  private calculateArea(bbox: BBox): number {
+    const [minX, minY, maxX, maxY] = bbox;
     return Math.abs((maxX - minX) * (maxY - minY));
   }
 
   async executeOnMap(map: EsriMap): Promise<void> {
-    const area = this.calculateArea();
     const graphicsLayer = new GraphicsLayer({
       id: 'bboxVisualizationLayer',
     });
@@ -34,8 +29,9 @@ export class AddBboxVisualizationCommand implements MapCommand {
     let meshGraphic: Graphic;
     let outlineGraphic: Graphic;
 
-    if (area > AREA_THRESHOLD) {
-      for (const bbox of this.bbox) {
+    for (const bbox of this.bbox) {
+      const area = this.calculateArea(bbox);
+      if (area > AREA_THRESHOLD) {
         // Create polygon for large areas
         const { mesh, outline } = createMeshGeometryFromBBox(bbox);
 
@@ -62,32 +58,32 @@ export class AddBboxVisualizationCommand implements MapCommand {
 
         graphicsLayer.add(meshGraphic);
         graphicsLayer.add(outlineGraphic);
+      } else {
+        // Create center point for small areas
+        const [minX, minY, maxX, maxY] = bbox;
+        const centerX = (minX + maxX) / 2;
+        const centerY = (minY + maxY) / 2;
+
+        const point = new Point({
+          longitude: centerX,
+          latitude: centerY,
+        });
+
+        const symbol = new SimpleMarkerSymbol({
+          color: '#CC0033',
+          outline: {
+            width: 1,
+            color: 'white',
+          },
+          size: 6,
+        });
+
+        const pointGraphic = new Graphic({
+          geometry: point,
+          symbol,
+        });
+        graphicsLayer.add(pointGraphic);
       }
-    } else {
-      // Create center point for small areas
-      const [minX, minY, maxX, maxY] = this.envelopeBbox;
-      const centerX = (minX + maxX) / 2;
-      const centerY = (minY + maxY) / 2;
-
-      const point = new Point({
-        longitude: centerX,
-        latitude: centerY,
-      });
-
-      const symbol = new SimpleMarkerSymbol({
-        color: '#CC0033',
-        outline: {
-          width: 1,
-          color: 'white',
-        },
-        size: 6,
-      });
-
-      const pointGraphic = new Graphic({
-        geometry: point,
-        symbol,
-      });
-      graphicsLayer.add(pointGraphic);
     }
 
     map.add(graphicsLayer);

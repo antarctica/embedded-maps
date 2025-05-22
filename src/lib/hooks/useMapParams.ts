@@ -1,3 +1,4 @@
+import { bboxParamToArray } from '@/components/Map/utils/bboxUtils';
 import {
   DEFAULT_REGIONAL_EXTENT,
   DEFAULT_SHOW_ASSET_POPUP,
@@ -37,12 +38,15 @@ export function useMapParams() {
     'asset-force-popup': assetForcePopup = DEFAULT_SHOW_ASSET_POPUP,
   } = Route.useSearch();
 
+  const bboxArray = bbox ? bboxParamToArray(bbox) : undefined;
+  console.log('bboxArray', bboxArray);
+
   return {
     // View parameters
     zoom,
     scale,
     centre,
-    bbox,
+    bbox: bbox ? bboxParamToArray(bbox) : undefined,
     bboxForceRegionalExtent,
 
     // UI Controls

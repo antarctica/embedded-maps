@@ -1,6 +1,8 @@
 import Basemap from '@arcgis/core/Basemap';
 import { Polygon, SpatialReference } from '@arcgis/core/geometry';
 
+import { BBox } from '@/components/Map/utils/bboxUtils';
+
 export enum MapProjection {
   ANTARCTIC = 'antarctic',
   ARCTIC = 'arctic',
@@ -28,6 +30,14 @@ export function getMapProjectionFromPosition([longitude, latitude]: [
     default:
       return MapProjection.WORLD;
   }
+}
+
+export function calculateEnvelopeBbox(bbox: BBox[]): BBox {
+  const minX = Math.min(...bbox.map((b) => b[0]));
+  const minY = Math.min(...bbox.map((b) => b[1]));
+  const maxX = Math.max(...bbox.map((b) => b[2]));
+  const maxY = Math.max(...bbox.map((b) => b[3]));
+  return [minX, minY, maxX, maxY];
 }
 
 export function getMapProjectionFromBbox([minX, minY, maxX, maxY]: [

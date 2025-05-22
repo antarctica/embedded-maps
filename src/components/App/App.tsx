@@ -40,7 +40,7 @@ export function App() {
         initialAssetId={assetId}
         initialCenter={centre}
         initialZoom={zoom}
-        initialBbox={bbox as [number, number, number, number]}
+        initialBbox={bbox}
         bboxForceRegionalExtent={convertEmptyStringToBooleanPresence(bboxForceRegionalExtent)}
         initialScale={scale}
         showGlobeOverview={convertEmptyStringToBooleanPresence(showGlobeOverview)}

@@ -11,12 +11,14 @@ import HomeControl from '../map-controls/HomeControl';
 import ScaleControl from '../map-controls/ScaleControl/ScaleControl';
 import ZoomControl from '../map-controls/ZoomControl';
 import { useMapInitialization } from './hooks/useMapInitialization';
+import { BBox } from './utils/bboxUtils';
+
 interface MapProps {
   // View parameters
   initialZoom?: number;
   initialScale?: number;
   initialCenter?: [number, number];
-  initialBbox?: [number, number, number, number];
+  initialBbox?: BBox[];
   bboxForceRegionalExtent?: boolean;
 
   // UI Controls
@@ -53,6 +55,8 @@ export function Map({
     bboxForceRegionalExtent,
     initialShowAssetPopup,
   });
+
+  console.log('error', error);
 
   if (!map || isMapLoading || error) {
     return <LoadingScrim isLoading={true} error={error?.message} />;

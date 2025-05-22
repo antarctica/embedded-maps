@@ -11,8 +11,8 @@ import { isEsriPoint } from '@/lib/arcgis/typings/typeGuards';
 import { isPolarProjection } from '@/lib/config/basemap';
 import { isDefined } from '@/lib/helpers/typeGuards';
 
+import { BBox } from '../Map/utils/bboxUtils';
 import { useMapInitialization } from './hooks/useMapInitialization';
-
 const globe = tv({
   slots: {
     wrapper:
@@ -26,7 +26,7 @@ const globe = tv({
 
 interface GlobeProps {
   initialAssetId?: string;
-  initialBbox?: [number, number, number, number];
+  initialBbox?: BBox[];
 }
 
 const correctViewpointForPoles = ([longitude, latitude]: [number, number]): Point => {

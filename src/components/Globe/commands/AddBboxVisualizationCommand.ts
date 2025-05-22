@@ -7,17 +7,21 @@ import MeshSymbol3D from '@arcgis/core/symbols/MeshSymbol3D.js';
 import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 
-import { createMeshGeometryFromBBox } from '@/components/Map/utils/bboxUtils';
+import { BBox, createMeshGeometryFromBBox } from '@/components/Map/utils/bboxUtils';
 import { MapCommand } from '@/lib/arcgis/typings/commandtypes';
+import { calculateEnvelopeBbox } from '@/lib/config/basemap';
 
 // Below this threshold, we use a point to represent the bbox
 const AREA_THRESHOLD = 20; // Square degrees
 
 export class AddBboxVisualizationCommand implements MapCommand {
-  constructor(private bbox: [number, number, number, number]) {}
+  private envelopeBbox: BBox;
+  constructor(private bbox: BBox[]) {
+    this.envelopeBbox = calculateEnvelopeBbox(bbox);
+  }
 
   private calculateArea(): number {
-    const [minX, minY, maxX, maxY] = this.bbox;
+    const [minX, minY, maxX, maxY] = this.envelopeBbox;
     return Math.abs((maxX - minX) * (maxY - minY));
   }
 
@@ -31,35 +35,37 @@ export class AddBboxVisualizationCommand implements MapCommand {
     let outlineGraphic: Graphic;
 
     if (area > AREA_THRESHOLD) {
-      // Create polygon for large areas
-      const { mesh, outline } = createMeshGeometryFromBBox(this.bbox);
+      for (const bbox of this.bbox) {
+        // Create polygon for large areas
+        const { mesh, outline } = createMeshGeometryFromBBox(bbox);
 
-      meshGraphic = new Graphic({
-        geometry: mesh,
-        symbol: new MeshSymbol3D({
-          symbolLayers: [
-            new FillSymbol3DLayer({
-              material: {
-                color: [255, 0, 0, 0.4],
-              },
-            }),
-          ],
-        }),
-      });
+        meshGraphic = new Graphic({
+          geometry: mesh,
+          symbol: new MeshSymbol3D({
+            symbolLayers: [
+              new FillSymbol3DLayer({
+                material: {
+                  color: [255, 0, 0, 0.4],
+                },
+              }),
+            ],
+          }),
+        });
 
-      outlineGraphic = new Graphic({
-        geometry: outline,
-        symbol: new SimpleLineSymbol({
-          color: 'red',
-          width: 3,
-        }),
-      });
+        outlineGraphic = new Graphic({
+          geometry: outline,
+          symbol: new SimpleLineSymbol({
+            color: 'red',
+            width: 3,
+          }),
+        });
 
-      graphicsLayer.add(meshGraphic);
-      graphicsLayer.add(outlineGraphic);
+        graphicsLayer.add(meshGraphic);
+        graphicsLayer.add(outlineGraphic);
+      }
     } else {
       // Create center point for small areas
-      const [minX, minY, maxX, maxY] = this.bbox;
+      const [minX, minY, maxX, maxY] = this.envelopeBbox;
       const centerX = (minX + maxX) / 2;
       const centerY = (minY + maxY) / 2;
 

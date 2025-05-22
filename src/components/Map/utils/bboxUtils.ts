@@ -5,8 +5,23 @@ import * as shapePreservingProjectOperator from '@arcgis/core/geometry/operators
 import Polygon from '@arcgis/core/geometry/Polygon';
 import Polyline from '@arcgis/core/geometry/Polyline';
 import MeshComponent from '@arcgis/core/geometry/support/MeshComponent';
+import { z } from 'zod';
 
 import { getBasemapConfigForMapProjection, MapProjection } from '@/lib/config/basemap';
+
+export const BBox = z.tuple([z.number(), z.number(), z.number(), z.number()]);
+export const BBoxParam = z.union([BBox, z.array(BBox)]);
+
+export type BBox = z.infer<typeof BBox>;
+export type BBoxParam = z.infer<typeof BBoxParam>;
+
+// write a function that will turn a bboxparam into an array of bbox
+export function bboxParamToArray(bboxParam: BBoxParam): BBox[] {
+  if (Array.isArray(bboxParam[0])) {
+    return bboxParam as BBox[];
+  }
+  return [bboxParam as BBox];
+}
 
 /**
  * Reference the BBOX spec to understand the behavior around the antimeridian:

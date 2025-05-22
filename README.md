@@ -104,14 +104,15 @@ Set these parameters to visualise a 2D bounding box:
 
 | Parameter                    | Description                                      | Default     | Example                    |
 |------------------------------|--------------------------------------------------|-------------|----------------------------|
-| `bbox`                       | Bounding box [minX, minY, maxX, maxY]            | -           | [-180.0,-90.0,180.0,-60.0] |
-| `bbox-force-regional-extent` | Ensure `bbox` is shown at he full basemap extent | false       | true                       |
+| `bbox`                       | Single bounding box [minX, minY, maxX, maxY] or array of bounding boxes | -           | [-180.0,-90.0,180.0,-60.0] or [[-180.0,-90.0,180.0,-60.0], [-68.3359,-67.5894,-68.0677,-67.4869]] |
+| `bbox-force-regional-extent` | Ensure `bbox` is shown at the full basemap extent | false       | true                       |
 
 When defining a bounding box that crosses the antimeridian (180°/-180° longitude), use a larger value for the western edge (minX) than the eastern edge (maxX). For example:
 
 ```
-[170.0, -70.0, -170.0, -60.0]  # Crosses antimeridian (valid)
-[-170.0, -70.0, 170.0, -60.0]  # Does not cross antimeridian (valid)
+[170.0, -70.0, -170.0, -60.0]  # Single bbox crossing antimeridian (valid)
+[-170.0, -70.0, 170.0, -60.0]  # Single bbox not crossing antimeridian (valid)
+[[170.0, -70.0, -170.0, -60.0], [-68.3359,-67.5894,-68.0677,-67.4869]]  # Multiple bboxes (valid)
 ```
 
 This follows the OGC API Features specification for handling bounding boxes that cross the antimeridian.
@@ -176,6 +177,12 @@ Show a bounding box with a globe overview for orientation:
 
 ```
 https://embedded-maps.data.bas.ac.uk/v1/?bbox=[-68.3359,-67.5894,-68.0677,-67.4869]&globe-overview
+```
+
+Show multiple bounding boxes with a globe overview:
+
+```
+https://embedded-maps.data.bas.ac.uk/v1/?bbox=[[-68.3359,-67.5894,-68.0677,-67.4869],[-67.5894,-66.5894,-67.0677,-66.4869]]&globe-overview
 ```
 
 Show a bounding box, zoomed out to show the full basemap:

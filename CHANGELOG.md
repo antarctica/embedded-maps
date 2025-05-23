@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   [#47](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/47)
 * Added support for graticule layer overlay
   [#52](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/52)
+* Added support for points to be passed in the url params
+  [#49](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/49)
 
 
 ### Fixed

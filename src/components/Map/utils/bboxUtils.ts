@@ -5,8 +5,23 @@ import * as shapePreservingProjectOperator from '@arcgis/core/geometry/operators
 import Polygon from '@arcgis/core/geometry/Polygon';
 import Polyline from '@arcgis/core/geometry/Polyline';
 import MeshComponent from '@arcgis/core/geometry/support/MeshComponent';
+import { z } from 'zod';
 
 import { getBasemapConfigForMapProjection, MapProjection } from '@/lib/config/basemap';
+
+export const BBox = z.tuple([z.number(), z.number(), z.number(), z.number()]);
+export const BBoxParam = z.union([BBox, z.array(BBox)]);
+
+export type BBox = z.infer<typeof BBox>;
+export type BBoxParam = z.infer<typeof BBoxParam>;
+
+// write a function that will turn a bboxparam into an array of bbox
+export function bboxParamToArray(bboxParam: BBoxParam): BBox[] {
+  if (Array.isArray(bboxParam[0])) {
+    return bboxParam as BBox[];
+  }
+  return [bboxParam as BBox];
+}
 
 /**
  * Reference the BBOX spec to understand the behavior around the antimeridian:
@@ -37,10 +52,7 @@ import { getBasemapConfigForMapProjection, MapProjection } from '@/lib/config/ba
  * @param projection - Target map projection for the resulting polygon
  * @returns ArcGIS Polygon geometry in the specified projection
  */
-export function createGeometryFromBBox(
-  bbox: [number, number, number, number],
-  projection: MapProjection,
-): __esri.Polygon {
+export function createGeometryFromBBox(bbox: BBox, projection: MapProjection): __esri.Polygon {
   const [minLon, minLat, maxLon, maxLat] = bbox;
   const crossesAntimeridian = minLon > maxLon;
 
@@ -78,44 +90,57 @@ export function createGeometryFromBBox(
  * @returns Object containing both the mesh geometry and its outline as a multipart polyline
  */
 export function createMeshGeometryFromBBox(
-  bbox: [number, number, number, number],
+  [minLon, minLat, maxLon, maxLat]: BBox,
   height: number = 5000,
   segments: number = 1000,
 ): { mesh: __esri.Mesh; outline: __esri.Polyline } {
-  const [minLon, minLat, maxLon, maxLat] = bbox;
   const crossesAntimeridian = minLon > maxLon;
 
   const vertices: number[] = [];
   const faces: number[] = [];
 
-  const lonSegments = segments;
-  const latSegments = Math.floor((segments * (maxLat - minLat)) / 360);
+  // generate a regular grid of vertices.
+  const nLonSegments = segments;
+  const nLatSegments = Math.floor((segments * (maxLat - minLat)) / 360);
 
-  for (let i = 0; i <= lonSegments; i++) {
-    const lonFraction = i / lonSegments;
+  // loop through the longitude segments index
+  for (let i = 0; i <= nLonSegments; i++) {
+    const lonFraction = i / nLonSegments;
+
+    // calculate the longitude value for the current segment
     let lon;
-
     if (crossesAntimeridian) {
+      // When the bbox crosses the antimeridian (180/-180 line), we need special handling:
+      // 1. Calculate total angle by subtracting the gap between minLon and maxLon from 360
       const totalAngle = 360 - (minLon - maxLon);
+      // 2. Calculate longitude by adding a fraction of the total angle to minLon
       lon = minLon + totalAngle * lonFraction;
+      // 3. Normalize longitude to [-180, 180] range
       if (lon > 180) lon -= 360;
     } else {
+      // For normal cases, simply interpolate between minLon and maxLon
       lon = minLon + (maxLon - minLon) * lonFraction;
     }
 
-    for (let j = 0; j <= latSegments; j++) {
-      const latFraction = j / latSegments;
+    // loop through the latitude segments index
+    for (let j = 0; j <= nLatSegments; j++) {
+      const latFraction = j / nLatSegments;
       const lat = minLat + (maxLat - minLat) * latFraction;
+
+      // push the vertex to the vertices array
       vertices.push(lon, lat, height);
     }
   }
 
-  for (let i = 0; i < lonSegments; i++) {
-    for (let j = 0; j < latSegments; j++) {
-      const baseIndex = i * (latSegments + 1) + j;
+  // loop through the faces and push the indices to the faces array
+  // The faces are the triangles that make up the mesh, they are defined by indices that
+  // reference the vertices array.
+  for (let i = 0; i < nLonSegments; i++) {
+    for (let j = 0; j < nLatSegments; j++) {
+      const baseIndex = i * (nLatSegments + 1) + j;
       const nextIndex = baseIndex + 1;
-      const belowIndex = baseIndex + (latSegments + 1);
-      const belowNextIndex = nextIndex + (latSegments + 1);
+      const belowIndex = baseIndex + (nLatSegments + 1);
+      const belowNextIndex = nextIndex + (nLatSegments + 1);
 
       faces.push(baseIndex);
       faces.push(belowIndex);
@@ -131,6 +156,7 @@ export function createMeshGeometryFromBBox(
     faces,
   });
 
+  // create the mesh geometry
   const mesh = new Mesh({
     components: [component],
     vertexAttributes: {
@@ -175,10 +201,38 @@ export function createMeshGeometryFromBBox(
     paths.push(topPath, rightPath, bottomPath, leftPath);
   }
 
+  // create the outline geometry
   const outline = new Polyline({
     paths,
     spatialReference: { wkid: 4326 },
   });
 
   return { mesh, outline };
+}
+
+export function calculateEnvelopeBbox(bbox: BBox[]): BBox {
+  const minX = Math.min(...bbox.map((b) => b[0]));
+  const minY = Math.min(...bbox.map((b) => b[1]));
+  const maxX = Math.max(...bbox.map((b) => b[2]));
+  const maxY = Math.max(...bbox.map((b) => b[3]));
+  return [minX, minY, maxX, maxY];
+}
+
+export function convertBboxObjectToBBox(bbox: {
+  minX: number;
+  minY: number;
+  maxX: number;
+  maxY: number;
+}): BBox {
+  return [bbox.minX, bbox.minY, bbox.maxX, bbox.maxY];
+}
+
+export function isBBoxCompletelyInside(inner: BBox, outer: BBox): boolean {
+  return (
+    inner[0] >= outer[0] && inner[1] >= outer[1] && inner[2] <= outer[2] && inner[3] <= outer[3]
+  );
+}
+
+export function isPointWithinBBox(point: [number, number], bbox: BBox): boolean {
+  return point[0] >= bbox[0] && point[0] <= bbox[2] && point[1] >= bbox[1] && point[1] <= bbox[3];
 }

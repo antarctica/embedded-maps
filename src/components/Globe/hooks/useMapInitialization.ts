@@ -1,6 +1,7 @@
 import EsriMap from '@arcgis/core/Map';
 import { useEffect } from 'react';
 
+import { BBox } from '@/components/Map/utils/bboxUtils';
 import { useMapCommandExecuter } from '@/lib/arcgis/hooks/useMapCommandExecuter';
 
 import { AddAssetLayerCommand } from '../commands/AddAssetLayerCommand';
@@ -15,7 +16,7 @@ interface UseMapInitializationResult {
 
 interface UseMapInitializationProps {
   initialAssetId?: string;
-  initialBbox?: [number, number, number, number];
+  initialBbox?: BBox[];
 }
 
 export function useMapInitialization({

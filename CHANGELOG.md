@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+* Added bounding box layer to handle display of bounding boxes at different scales
+  [#46](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/45)
+* Added support for multiple bounding boxes passed in the url params
+  [#47](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/47)
+* Added support for graticule layer overlay
+  [#52](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/52)
+
+
+### Fixed
+* Fixed bug where bounding box was not being displayed correctly on the globe near the poles.
+  [#54](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/54)
+
+
 ## [0.2.1] 2025-04-01
 
 ### Added

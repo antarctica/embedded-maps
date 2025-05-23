@@ -7,11 +7,12 @@ import { useMapCommandExecuter } from '@/lib/arcgis/hooks/useMapCommandExecuter'
 import { MapCommand, ViewCommand } from '@/lib/arcgis/typings/commandtypes';
 
 import { AddBboxCommand } from '../commands/AddBboxCommand';
+import { BBox } from '../utils/bboxUtils';
 
 interface UseMapInitializationProps {
   initialAssetId?: string;
   initialCenter?: [number, number];
-  initialBbox?: [number, number, number, number];
+  initialBbox?: BBox[];
   bboxForceRegionalExtent?: boolean;
   initialShowAssetPopup?: boolean;
   onViewReady?: (view: __esri.MapView) => void;

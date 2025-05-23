@@ -11,8 +11,8 @@ import { isEsriPoint } from '@/lib/arcgis/typings/typeGuards';
 import { isPolarProjection } from '@/lib/config/basemap';
 import { isDefined } from '@/lib/helpers/typeGuards';
 
+import { BBox } from '../Map/utils/bboxUtils';
 import { useMapInitialization } from './hooks/useMapInitialization';
-
 const globe = tv({
   slots: {
     wrapper:
@@ -26,21 +26,21 @@ const globe = tv({
 
 interface GlobeProps {
   initialAssetId?: string;
-  initialBbox?: [number, number, number, number];
+  initialBbox?: BBox[];
 }
 
 const correctViewpointForPoles = ([longitude, latitude]: [number, number]): Point => {
   // Adjust coordinates near poles (within 0.5 degrees)
   if (Math.abs(Math.abs(latitude) - 90) < 0.5) {
     if (latitude > 0) {
-      latitude -= 0.1;
+      latitude -= 0.2;
     } else {
       latitude += 0.1;
     }
   }
   if (Math.abs(Math.abs(longitude) - 180) < 0.5) {
     if (longitude > 0) {
-      longitude -= 0.1;
+      longitude -= 0.2;
     } else {
       longitude += 0.1;
     }

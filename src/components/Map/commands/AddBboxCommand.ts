@@ -1,40 +1,43 @@
 import Graphic from '@arcgis/core/Graphic';
-import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import EsriMap from '@arcgis/core/Map';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
 
+import { ScaleAwarePolygonLayer } from '@/lib/arcgis/customlayers/ScaleAwarePolygonLayer/ScaleAwarePolygonLayer';
 import { MapCommand, ViewCommand } from '@/lib/arcgis/typings/commandtypes';
 import { getBasemapConfigForMapProjection, getMapProjectionFromBbox } from '@/lib/config/basemap';
 
-import { createGeometryFromBBox } from '../utils/bboxUtils';
+import { BBox, calculateEnvelopeBbox, createGeometryFromBBox } from '../utils/bboxUtils';
 import { applyBasemapConstraints } from '../utils/mapViewUtils';
-
 export class AddBboxCommand implements MapCommand {
+  private bboxGraphicsLayer = new ScaleAwarePolygonLayer();
+
   constructor(
-    private bbox: [number, number, number, number],
+    private bbox: BBox[],
     private showRegion?: boolean,
   ) {}
 
   async executeOnMap(map: EsriMap): Promise<ViewCommand | void> {
-    const mapProjection = getMapProjectionFromBbox(this.bbox);
+    const envelopeBbox = calculateEnvelopeBbox(this.bbox);
+    const mapProjection = getMapProjectionFromBbox(envelopeBbox);
     const basemapConfig = getBasemapConfigForMapProjection(mapProjection);
     map.basemap = basemapConfig.basemap;
 
-    const bboxGraphic = new Graphic({
-      geometry: createGeometryFromBBox(this.bbox, mapProjection),
-      symbol: new SimpleFillSymbol({
-        color: [204, 0, 51, 0.2], // #CC0033 @ 80% opacity
-        outline: {
-          color: [204, 0, 51, 1], // #CC0033
-          width: 1,
-        },
-      }),
-    });
+    for (const bbox of this.bbox) {
+      const bboxPolygonGraphic = new Graphic({
+        geometry: createGeometryFromBBox(bbox, mapProjection),
+        symbol: new SimpleFillSymbol({
+          color: [204, 0, 51, 0.2], // #CC0033 @ 80% opacity
+          outline: {
+            color: [204, 0, 51, 1], // #CC0033
+            width: 1,
+          },
+        }),
+      });
 
-    const bboxGraphicsLayer = new GraphicsLayer({
-      graphics: [bboxGraphic],
-    });
-    map.add(bboxGraphicsLayer);
+      this.bboxGraphicsLayer.add(bboxPolygonGraphic);
+    }
+
+    map.add(this.bboxGraphicsLayer);
 
     return {
       executeOnView: async (mapView: __esri.MapView) => {
@@ -43,7 +46,8 @@ export class AddBboxCommand implements MapCommand {
         if (this.showRegion) {
           await mapView.goTo({ target: basemapConfig.viewExtent }, { animate: false });
         } else {
-          await mapView.goTo({ target: bboxGraphic.geometry }, { animate: false });
+          const bboxGeometry = createGeometryFromBBox(envelopeBbox, mapProjection);
+          await mapView.goTo({ target: bboxGeometry }, { animate: false });
         }
       },
     };

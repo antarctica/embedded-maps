@@ -14,7 +14,6 @@ services:
       # this is because the install is specific to the OS.
       - ../../.:/app
       # Cache layers to improve performance
-      - playwright_cache:/root/.cache/ms-playwright
       - node_modules:/app/node_modules:delegated
       # Test artifacts with permissions matching playwright.config.ts paths
       - ../../e2e/results:/app/e2e/results:rw,delegated
@@ -39,6 +38,8 @@ services:
         echo "📦 Installing dependencies and setting up environment..."
         npm install
         apt-get update && apt-get install -y xvfb
+        
+        echo "🎭 Installing Playwright browsers..."
         npx playwright install --with-deps
 
         echo "🧪 Running tests..."
@@ -49,5 +50,4 @@ services:
           $([ "$UPDATE_SNAPSHOTS" = "true" ] && echo "--update-snapshots") \
           $([ ! -z "$TEST_GREP" ] && echo "--grep=$TEST_GREP")'        
 volumes:
-  playwright_cache:
   node_modules:

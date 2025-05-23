@@ -3,10 +3,10 @@ import { fallback, zodValidator } from '@tanstack/zod-adapter';
 import * as React from 'react';
 import { z } from 'zod';
 
+import { BBoxParam } from '@/components/Map/utils/bboxUtils';
 import { DEFAULT_CENTER } from '@/lib/config/mapParamDefaults';
 
 export const CoordinatePair = z.tuple([z.number(), z.number()]);
-export const BBox = z.tuple([z.number(), z.number(), z.number(), z.number()]);
 
 const booleanWithoutValue = () => z.union([z.literal(''), z.boolean()]);
 
@@ -15,7 +15,7 @@ const baseSearchSchema = z.object({
   zoom: fallback(z.number().optional(), undefined),
   scale: fallback(z.number().optional(), undefined),
   centre: fallback(CoordinatePair.optional(), undefined),
-  bbox: fallback(BBox.optional(), undefined),
+  bbox: fallback(BBoxParam.optional(), undefined),
   'bbox-force-regional-extent': fallback(booleanWithoutValue().optional(), undefined),
 
   // UI Controls
@@ -25,6 +25,9 @@ const baseSearchSchema = z.object({
 
   // Globe overview
   'globe-overview': fallback(booleanWithoutValue().optional(), undefined),
+
+  // Overlays
+  graticule: fallback(booleanWithoutValue().optional(), undefined),
 
   // Asset parameters
   'asset-id': fallback(z.string().optional(), undefined),

@@ -131,6 +131,7 @@ Set these parameters to enable or disable map controls:
 | `ctrl-zoom`       | Show zoom in/out control       | true    | true    |
 | `ctrl-reset`      | Show view reset (home) control | true    | true    |
 | `ctrl-fullscreen` | Show fullscreen view control   | false   | true    |
+| `graticule`       | Show graticule grid lines      | false   | true    |
 
 > [!NOTE]
 > Setting a parameter without a value evaluates to true. Use `{parameter}=false` to override.

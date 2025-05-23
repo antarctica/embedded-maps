@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   [#46](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/45)
 * Added support for multiple bounding boxes passed in the url params
   [#47](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/47)
+* Added support for graticule layer overlay
+  [#52](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/52)
 
 
 ### Fixed

@@ -1,11 +1,12 @@
 import EsriMap from '@arcgis/core/Map';
 import { useEffect } from 'react';
 
-import { BBox } from '@/components/Map/utils/bboxUtils';
 import { useMapCommandExecuter } from '@/lib/arcgis/hooks/useMapCommandExecuter';
+import { BBox, MapPoint } from '@/lib/config/schema';
 
 import { AddAssetLayerCommand } from '../commands/AddAssetLayerCommand';
 import { AddBboxVisualizationCommand } from '../commands/AddBboxVisualizationCommand';
+import { AddPointsLayerCommand } from '../commands/AddPointsLayerCommand';
 import { SetupGlobeMapCommand } from '../commands/SetupGlobeMapCommand';
 
 interface UseMapInitializationResult {
@@ -17,11 +18,13 @@ interface UseMapInitializationResult {
 interface UseMapInitializationProps {
   initialAssetId?: string;
   initialBbox?: BBox[];
+  initialPoints?: MapPoint[];
 }
 
 export function useMapInitialization({
   initialAssetId,
   initialBbox,
+  initialPoints,
 }: UseMapInitializationProps): UseMapInitializationResult {
   const { map, setMap, error, isExecuting, executeCommands } = useMapCommandExecuter();
 
@@ -39,9 +42,13 @@ export function useMapInitialization({
         commands.push(new AddBboxVisualizationCommand(initialBbox));
       }
 
+      if (initialPoints) {
+        commands.push(new AddPointsLayerCommand(initialPoints));
+      }
+
       executeCommands(mapInstance, commands);
     }
-  }, [map, initialAssetId, initialBbox, executeCommands, setMap]);
+  }, [map, initialAssetId, initialBbox, initialPoints, executeCommands, setMap]);
 
   return {
     map,

@@ -9,10 +9,11 @@ import { ArcSceneView } from '@/lib/arcgis/components/ArcView/ArcSceneView';
 import { useCurrentMapView, useWatchEffect } from '@/lib/arcgis/hooks';
 import { isEsriPoint } from '@/lib/arcgis/typings/typeGuards';
 import { isPolarProjection } from '@/lib/config/basemap';
+import { BBox, MapPoint } from '@/lib/config/schema';
 import { isDefined } from '@/lib/helpers/typeGuards';
 
-import { BBox } from '../Map/utils/bboxUtils';
 import { useMapInitialization } from './hooks/useMapInitialization';
+
 const globe = tv({
   slots: {
     wrapper:
@@ -27,6 +28,7 @@ const globe = tv({
 interface GlobeProps {
   initialAssetId?: string;
   initialBbox?: BBox[];
+  initialPoints?: MapPoint[];
 }
 
 const correctViewpointForPoles = ([longitude, latitude]: [number, number]): Point => {
@@ -76,7 +78,7 @@ const getCorrectedSceneViewpoint = (mapViewpoint: __esri.Viewpoint): __esri.View
   return newViewPoint;
 };
 
-export function Globe({ initialAssetId, initialBbox }: GlobeProps) {
+export function Globe({ initialAssetId, initialBbox, initialPoints }: GlobeProps) {
   const mapView = useCurrentMapView();
   const [sceneView, setSceneView] = useState<__esri.SceneView>();
 
@@ -124,6 +126,7 @@ export function Globe({ initialAssetId, initialBbox }: GlobeProps) {
   const { map } = useMapInitialization({
     initialAssetId,
     initialBbox,
+    initialPoints,
   });
 
   useWatchEffect(

@@ -4,6 +4,7 @@ import React from 'react';
 
 import { ArcMapView } from '@/lib/arcgis/components/ArcView/ArcMapView';
 import { GraticuleLayer } from '@/lib/arcgis/customlayers/GraticuleLayer/GraticuleLayer';
+import { BBox, MapPoint } from '@/lib/config/schema';
 
 import { Globe } from '../Globe';
 import LoadingScrim from '../LoadingScrim';
@@ -12,7 +13,6 @@ import HomeControl from '../map-controls/HomeControl';
 import ScaleControl from '../map-controls/ScaleControl/ScaleControl';
 import ZoomControl from '../map-controls/ZoomControl';
 import { useMapInitialization } from './hooks/useMapInitialization';
-import { BBox } from './utils/bboxUtils';
 
 interface MapProps {
   // View parameters
@@ -21,6 +21,7 @@ interface MapProps {
   initialCenter?: [number, number];
   initialBbox?: BBox[];
   bboxForceRegionalExtent?: boolean;
+  initialPoints?: MapPoint[];
 
   // UI Controls
   showZoomButton?: boolean;
@@ -43,6 +44,7 @@ export function Map({
   initialCenter,
   initialZoom,
   initialBbox,
+  initialPoints,
   bboxForceRegionalExtent,
   initialScale,
   showGlobeOverview,
@@ -57,6 +59,7 @@ export function Map({
     initialAssetId,
     initialCenter,
     initialBbox,
+    initialPoints,
     bboxForceRegionalExtent,
     initialShowAssetPopup,
   });
@@ -95,7 +98,11 @@ export function Map({
         </arcgis-placement>
         {showGlobeOverview && (
           <arcgis-placement position="top-right">
-            <Globe initialAssetId={initialAssetId} initialBbox={initialBbox} />
+            <Globe
+              initialAssetId={initialAssetId}
+              initialBbox={initialBbox}
+              initialPoints={initialPoints}
+            />
           </arcgis-placement>
         )}
       </ArcMapView>

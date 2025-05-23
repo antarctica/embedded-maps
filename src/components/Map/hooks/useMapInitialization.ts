@@ -5,14 +5,16 @@ import { FindAssetCommand } from '@/components/Map/commands/FindAssetCommand';
 import { MapCenterCommand } from '@/components/Map/commands/MapCenterCommand';
 import { useMapCommandExecuter } from '@/lib/arcgis/hooks/useMapCommandExecuter';
 import { MapCommand, ViewCommand } from '@/lib/arcgis/typings/commandtypes';
+import { BBox, MapPoint } from '@/lib/config/schema';
 
 import { AddBboxCommand } from '../commands/AddBboxCommand';
-import { BBox } from '../utils/bboxUtils';
+import { AddMapPointsCommand } from '../commands/AddMapPointsCommand';
 
 interface UseMapInitializationProps {
   initialAssetId?: string;
   initialCenter?: [number, number];
   initialBbox?: BBox[];
+  initialPoints?: MapPoint[];
   bboxForceRegionalExtent?: boolean;
   initialShowAssetPopup?: boolean;
   onViewReady?: (view: __esri.MapView) => void;
@@ -30,6 +32,7 @@ export function useMapInitialization({
   initialAssetId,
   initialCenter,
   initialBbox,
+  initialPoints,
   bboxForceRegionalExtent,
   initialShowAssetPopup,
 }: UseMapInitializationProps): UseMapInitializationResult {
@@ -51,8 +54,9 @@ export function useMapInitialization({
       }
       if (initialBbox) {
         commands.push(new AddBboxCommand(initialBbox, bboxForceRegionalExtent));
+      } else if (initialPoints) {
+        commands.push(new AddMapPointsCommand(initialPoints));
       }
-
       executeCommands(mapInstance, commands).then((results) => {
         const postInitCommands = results.filter((result): result is ViewCommand => result != null);
         postInitCommandsRef.current = postInitCommands;
@@ -63,6 +67,7 @@ export function useMapInitialization({
     initialCenter,
     initialAssetId,
     initialBbox,
+    initialPoints,
     bboxForceRegionalExtent,
     initialShowAssetPopup,
     executeCommands,

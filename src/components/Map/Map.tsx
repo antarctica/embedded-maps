@@ -33,6 +33,7 @@ interface MapProps {
 
   // Asset parameters
   initialAssetId?: string;
+  initialAssetType?: string;
   initialShowAssetPopup?: boolean;
 
   // Overlays
@@ -41,6 +42,7 @@ interface MapProps {
 
 export function Map({
   initialAssetId,
+  initialAssetType,
   initialCenter,
   initialZoom,
   initialBbox,
@@ -57,6 +59,7 @@ export function Map({
   const [viewPoint, setViewPoint] = React.useState<__esri.Viewpoint | undefined>(undefined);
   const { map, error, isMapLoading, isViewReady, handleViewReady } = useMapInitialization({
     initialAssetId,
+    initialAssetType,
     initialCenter,
     initialBbox,
     initialPoints,
@@ -102,6 +105,7 @@ export function Map({
               initialAssetId={initialAssetId}
               initialBbox={initialBbox}
               initialPoints={initialPoints}
+              initialAssetType={initialAssetType}
             />
           </arcgis-placement>
         )}

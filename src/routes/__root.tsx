@@ -28,6 +28,7 @@ const baseSearchSchema = z.object({
 
   // Asset parameters
   'asset-id': fallback(z.string().optional(), undefined),
+  'asset-type': fallback(z.number().optional(), undefined),
   'asset-force-popup': fallback(booleanWithoutValue().optional(), undefined),
 });
 

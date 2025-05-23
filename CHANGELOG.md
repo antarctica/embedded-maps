@@ -17,7 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   [#52](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/52)
 * Added support for points to be passed in the url params
   [#49](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/49)
-
+* Added support for asset type to be passed in the url params
+  [#53](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/53)
 
 ### Fixed
 * Fixed bug where bounding box was not being displayed correctly on the globe near the poles.

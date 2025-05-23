@@ -1,13 +1,16 @@
 import { SpatialReference } from '@arcgis/core/geometry';
 import Extent from '@arcgis/core/geometry/Extent';
 import Mesh from '@arcgis/core/geometry/Mesh';
+import * as projectOperator from '@arcgis/core/geometry/operators/projectOperator.js';
 import * as shapePreservingProjectOperator from '@arcgis/core/geometry/operators/shapePreservingProjectOperator.js';
 import Polygon from '@arcgis/core/geometry/Polygon';
 import Polyline from '@arcgis/core/geometry/Polyline';
 import MeshComponent from '@arcgis/core/geometry/support/MeshComponent';
 
+import { isEsriExtent } from '@/lib/arcgis/typings/typeGuards';
 import { getBasemapConfigForMapProjection, MapProjection } from '@/lib/config/basemap';
 import { BBox } from '@/lib/config/schema';
+import { isDefined } from '@/lib/helpers/typeGuards';
 
 /**
  * Reference the BBOX spec to understand the behavior around the antimeridian:
@@ -196,10 +199,53 @@ export function createMeshGeometryFromBBox(
   return { mesh, outline };
 }
 
-export function convertExtentToBBox(extent: Extent): BBox {
-  return [extent.xmin, extent.ymin, extent.xmax, extent.ymax];
+/**
+ * Converts an ArcGIS Extent to a standardized BBox format while handling antimeridian crossing.
+ * When an extent crosses the antimeridian (180/-180 line), the standard BBox format requires
+ * that minLon > maxLon to indicate the crossing. For example:
+ * - Normal case: [-160, 20, 170, 45] represents an extent from -160 to 170
+ * - Antimeridian crossing: [170, 20, -160, 45] represents an extent crossing the antimeridian
+ *
+ * @param extent - The ArcGIS Extent object to convert
+ * @returns BBox - Array of [minLon, minLat, maxLon, maxLat] in WGS84 coordinates
+ */
+export function convertExtentToBBoxWithAntimeridianNormalization(extent: Extent): BBox {
+  const { xmin, xmax, ymin, ymax } = extent;
+  if (xmin < -180) {
+    // convert the xmin value to be consistent with the bbox standard
+    extent.xmin = xmin + 360;
+  }
+  return [xmin, ymin, xmax, ymax];
 }
 
+/**
+ * Converts an ArcGIS Extent to a standardized BBox format, handling coordinate system projection.
+ * If the extent is not in WGS84, it will be projected to WGS84 coordinates.
+ * Falls back to world extent [-180, -90, 180, 90] if projection fails.
+ *
+ * @param extent - The ArcGIS Extent object to convert
+ * @returns BBox - Array of [minLon, minLat, maxLon, maxLat] in WGS84 coordinates
+ */
+export function convertExtentToBBox(extent: Extent): BBox {
+  if (extent.spatialReference.isWGS84) {
+    return convertExtentToBBoxWithAntimeridianNormalization(extent);
+  }
+
+  const projectedExtent = projectOperator.execute(extent, SpatialReference.WGS84);
+  if (isDefined(projectedExtent) && isEsriExtent(projectedExtent)) {
+    return convertExtentToBBoxWithAntimeridianNormalization(projectedExtent);
+  }
+
+  return [-180, -90, 180, 90];
+}
+
+/**
+ * Calculates the minimum bounding box that contains all input bboxes.
+ * This is useful for finding the overall extent of multiple geographic features.
+ *
+ * @param bbox - Array of BBox objects to envelope
+ * @returns BBox - The minimum bounding box containing all input boxes
+ */
 export function calculateEnvelopeBbox(bbox: BBox[]): BBox {
   const minX = Math.min(...bbox.map((b) => b[0]));
   const minY = Math.min(...bbox.map((b) => b[1]));
@@ -208,6 +254,12 @@ export function calculateEnvelopeBbox(bbox: BBox[]): BBox {
   return [minX, minY, maxX, maxY];
 }
 
+/**
+ * Converts a bbox-like object with named properties to the standard BBox array format.
+ *
+ * @param bbox - Object containing minX, minY, maxX, maxY properties
+ * @returns BBox - Array of [minLon, minLat, maxLon, maxLat]
+ */
 export function convertBboxObjectToBBox(bbox: {
   minX: number;
   minY: number;

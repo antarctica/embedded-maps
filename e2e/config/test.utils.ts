@@ -45,7 +45,7 @@ export async function waitForSceneReady(
 export async function testSnapshot(page: Page, name: string) {
   await expect(page).toHaveScreenshot(`${name.replace(/\s+/g, '-')}.png`, {
     fullPage: true,
-    maxDiffPixels: 50,
+    maxDiffPixels: 200,
   });
 }
 

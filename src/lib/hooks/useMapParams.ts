@@ -1,4 +1,3 @@
-import { bboxParamToArray } from '@/components/Map/utils/bboxUtils';
 import {
   DEFAULT_REGIONAL_EXTENT,
   DEFAULT_SHOW_ASSET_POPUP,
@@ -10,12 +9,11 @@ import {
 } from '@/lib/config/mapParamDefaults';
 import { Route } from '@/routes/__root';
 
-function convertEmptyStringParamToBooleanPresence(
-  value: '' | boolean | undefined,
-): boolean | undefined {
-  if (value === '') return true;
-  return value;
-}
+import {
+  bboxParamToArray,
+  convertEmptyStringParamToBooleanPresence,
+  mapPointParamToArray,
+} from '../config/schema';
 
 export function useMapParams() {
   const {
@@ -24,6 +22,7 @@ export function useMapParams() {
     scale,
     centre,
     bbox,
+    points,
     'bbox-force-regional-extent': bboxForceRegionalExtent = DEFAULT_REGIONAL_EXTENT,
 
     // UI Controls
@@ -48,6 +47,7 @@ export function useMapParams() {
     scale,
     centre,
     bbox: bbox ? bboxParamToArray(bbox) : undefined,
+    points: points ? mapPointParamToArray(points) : undefined,
     bboxForceRegionalExtent: convertEmptyStringParamToBooleanPresence(bboxForceRegionalExtent),
 
     // UI Controls

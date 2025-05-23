@@ -3,12 +3,8 @@ import { fallback, zodValidator } from '@tanstack/zod-adapter';
 import * as React from 'react';
 import { z } from 'zod';
 
-import { BBoxParam } from '@/components/Map/utils/bboxUtils';
 import { DEFAULT_CENTER } from '@/lib/config/mapParamDefaults';
-
-export const CoordinatePair = z.tuple([z.number(), z.number()]);
-
-const booleanWithoutValue = () => z.union([z.literal(''), z.boolean()]);
+import { BBoxParam, booleanWithoutValue, CoordinatePair, MapPointParam } from '@/lib/config/schema';
 
 const baseSearchSchema = z.object({
   // View parameters
@@ -17,6 +13,7 @@ const baseSearchSchema = z.object({
   centre: fallback(CoordinatePair.optional(), undefined),
   bbox: fallback(BBoxParam.optional(), undefined),
   'bbox-force-regional-extent': fallback(booleanWithoutValue().optional(), undefined),
+  points: fallback(MapPointParam.optional(), undefined),
 
   // UI Controls
   'ctrl-zoom': fallback(booleanWithoutValue().optional(), undefined),
@@ -42,7 +39,7 @@ function resolveInitialViewpoint(data: SearchParams): SearchParams {
     return { ...data, bbox: undefined, centre: undefined };
   }
   // Bounding box takes precedence over center point
-  if (data.bbox) {
+  if (data.bbox || data.points) {
     return { ...data, centre: undefined };
   }
 

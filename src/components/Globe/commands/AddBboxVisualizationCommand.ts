@@ -7,8 +7,9 @@ import MeshSymbol3D from '@arcgis/core/symbols/MeshSymbol3D.js';
 import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 
-import { BBox, createMeshGeometryFromBBox } from '@/components/Map/utils/bboxUtils';
+import { createMeshGeometryFromBBox } from '@/components/Map/utils/bboxUtils';
 import { MapCommand } from '@/lib/arcgis/typings/commandtypes';
+import { BBox } from '@/lib/config/schema';
 
 // Below this threshold, we use a point to represent the bbox on the globe
 const AREA_THRESHOLD = 20; // Square degrees

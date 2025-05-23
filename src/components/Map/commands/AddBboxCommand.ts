@@ -5,8 +5,9 @@ import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
 import { ScaleAwarePolygonLayer } from '@/lib/arcgis/customlayers/ScaleAwarePolygonLayer/ScaleAwarePolygonLayer';
 import { MapCommand, ViewCommand } from '@/lib/arcgis/typings/commandtypes';
 import { getBasemapConfigForMapProjection, getMapProjectionFromBbox } from '@/lib/config/basemap';
+import { BBox } from '@/lib/config/schema';
 
-import { BBox, calculateEnvelopeBbox, createGeometryFromBBox } from '../utils/bboxUtils';
+import { calculateEnvelopeBbox, createGeometryFromBBox } from '../utils/bboxUtils';
 import { applyBasemapConstraints } from '../utils/mapViewUtils';
 export class AddBboxCommand implements MapCommand {
   private bboxGraphicsLayer = new ScaleAwarePolygonLayer();

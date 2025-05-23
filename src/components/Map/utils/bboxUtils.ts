@@ -209,3 +209,30 @@ export function createMeshGeometryFromBBox(
 
   return { mesh, outline };
 }
+
+export function calculateEnvelopeBbox(bbox: BBox[]): BBox {
+  const minX = Math.min(...bbox.map((b) => b[0]));
+  const minY = Math.min(...bbox.map((b) => b[1]));
+  const maxX = Math.max(...bbox.map((b) => b[2]));
+  const maxY = Math.max(...bbox.map((b) => b[3]));
+  return [minX, minY, maxX, maxY];
+}
+
+export function convertBboxObjectToBBox(bbox: {
+  minX: number;
+  minY: number;
+  maxX: number;
+  maxY: number;
+}): BBox {
+  return [bbox.minX, bbox.minY, bbox.maxX, bbox.maxY];
+}
+
+export function isBBoxCompletelyInside(inner: BBox, outer: BBox): boolean {
+  return (
+    inner[0] >= outer[0] && inner[1] >= outer[1] && inner[2] <= outer[2] && inner[3] <= outer[3]
+  );
+}
+
+export function isPointWithinBBox(point: [number, number], bbox: BBox): boolean {
+  return point[0] >= bbox[0] && point[0] <= bbox[2] && point[1] >= bbox[1] && point[1] <= bbox[3];
+}

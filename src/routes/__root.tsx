@@ -26,6 +26,9 @@ const baseSearchSchema = z.object({
   // Globe overview
   'globe-overview': fallback(booleanWithoutValue().optional(), undefined),
 
+  // Overlays
+  graticule: fallback(booleanWithoutValue().optional(), undefined),
+
   // Asset parameters
   'asset-id': fallback(z.string().optional(), undefined),
   'asset-force-popup': fallback(booleanWithoutValue().optional(), undefined),

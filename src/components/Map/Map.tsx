@@ -3,6 +3,7 @@ import '@arcgis/map-components/components/arcgis-placement';
 import React from 'react';
 
 import { ArcMapView } from '@/lib/arcgis/components/ArcView/ArcMapView';
+import { GraticuleLayer } from '@/lib/arcgis/customlayers/GraticuleLayer/GraticuleLayer';
 
 import { Globe } from '../Globe';
 import LoadingScrim from '../LoadingScrim';
@@ -32,6 +33,9 @@ interface MapProps {
   // Asset parameters
   initialAssetId?: string;
   initialShowAssetPopup?: boolean;
+
+  // Overlays
+  showGraticule?: boolean;
 }
 
 export function Map({
@@ -45,6 +49,7 @@ export function Map({
   showZoomButton,
   showResetButton,
   showFullscreenButton,
+  showGraticule,
   initialShowAssetPopup,
 }: MapProps) {
   const [viewPoint, setViewPoint] = React.useState<__esri.Viewpoint | undefined>(undefined);
@@ -77,6 +82,7 @@ export function Map({
         scale={initialScale}
         zoom={initialZoom}
       >
+        {showGraticule && <GraticuleLayer />}
         <arcgis-placement position="top-left">
           <div className="flex flex-col gap-4">
             {showZoomButton && <ZoomControl />}

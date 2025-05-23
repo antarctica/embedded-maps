@@ -1,7 +1,11 @@
 import Basemap from '@arcgis/core/Basemap';
 import { Polygon, SpatialReference } from '@arcgis/core/geometry';
 
-import { BBox } from '@/components/Map/utils/bboxUtils';
+import {
+  convertBboxObjectToBBox,
+  isBBoxCompletelyInside,
+  isPointWithinBBox,
+} from '@/components/Map/utils/bboxUtils';
 
 export enum MapProjection {
   ANTARCTIC = 'antarctic',
@@ -14,48 +18,61 @@ export function getMapProjectionFromPosition([longitude, latitude]: [
   number,
   number,
 ]): MapProjection {
-  switch (true) {
-    case latitude >= 60:
-      return MapProjection.ARCTIC;
-    case latitude <= -50:
-      if (
-        latitude >= -55.200717 &&
-        latitude <= -53.641972 &&
-        longitude >= -38.643677 &&
-        longitude <= -35.271423
-      ) {
-        return MapProjection.SOUTH_GEORGIA;
-      }
-      return MapProjection.ANTARCTIC;
-    default:
-      return MapProjection.WORLD;
+  // Check South Georgia first as it's the most specific
+  if (
+    isPointWithinBBox(
+      [longitude, latitude],
+      convertBboxObjectToBBox(SOUTH_GEORGIA_BASEMAP_CONFIG.constraints.bbox),
+    )
+  ) {
+    return MapProjection.SOUTH_GEORGIA;
   }
+
+  if (
+    isPointWithinBBox(
+      [longitude, latitude],
+      convertBboxObjectToBBox(ARCTIC_BASEMAP_CONFIG.constraints.bbox),
+    )
+  ) {
+    return MapProjection.ARCTIC;
+  }
+
+  if (
+    isPointWithinBBox(
+      [longitude, latitude],
+      convertBboxObjectToBBox(ANTARCTIC_BASEMAP_CONFIG.constraints.bbox),
+    )
+  ) {
+    return MapProjection.ANTARCTIC;
+  }
+
+  return MapProjection.WORLD;
 }
 
-export function calculateEnvelopeBbox(bbox: BBox[]): BBox {
-  const minX = Math.min(...bbox.map((b) => b[0]));
-  const minY = Math.min(...bbox.map((b) => b[1]));
-  const maxX = Math.max(...bbox.map((b) => b[2]));
-  const maxY = Math.max(...bbox.map((b) => b[3]));
-  return [minX, minY, maxX, maxY];
-}
-
-export function getMapProjectionFromBbox([minX, minY, maxX, maxY]: [
-  number,
-  number,
-  number,
-  number,
-]): MapProjection {
-  switch (true) {
-    case minX >= -38.643677 && maxX <= -35.271423 && minY >= -55.200717 && maxY <= -53.641972:
-      return MapProjection.SOUTH_GEORGIA;
-    case maxY <= -50 && minY <= -50:
-      return MapProjection.ANTARCTIC;
-    case minY >= 50 && maxY >= 50:
-      return MapProjection.ARCTIC;
-    default:
-      return MapProjection.WORLD;
+export function getMapProjectionFromBbox(bbox: [number, number, number, number]): MapProjection {
+  // Check South Georgia first as it's the most specific
+  if (
+    isBBoxCompletelyInside(
+      bbox,
+      convertBboxObjectToBBox(SOUTH_GEORGIA_BASEMAP_CONFIG.constraints.bbox),
+    )
+  ) {
+    return MapProjection.SOUTH_GEORGIA;
   }
+
+  if (
+    isBBoxCompletelyInside(bbox, convertBboxObjectToBBox(ARCTIC_BASEMAP_CONFIG.constraints.bbox))
+  ) {
+    return MapProjection.ARCTIC;
+  }
+
+  if (
+    isBBoxCompletelyInside(bbox, convertBboxObjectToBBox(ANTARCTIC_BASEMAP_CONFIG.constraints.bbox))
+  ) {
+    return MapProjection.ANTARCTIC;
+  }
+
+  return MapProjection.WORLD;
 }
 
 export function getBasemapConfigForMapProjection(mapProjection: MapProjection): BasemapConfig {
@@ -76,6 +93,14 @@ export interface BasemapConfig {
   rotation: number;
   viewExtent: Polygon;
   spatialReference: SpatialReference;
+  constraints: {
+    bbox: {
+      minX: number;
+      minY: number;
+      maxX: number;
+      maxY: number;
+    };
+  };
 }
 
 /**
@@ -116,6 +141,14 @@ export const ANTARCTIC_BASEMAP_CONFIG: BasemapConfig = {
     spatialReference: new SpatialReference({ wkid: 3031 }),
   }),
   spatialReference: new SpatialReference({ wkid: 3031 }),
+  constraints: {
+    bbox: {
+      minX: -180,
+      maxX: 180,
+      minY: -90,
+      maxY: -50,
+    },
+  },
 };
 
 export const ARCTIC_BASEMAP_CONFIG: BasemapConfig = {
@@ -130,6 +163,14 @@ export const ARCTIC_BASEMAP_CONFIG: BasemapConfig = {
     spatialReference: new SpatialReference({ wkid: 5936 }),
   }),
   spatialReference: new SpatialReference({ wkid: 5936 }),
+  constraints: {
+    bbox: {
+      minX: -180,
+      maxX: 180,
+      minY: 50,
+      maxY: 90,
+    },
+  },
 };
 
 export const WORLD_BASEMAP_CONFIG: BasemapConfig = {
@@ -152,6 +193,14 @@ export const WORLD_BASEMAP_CONFIG: BasemapConfig = {
     spatialReference: new SpatialReference({ wkid: 3857 }),
   }),
   spatialReference: new SpatialReference({ wkid: 3857 }),
+  constraints: {
+    bbox: {
+      minX: -180,
+      maxX: 180,
+      minY: -90,
+      maxY: 90,
+    },
+  },
 };
 
 export const SOUTH_GEORGIA_BASEMAP_CONFIG: BasemapConfig = {
@@ -174,6 +223,14 @@ export const SOUTH_GEORGIA_BASEMAP_CONFIG: BasemapConfig = {
     spatialReference: SpatialReference.WGS84,
   }),
   spatialReference: new SpatialReference({ wkid: 3762 }),
+  constraints: {
+    bbox: {
+      minX: -38.643677,
+      maxX: -35.271423,
+      minY: -55.200717,
+      maxY: -53.641972,
+    },
+  },
 };
 
 export function isPolarProjection(wkid: number): boolean {
@@ -181,4 +238,17 @@ export function isPolarProjection(wkid: number): boolean {
     wkid === ARCTIC_BASEMAP_CONFIG.spatialReference.wkid ||
     wkid === ANTARCTIC_BASEMAP_CONFIG.spatialReference.wkid
   );
+}
+
+export function getConstraintsForWkid(wkid: number) {
+  switch (wkid) {
+    case ARCTIC_BASEMAP_CONFIG.spatialReference.wkid:
+      return ARCTIC_BASEMAP_CONFIG.constraints.bbox;
+    case ANTARCTIC_BASEMAP_CONFIG.spatialReference.wkid:
+      return ANTARCTIC_BASEMAP_CONFIG.constraints.bbox;
+    case SOUTH_GEORGIA_BASEMAP_CONFIG.spatialReference.wkid:
+      return SOUTH_GEORGIA_BASEMAP_CONFIG.constraints.bbox;
+    default:
+      return WORLD_BASEMAP_CONFIG.constraints.bbox;
+  }
 }

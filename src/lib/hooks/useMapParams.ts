@@ -4,6 +4,7 @@ import {
   DEFAULT_SHOW_ASSET_POPUP,
   DEFAULT_SHOW_FULLSCREEN_BUTTON,
   DEFAULT_SHOW_GLOBE_OVERVIEW,
+  DEFAULT_SHOW_GRATICULE,
   DEFAULT_SHOW_RESET_BUTTON,
   DEFAULT_SHOW_ZOOM_BUTTON,
 } from '@/lib/config/mapParamDefaults';
@@ -36,6 +37,9 @@ export function useMapParams() {
     // Asset parameters
     'asset-id': assetId,
     'asset-force-popup': assetForcePopup = DEFAULT_SHOW_ASSET_POPUP,
+
+    // Overlays
+    graticule: showGraticule = DEFAULT_SHOW_GRATICULE,
   } = Route.useSearch();
 
   return {
@@ -44,7 +48,7 @@ export function useMapParams() {
     scale,
     centre,
     bbox: bbox ? bboxParamToArray(bbox) : undefined,
-    bboxForceRegionalExtent,
+    bboxForceRegionalExtent: convertEmptyStringParamToBooleanPresence(bboxForceRegionalExtent),
 
     // UI Controls
     showZoomButton: convertEmptyStringParamToBooleanPresence(showZoomButton),
@@ -57,5 +61,8 @@ export function useMapParams() {
     // Asset parameters
     assetId,
     assetForcePopup: convertEmptyStringParamToBooleanPresence(assetForcePopup),
+
+    // Overlays
+    showGraticule: convertEmptyStringParamToBooleanPresence(showGraticule),
   };
 }

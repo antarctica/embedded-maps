@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { test } from '@playwright/test';
 
 import {
   runAccessibilityCheck,
@@ -26,7 +26,7 @@ test.describe.parallel('Arctic Bounding Boxes', () => {
   for (const bbox of bboxes) {
     test.describe(`bbox=${bbox}`, () => {
       test.beforeEach(async ({ page }) => {
-        await page.goto(`/?bbox=[${bbox.join(',')}]`);
+        await page.goto(`/?bbox=${JSON.stringify(bbox)}`);
         await waitForMapReady(page);
       });
 
@@ -51,14 +51,7 @@ test.describe('Arctic Bounding Box with globe overview', () => {
   });
 
   test('snapshot', async ({ page }) => {
-    await page.waitForSelector('arcgis-map:not([updating])', {
-      state: 'visible',
-      timeout: 20000,
-    });
-
-    await page.waitForTimeout(5000);
-
-    await expect(page).toHaveScreenshot('bbox-arctic-globe-overview.png', { fullPage: true });
+    await testSnapshot(page, 'bbox-arctic-globe-overview');
   });
 
   test('should not have any automatically detectable accessibility issues', async ({ page }) => {

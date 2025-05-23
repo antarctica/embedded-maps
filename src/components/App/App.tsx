@@ -5,13 +5,6 @@ import { useMapParams } from '@/lib/hooks/useMapParams';
 
 import { Map } from '../Map/Map';
 
-function convertEmptyStringToBooleanPresence(
-  value: string | boolean | undefined,
-): boolean | undefined {
-  if (value === '' || typeof value === 'string') return true;
-  return value;
-}
-
 export function App() {
   const {
     // View parameters
@@ -32,6 +25,9 @@ export function App() {
     // Asset parameters
     assetId,
     assetForcePopup,
+
+    // Overlays
+    showGraticule,
   } = useMapParams();
 
   return (
@@ -41,13 +37,14 @@ export function App() {
         initialCenter={centre}
         initialZoom={zoom}
         initialBbox={bbox}
-        bboxForceRegionalExtent={convertEmptyStringToBooleanPresence(bboxForceRegionalExtent)}
+        bboxForceRegionalExtent={bboxForceRegionalExtent}
         initialScale={scale}
-        showGlobeOverview={convertEmptyStringToBooleanPresence(showGlobeOverview)}
-        showZoomButton={convertEmptyStringToBooleanPresence(showZoomButton)}
-        showResetButton={convertEmptyStringToBooleanPresence(showResetButton)}
-        showFullscreenButton={convertEmptyStringToBooleanPresence(showFullscreenButton)}
-        initialShowAssetPopup={convertEmptyStringToBooleanPresence(assetForcePopup)}
+        showGraticule={showGraticule}
+        showGlobeOverview={showGlobeOverview}
+        showZoomButton={showZoomButton}
+        showResetButton={showResetButton}
+        showFullscreenButton={showFullscreenButton}
+        initialShowAssetPopup={assetForcePopup}
       />
     </GeometryToolsLoader>
   );

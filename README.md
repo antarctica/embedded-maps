@@ -122,6 +122,23 @@ This follows the OGC API Features specification for handling bounding boxes that
 >
 > Setting `bbox-force-regional-extent` without a value evaluates to true. Use `bbox-force-regional-extent=false` to override.
 
+
+#### Point parameters
+
+Set these parameters to visualize one or more points on the map:
+
+| Parameter | Description                                      | Default     | Example                    |
+|-----------|--------------------------------------------------|-------------|----------------------------|
+| `points`  | Single point or array of points. Each point can be either a [longitude, latitude] coordinate pair or an object with `longitude`, `latitude`, optional `color`, and optional `size` properties | -           | `[[-90, -0]]` or `[{"longitude": 106.8, "latitude": -75.1, "color": "green", "size": 15}]` |
+
+
+
+> [!NOTE]
+> When using styled points, the `color` property accepts any valid CSS color value, and `size` is specified in pts.
+> Multiple points can be mixed between coordinate pairs and styled points in the same array.
+
+
+
 #### UI control parameters
 
 Set these parameters to enable or disable map controls:
@@ -190,6 +207,12 @@ Show a bounding box, zoomed out to show the full basemap:
 
 ```
 https://embedded-maps.data.bas.ac.uk/v1/?bbox=[10.0,74.0,35.0,81.0]&bbox-force-regional-extent
+```
+
+Show multiple points with different styles and a globe overview:
+
+```
+https://embedded-maps.data.bas.ac.uk/v1/?points=[[-68.3359,-67.5894],{"longitude":106.8,"latitude":-75.1,"color":"green","size":15}]&globe-overview
 ```
 
 Enable all available map controls (zoom and reset are also shown by default):

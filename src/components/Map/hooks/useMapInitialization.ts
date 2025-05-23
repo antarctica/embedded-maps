@@ -12,6 +12,7 @@ import { AddMapPointsCommand } from '../commands/AddMapPointsCommand';
 
 interface UseMapInitializationProps {
   initialAssetId?: string;
+  initialAssetType?: string;
   initialCenter?: [number, number];
   initialBbox?: BBox[];
   initialPoints?: MapPoint[];
@@ -30,6 +31,7 @@ interface UseMapInitializationResult {
 
 export function useMapInitialization({
   initialAssetId,
+  initialAssetType,
   initialCenter,
   initialBbox,
   initialPoints,
@@ -49,8 +51,14 @@ export function useMapInitialization({
       if (initialCenter) {
         commands.push(new MapCenterCommand(initialCenter));
       }
-      if (initialAssetId) {
-        commands.push(new FindAssetCommand(initialAssetId, initialShowAssetPopup));
+      if (initialAssetId || initialAssetType) {
+        commands.push(
+          new FindAssetCommand({
+            assetId: initialAssetId,
+            assetType: initialAssetType,
+            showAssetPopup: initialShowAssetPopup,
+          }),
+        );
       }
       if (initialBbox) {
         commands.push(new AddBboxCommand(initialBbox, bboxForceRegionalExtent));
@@ -66,6 +74,7 @@ export function useMapInitialization({
     map,
     initialCenter,
     initialAssetId,
+    initialAssetType,
     initialBbox,
     initialPoints,
     bboxForceRegionalExtent,

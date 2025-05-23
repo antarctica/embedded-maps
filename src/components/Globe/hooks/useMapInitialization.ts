@@ -19,12 +19,14 @@ interface UseMapInitializationProps {
   initialAssetId?: string;
   initialBbox?: BBox[];
   initialPoints?: MapPoint[];
+  initialAssetType?: string;
 }
 
 export function useMapInitialization({
   initialAssetId,
   initialBbox,
   initialPoints,
+  initialAssetType,
 }: UseMapInitializationProps): UseMapInitializationResult {
   const { map, setMap, error, isExecuting, executeCommands } = useMapCommandExecuter();
 
@@ -34,8 +36,10 @@ export function useMapInitialization({
       setMap(mapInstance);
       const commands = [new SetupGlobeMapCommand()];
 
-      if (initialAssetId) {
-        commands.push(new AddAssetLayerCommand(initialAssetId));
+      if (initialAssetId || initialAssetType) {
+        commands.push(
+          new AddAssetLayerCommand({ assetId: initialAssetId, assetType: initialAssetType }),
+        );
       }
 
       if (initialBbox) {
@@ -48,7 +52,7 @@ export function useMapInitialization({
 
       executeCommands(mapInstance, commands);
     }
-  }, [map, initialAssetId, initialBbox, initialPoints, executeCommands, setMap]);
+  }, [map, initialAssetId, initialBbox, initialPoints, executeCommands, setMap, initialAssetType]);
 
   return {
     map,

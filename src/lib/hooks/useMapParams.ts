@@ -35,6 +35,7 @@ export function useMapParams() {
 
     // Asset parameters
     'asset-id': assetId,
+    'asset-type': assetType,
     'asset-force-popup': assetForcePopup = DEFAULT_SHOW_ASSET_POPUP,
 
     // Overlays
@@ -60,6 +61,7 @@ export function useMapParams() {
 
     // Asset parameters
     assetId,
+    assetType,
     assetForcePopup: convertEmptyStringParamToBooleanPresence(assetForcePopup),
 
     // Overlays

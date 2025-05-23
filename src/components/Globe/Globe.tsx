@@ -28,6 +28,7 @@ const globe = tv({
 interface GlobeProps {
   initialAssetId?: string;
   initialBbox?: BBox[];
+  initialAssetType?: string;
   initialPoints?: MapPoint[];
 }
 
@@ -78,7 +79,12 @@ const getCorrectedSceneViewpoint = (mapViewpoint: __esri.Viewpoint): __esri.View
   return newViewPoint;
 };
 
-export function Globe({ initialAssetId, initialBbox, initialPoints }: GlobeProps) {
+export function Globe({
+  initialAssetId,
+  initialBbox,
+  initialPoints,
+  initialAssetType,
+}: GlobeProps) {
   const mapView = useCurrentMapView();
   const [sceneView, setSceneView] = useState<__esri.SceneView>();
 
@@ -127,6 +133,7 @@ export function Globe({ initialAssetId, initialBbox, initialPoints }: GlobeProps
     initialAssetId,
     initialBbox,
     initialPoints,
+    initialAssetType,
   });
 
   useWatchEffect(

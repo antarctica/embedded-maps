@@ -174,6 +174,7 @@ Set these parameters to visualise the last known position of an asset tracked by
 | Parameter           | Description                     | Default | Example                      |
 |---------------------|---------------------------------|---------|------------------------------|
 | `asset-id`          | ID of the asset to visualise    | -       | `01JDRYA29AR6PFGXVCZ40V8C74` |
+| `asset-type`        | Type code to filter assets by   | -       | `98` (Snowmobile), `62` (Aeroplane) |
 | `asset-force-popup` | Open popup for asset by default | false   | true                         |
 
 > [!TIP]
@@ -237,6 +238,12 @@ Show the latest position of the SDA on a non-interactive display:
 
 ```
 https://embedded-maps.data.bas.ac.uk/v1/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&asset-force-popup&scale=500000&globe-overview&ctrl-zoom=false&ctrl-reset=false&ctrl-fullscreen=false
+```
+
+Show all snowmobiles with a globe overview:
+
+```
+https://embedded-maps.data.bas.ac.uk/v1/?asset-type=98&globe-overview
 ```
 
 ### Embedding

@@ -25,6 +25,7 @@ export function App() {
 
     // Asset parameters
     assetId,
+    assetType,
     assetForcePopup,
 
     // Overlays
@@ -35,6 +36,7 @@ export function App() {
     <GeometryToolsLoader>
       <Map
         initialAssetId={assetId}
+        initialAssetType={assetType?.toString()}
         initialCenter={centre}
         initialZoom={zoom}
         initialBbox={bbox}

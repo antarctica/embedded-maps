@@ -149,11 +149,14 @@ Set these parameters to enable or disable map controls:
 | `ctrl-reset`      | Show view reset (home) control | true    | true    |
 | `ctrl-fullscreen` | Show fullscreen view control   | false   | true    |
 | `graticule`       | Show graticule grid lines      | false   | true    |
+| `legacy-theme`    | Use legacy BAS style kit      | false   | true    |
 
 > [!NOTE]
 > Setting a parameter without a value evaluates to true. Use `{parameter}=false` to override.
 >
 > All maps will also include scale and attribution UI controls which cannot be disabled.
+>
+> The `legacy-theme` parameter enables backward compatibility with existing BAS style implementations while supporting future style updates.
 
 #### Overview parameters
 

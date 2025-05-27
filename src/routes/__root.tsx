@@ -19,6 +19,7 @@ const baseSearchSchema = z.object({
   'ctrl-zoom': fallback(booleanWithoutValue().optional(), undefined),
   'ctrl-reset': fallback(booleanWithoutValue().optional(), undefined),
   'ctrl-fullscreen': fallback(booleanWithoutValue().optional(), undefined),
+  'legacy-theme': fallback(booleanWithoutValue().optional(), undefined),
 
   // Globe overview
   'globe-overview': fallback(booleanWithoutValue().optional(), undefined),

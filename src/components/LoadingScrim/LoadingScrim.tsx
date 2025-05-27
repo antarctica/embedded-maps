@@ -30,7 +30,11 @@ function LoadingScrim({ isLoading, error }: { isLoading: boolean; error?: string
 
   return (
     <div className={loadingScrim({ isLoading: shouldShow })}>
-      {error ? <h2>{`Error initializing map: ${error}`}</h2> : <SpinLoader size={120}></SpinLoader>}
+      {error ? (
+        <h2>{`Error initializing map: ${error}`}</h2>
+      ) : (
+        <SpinLoader className="text-fg" size={140}></SpinLoader>
+      )}
     </div>
   );
 }

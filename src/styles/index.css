@@ -7,6 +7,12 @@
 @import "./shadow.css";
 @import "tailwindcss";
 
+@custom-variant theme-legacy {
+  &:where([data-theme="legacy"] *) {
+    @slot;
+  }
+}
+
 @theme {
   /* Fonts */
   --font-sans: 'Work Sans Variable', sans-serif;
@@ -89,7 +95,8 @@
 
 @theme inline {
   /* Semantic Colors */
-  --color-htmlBackground: var(--color-gray-4);
+  --color-accent: var(--color-blue-9);
+  --color-htmlBackground: var(--color-gray-3);
   --color-fg: var(--color-gray-12);
   --color-muted: var(--color-blue-7);
   --color-border: var(--color-blue-3);

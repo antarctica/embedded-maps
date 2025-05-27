@@ -1,4 +1,5 @@
 import {
+  DEFAULT_LEGACY_THEME,
   DEFAULT_REGIONAL_EXTENT,
   DEFAULT_SHOW_ASSET_POPUP,
   DEFAULT_SHOW_FULLSCREEN_BUTTON,
@@ -29,6 +30,7 @@ export function useMapParams() {
     'ctrl-zoom': showZoomButton = DEFAULT_SHOW_ZOOM_BUTTON,
     'ctrl-reset': showResetButton = DEFAULT_SHOW_RESET_BUTTON,
     'ctrl-fullscreen': showFullscreenButton = DEFAULT_SHOW_FULLSCREEN_BUTTON,
+    'legacy-theme': legacyTheme = DEFAULT_LEGACY_THEME,
 
     // Globe overview
     'globe-overview': showGlobeOverview = DEFAULT_SHOW_GLOBE_OVERVIEW,
@@ -55,6 +57,7 @@ export function useMapParams() {
     showZoomButton: convertEmptyStringParamToBooleanPresence(showZoomButton),
     showResetButton: convertEmptyStringParamToBooleanPresence(showResetButton),
     showFullscreenButton: convertEmptyStringParamToBooleanPresence(showFullscreenButton),
+    legacyTheme: convertEmptyStringParamToBooleanPresence(legacyTheme),
 
     // Globe overview
     showGlobeOverview: convertEmptyStringParamToBooleanPresence(showGlobeOverview),

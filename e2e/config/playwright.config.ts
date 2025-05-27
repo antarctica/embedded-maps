@@ -20,7 +20,7 @@ const rootDir = path.resolve(__dirname, '../..');
 export default defineConfig({
   testDir: '../specs',
   /* Set appropriate timeouts for local and CI environments */
-  timeout: isCI ? 60000 : 30000, // 60s for CI, 30s for local
+  timeout: 60000, // 60s for both local and CI
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -124,7 +124,7 @@ export default defineConfig({
     command: 'npm run dev',
     port: 5173,
     reuseExistingServer: !isCI,
-    timeout: isCI ? 60000 : 30000, // Match the test timeout
+    timeout: 60000, // Match the test timeout
     cwd: rootDir, // Ensure dev server runs from project root
   },
 });

@@ -10,32 +10,32 @@ import {
 const testCases = [
   {
     name: 'default view with graticule',
-    params: '?graticule=true',
+    params: '?ctrl-graticule=true',
   },
   {
     name: 'arctic view with graticule',
-    params: '?bbox=[-180,60,180,90]&graticule=true',
+    params: '?bbox=[-180,60,180,90]&ctrl-graticule=true',
   },
   {
     name: 'antarctic view with graticule',
-    params: '?bbox=[-180,-90,180,-60]&graticule=true',
+    params: '?bbox=[-180,-90,180,-60]&ctrl-graticule=true',
   },
   {
     name: 'mercator view with graticule',
-    params: '?bbox=[24,34.5,28,39]&graticule=true',
+    params: '?bbox=[24,34.5,28,39]&ctrl-graticule=true',
   },
   {
     name: 'globe overview with graticule',
-    params: '?globe-overview=true&graticule=true',
+    params: '?globe-overview=true&ctrl-graticule=true',
     requiresSceneReady: true,
   },
   {
     name: 'graticule with custom zoom',
-    params: '?centre=[-180,-90]&zoom=6&graticule=true',
+    params: '?centre=[-180,-90]&zoom=6&ctrl-graticule=true',
   },
   {
     name: 'graticule with custom scale',
-    params: '?centre=[24,34.5]&scale=500000&graticule=true',
+    params: '?centre=[24,34.5]&scale=500000&ctrl-graticule=true',
   },
 ];
 

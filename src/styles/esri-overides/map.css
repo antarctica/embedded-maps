@@ -4,15 +4,10 @@
   }
 
   .esri-attribution {
-    color: var(--color-blue-contrast) !important;
-    background-color: var(--color-blue-a9) !important;
+    @apply text-blue-contrast bg-blue-a9 theme-bsk1:text-gray-1 theme-bsk1:bg-gray-12;
   }
 
-  .esri-attribution__sources {
-    font-weight: var(--font-weight-semibold) !important;
-  }
-
-  .esri-ui-inner-container .esri-component {
+  .esri-ui-inner-container .esri-component:not(.esri-popup) {
     box-shadow: none !important;
   }
 

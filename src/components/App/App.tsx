@@ -1,5 +1,7 @@
 import '@arcgis/core/assets/esri/themes/light/main.css?inline';
 
+import { useEffect } from 'react';
+
 import GeometryToolsLoader from '@/lib/arcgis/components/GeometryToolsLoader';
 import { useMapParams } from '@/lib/hooks/useMapParams';
 
@@ -19,6 +21,7 @@ export function App() {
     showZoomButton,
     showResetButton,
     showFullscreenButton,
+    theme,
 
     // Globe overview
     showGlobeOverview,
@@ -31,6 +34,10 @@ export function App() {
     // Overlays
     showGraticule,
   } = useMapParams();
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
   return (
     <GeometryToolsLoader>

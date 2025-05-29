@@ -11,9 +11,9 @@ import SvgIcon from '../../SvgIcon';
 const zoomButton = tv({
   slots: {
     wrapper:
-      'pointer-events-auto flex flex-col items-center justify-center overflow-hidden rounded-sm shadow-sm md:rounded-md theme-legacy:rounded-none',
+      'pointer-events-auto flex flex-col items-center justify-center overflow-hidden rounded-sm shadow-sm md:rounded-md theme-bsk1:rounded-none',
     button:
-      'border-bottom-none theme-legacy:first-of-type:border-b-0 theme-legacy:last-of-type:border-t-0',
+      'border-bottom-none theme-bsk1:first-of-type:border-b-0 theme-bsk1:last-of-type:border-t-0',
   },
 });
 
@@ -38,7 +38,7 @@ function ZoomControl() {
         size="md"
         contained
       />
-      <Divider className="bg-gray-1 theme-legacy:bg-gray-8" orientation="horizontal" />
+      <Divider className="bg-gray-1 theme-bsk1:bg-gray-8" orientation="horizontal" />
       <IconButton
         className={button()}
         icon={<SvgIcon name="icon-subtract" size={16} />}

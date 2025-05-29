@@ -21,7 +21,7 @@ export function App() {
     showZoomButton,
     showResetButton,
     showFullscreenButton,
-    legacyTheme,
+    theme,
 
     // Globe overview
     showGlobeOverview,
@@ -36,8 +36,8 @@ export function App() {
   } = useMapParams();
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', legacyTheme ? 'legacy' : 'default');
-  }, [legacyTheme]);
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
   return (
     <GeometryToolsLoader>

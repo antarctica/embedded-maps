@@ -1,5 +1,4 @@
 import {
-  DEFAULT_LEGACY_THEME,
   DEFAULT_REGIONAL_EXTENT,
   DEFAULT_SHOW_ASSET_POPUP,
   DEFAULT_SHOW_FULLSCREEN_BUTTON,
@@ -7,6 +6,7 @@ import {
   DEFAULT_SHOW_GRATICULE,
   DEFAULT_SHOW_RESET_BUTTON,
   DEFAULT_SHOW_ZOOM_BUTTON,
+  DEFAULT_THEME,
 } from '@/lib/config/mapParamDefaults';
 import { Route } from '@/routes/__root';
 
@@ -30,7 +30,7 @@ export function useMapParams() {
     'ctrl-zoom': showZoomButton = DEFAULT_SHOW_ZOOM_BUTTON,
     'ctrl-reset': showResetButton = DEFAULT_SHOW_RESET_BUTTON,
     'ctrl-fullscreen': showFullscreenButton = DEFAULT_SHOW_FULLSCREEN_BUTTON,
-    'legacy-theme': legacyTheme = DEFAULT_LEGACY_THEME,
+    theme = DEFAULT_THEME,
 
     // Globe overview
     'globe-overview': showGlobeOverview = DEFAULT_SHOW_GLOBE_OVERVIEW,
@@ -41,7 +41,7 @@ export function useMapParams() {
     'asset-force-popup': assetForcePopup = DEFAULT_SHOW_ASSET_POPUP,
 
     // Overlays
-    graticule: showGraticule = DEFAULT_SHOW_GRATICULE,
+    'ctrl-graticule': showGraticule = DEFAULT_SHOW_GRATICULE,
   } = Route.useSearch();
 
   return {
@@ -57,7 +57,7 @@ export function useMapParams() {
     showZoomButton: convertEmptyStringParamToBooleanPresence(showZoomButton),
     showResetButton: convertEmptyStringParamToBooleanPresence(showResetButton),
     showFullscreenButton: convertEmptyStringParamToBooleanPresence(showFullscreenButton),
-    legacyTheme: convertEmptyStringParamToBooleanPresence(legacyTheme),
+    theme,
 
     // Globe overview
     showGlobeOverview: convertEmptyStringParamToBooleanPresence(showGlobeOverview),

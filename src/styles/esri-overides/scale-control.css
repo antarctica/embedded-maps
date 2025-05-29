@@ -4,7 +4,7 @@
   --scalebar-line-color: var(--color-blue-9);
 }
 
-html[data-theme="legacy"] .scale-control {
+html[data-theme="bsk1"] .scale-control {
   --scalebar-text: var(--color-gray-11);
   --scalebar-bg: var(--color-gray-surface);
   --scalebar-line-color: var(--color-gray-11);

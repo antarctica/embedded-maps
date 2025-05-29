@@ -19,13 +19,13 @@ const baseSearchSchema = z.object({
   'ctrl-zoom': fallback(booleanWithoutValue().optional(), undefined),
   'ctrl-reset': fallback(booleanWithoutValue().optional(), undefined),
   'ctrl-fullscreen': fallback(booleanWithoutValue().optional(), undefined),
-  'legacy-theme': fallback(booleanWithoutValue().optional(), undefined),
+  theme: fallback(z.enum(['bsk1', 'bsk2']).optional(), undefined),
 
   // Globe overview
   'globe-overview': fallback(booleanWithoutValue().optional(), undefined),
 
   // Overlays
-  graticule: fallback(booleanWithoutValue().optional(), undefined),
+  'ctrl-graticule': fallback(booleanWithoutValue().optional(), undefined),
 
   // Asset parameters
   'asset-id': fallback(z.string().optional(), undefined),

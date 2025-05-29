@@ -6,4 +6,4 @@ export const DEFAULT_SHOW_GLOBE_OVERVIEW = false;
 export const DEFAULT_SHOW_ASSET_POPUP = false;
 export const DEFAULT_SHOW_GRATICULE = false;
 export const DEFAULT_CENTER: [number, number] = [-180, -90];
-export const DEFAULT_LEGACY_THEME = false;
+export const DEFAULT_THEME = 'bsk-2';

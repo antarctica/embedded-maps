@@ -8,12 +8,12 @@ export const buttonRecipe = tv({
   variants: {
     variant: {
       mapButton:
-        'rounded-sm border-transparent bg-blue-9 text-white shadow-sm hover:bg-blue-10 active:brightness-92 active:saturate-110 disabled:bg-blue-9/70 theme-legacy:border theme-legacy:border-gray-8 theme-legacy:bg-gray-2 theme-legacy:text-gray-12 theme-legacy:hover:bg-gray-3 theme-legacy:disabled:bg-gray-2/70 theme-legacy:disabled:text-gray-12/70',
+        'rounded-sm border-transparent bg-blue-9 text-white shadow-sm hover:bg-blue-10 active:brightness-92 active:saturate-110 disabled:bg-blue-9/70 theme-bsk1:border theme-bsk1:border-gray-8 theme-bsk1:bg-gray-2 theme-bsk1:text-gray-12 theme-bsk1:hover:bg-gray-3 theme-bsk1:disabled:bg-gray-2/70 theme-bsk1:disabled:text-gray-12/70',
     },
     size: {
-      sm: 'h-6 gap-1 rounded-sm px-1 py-0.5 text-xs theme-legacy:rounded-none',
-      md: 'text-md h-8 gap-2 rounded-md px-1.5 py-1 theme-legacy:rounded-none',
-      lg: 'h-10 gap-2 rounded-md px-2 py-2 text-lg theme-legacy:rounded-none',
+      sm: 'h-6 gap-1 rounded-sm px-1 py-0.5 text-xs theme-bsk1:rounded-none',
+      md: 'text-md h-8 gap-2 rounded-md px-1.5 py-1 theme-bsk1:rounded-none',
+      lg: 'h-10 gap-2 rounded-md px-2 py-2 text-lg theme-bsk1:rounded-none',
     },
     contained: {
       true: 'rounded-none',

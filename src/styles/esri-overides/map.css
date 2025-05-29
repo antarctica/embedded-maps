@@ -4,7 +4,7 @@
   }
 
   .esri-attribution {
-    @apply text-blue-contrast bg-blue-a9 theme-legacy:text-gray-1 theme-legacy:bg-gray-12;
+    @apply text-blue-contrast bg-blue-a9 theme-bsk1:text-gray-1 theme-bsk1:bg-gray-12;
   }
 
   .esri-ui-inner-container .esri-component:not(.esri-popup) {

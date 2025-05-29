@@ -7,8 +7,8 @@
 @import "./shadow.css";
 @import "tailwindcss";
 
-@custom-variant theme-legacy {
-  &:where([data-theme="legacy"] *) {
+@custom-variant theme-bsk1 {
+  &:where([data-theme="bsk1"] *) {
     @slot;
   }
 }

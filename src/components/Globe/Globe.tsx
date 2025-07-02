@@ -12,7 +12,7 @@ import { BBox, MapPoint } from '@/lib/config/schema';
 import { appTwVariants } from '@/lib/helpers/tailwind-utils';
 import { isDefined } from '@/lib/types/typeGuards';
 
-import { useMapInitialization } from './hooks/useMapInitialization';
+import { useMapInitialisation } from './hooks/useMapInitialisation';
 
 const globe = appTwVariants({
   slots: {
@@ -92,10 +92,6 @@ export function Globe({
   const mapView = useCurrentMapView();
   const [sceneView, setSceneView] = useState<__esri.SceneView>();
 
-  const initialCorrectedViewpoint = React.useMemo(() => {
-    return getCorrectedSceneViewpoint(mapView.viewpoint);
-  }, [mapView]);
-
   const synchroniseSceneView = useCallback(
     (sceneView: __esri.SceneView | undefined) => {
       if (!sceneView) {
@@ -109,7 +105,7 @@ export function Globe({
       }
 
       try {
-        sceneView.set('viewpoint', correctedViewpoint);
+        sceneView.viewpoint = correctedViewpoint;
         if (mapView.spatialReference?.wkid && isPolarProjection(mapView.spatialReference.wkid)) {
           const camera = sceneView?.viewpoint.camera?.clone();
           const cameraPosition = camera?.position?.clone();
@@ -133,7 +129,7 @@ export function Globe({
     [mapView],
   );
 
-  const { map } = useMapInitialization({
+  const { map } = useMapInitialisation({
     initialAssetId,
     initialBbox,
     initialPoints,
@@ -208,7 +204,6 @@ export function Globe({
           tabIndex={-1}
           map={map}
           alphaCompositingEnabled={true}
-          viewpoint={initialCorrectedViewpoint ?? undefined}
           onarcgisViewReadyChange={(event) => {
             const sceneView = event.target.view;
             setSceneView(sceneView);

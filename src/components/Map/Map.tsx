@@ -12,7 +12,7 @@ import FullScreenControl from '../map-controls/FullScreenControl/FullScreenContr
 import HomeControl from '../map-controls/HomeControl';
 import ScaleControl from '../map-controls/ScaleControl/ScaleControl';
 import ZoomControl from '../map-controls/ZoomControl';
-import { useMapInitialization } from './hooks/useMapInitialization';
+import { useMapInitialisation } from './hooks/useMapInitialisation';
 
 interface MapProps {
   // View parameters
@@ -57,7 +57,8 @@ export function Map({
   initialShowAssetPopup,
 }: MapProps) {
   const [viewPoint, setViewPoint] = React.useState<__esri.Viewpoint | undefined>(undefined);
-  const { map, error, isMapLoading, isViewReady, handleViewReady } = useMapInitialization({
+  const [isMapViewLoading, setIsMapViewLoading] = React.useState(true);
+  const { map, error, isMapLoading, handleViewReady } = useMapInitialisation({
     initialAssetId,
     initialAssetType,
     initialCenter,
@@ -65,6 +66,9 @@ export function Map({
     initialPoints,
     bboxForceRegionalExtent,
     initialShowAssetPopup,
+    postLoadCb: () => {
+      setIsMapViewLoading(false);
+    },
   });
 
   if (!map || isMapLoading || error) {
@@ -75,7 +79,7 @@ export function Map({
     <div
       className="map-container relative h-full w-full"
       data-testid="map-container"
-      data-ready={isViewReady}
+      data-ready={!isMapViewLoading}
     >
       <ArcMapView
         className="pointer-events-auto h-full w-full"

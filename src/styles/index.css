@@ -13,6 +13,12 @@
   }
 }
 
+@custom-variant theme-bsk2 {
+  &:where([data-theme="bsk2"] *) {
+    @slot;
+  }
+}
+
 @theme {
   /* Fonts */
   --font-sans: 'Work Sans Variable', sans-serif;
@@ -84,6 +90,12 @@
   --color-accent-surface: var(--blue-surface);
   --color-accent-indicator: var(--blue-indicator);
   --color-accent-track: var(--blue-track);
+
+  --color-dark-blue: var(--dark-blue);
+  --color-light-blue: var(--light-blue);
+  --color-seasalt: var(--seasalt);
+  --color-bright-blue: var(--bright-blue);
+  --color-dark-gray: var(--dark-gray);
 
   /* shadows */
   --shadow-sm: var(--app-shadow-sm);

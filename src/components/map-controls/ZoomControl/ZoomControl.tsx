@@ -11,7 +11,7 @@ import SvgIcon from '../../SvgIcon';
 const zoomButton = tv({
   slots: {
     wrapper:
-      'pointer-events-auto flex flex-col items-center justify-center overflow-hidden rounded-3xl bg-htmlBackground theme-bsk1:rounded-none',
+      'pointer-events-auto flex flex-col items-center justify-center overflow-hidden rounded-3xl bg-htmlBackground shadow-sm theme-bsk1:rounded-none',
     button:
       'border-bottom-none h-8 md:h-10 theme-bsk1:first-of-type:border-b-0 theme-bsk1:last-of-type:border-t-0',
   },

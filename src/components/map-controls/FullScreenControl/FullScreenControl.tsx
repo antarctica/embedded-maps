@@ -11,7 +11,7 @@ function FullScreenControl() {
   const isDisabled = useWatchState(() => widget.state === 'disabled') ?? false;
   return (
     <IconButton
-      icon={<SvgIcon name="icon-fullscreen" size={14} />}
+      icon={<SvgIcon name="icon-fullscreen" />}
       aria-label="Full Screen"
       isDisabled={isDisabled}
       onPress={() => widget.toggle()}

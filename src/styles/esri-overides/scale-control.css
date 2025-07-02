@@ -1,7 +1,7 @@
 .scale-control {
-  --scalebar-text: var(--color-blue-9);
-  --scalebar-bg: var(--color-blue-surface);
-  --scalebar-line-color: var(--color-blue-9);
+  --scalebar-text: var(--color-accent-9);
+  --scalebar-bg: var(--color-accent-surface);
+  --scalebar-line-color: var(--color-accent-9);
 }
 
 html[data-theme="bsk1"] .scale-control {

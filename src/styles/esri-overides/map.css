@@ -4,7 +4,7 @@
   }
 
   .esri-attribution {
-    @apply text-blue-contrast bg-blue-a9 theme-bsk1:text-gray-1 theme-bsk1:bg-gray-12;
+    @apply bg-accent-a9 text-accent-contrast theme-bsk1:bg-gray-12 theme-bsk1:text-gray-1;
   }
 
   .esri-ui-inner-container .esri-component:not(.esri-popup) {
@@ -14,4 +14,8 @@
   .esri-component {
     margin: 0 !important;
   }
+}
+
+:root {
+  --calcite-color-brand: var(--color-accent-a8);
 }

@@ -3,18 +3,18 @@ import * as projectOperator from '@arcgis/core/geometry/operators/projectOperato
 import VirtualLighting from '@arcgis/core/views/3d/environment/VirtualLighting.js';
 import WebsceneColorBackground from '@arcgis/core/webscene/background/ColorBackground.js';
 import React, { useCallback, useEffect, useState } from 'react';
-import { tv } from 'tailwind-variants';
 
 import { ArcSceneView } from '@/lib/arcgis/components/ArcView/ArcSceneView';
 import { useCurrentMapView, useWatchEffect } from '@/lib/arcgis/hooks';
 import { isEsriPoint } from '@/lib/arcgis/typings/typeGuards';
 import { isPolarProjection } from '@/lib/config/basemap';
 import { BBox, MapPoint } from '@/lib/config/schema';
+import { appTwVariants } from '@/lib/helpers/tailwind-utils';
 import { isDefined } from '@/lib/types/typeGuards';
 
 import { useMapInitialization } from './hooks/useMapInitialization';
 
-const globe = tv({
+const globe = appTwVariants({
   slots: {
     wrapper:
       'pointer-events-none absolute top-0 right-0 grid h-[10rem] w-[10rem] place-items-center overflow-hidden rounded-full border-4 border-solid border-seasalt shadow-lg md:h-[16rem] md:w-[16rem] md:border-6 lg:h-[20rem] lg:w-[20rem] lg:border-8 theme-bsk1:border-white',

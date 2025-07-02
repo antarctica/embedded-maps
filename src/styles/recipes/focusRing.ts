@@ -1,6 +1,6 @@
-import { tv } from 'tailwind-variants';
+import { appTwVariants } from '@/lib/helpers/tailwind-utils';
 
-export const insetfocusRing = tv({
+export const insetfocusRing = appTwVariants({
   base: 'outline -outline-offset-4 outline-accent-9',
   variants: {
     isFocusVisible: {
@@ -10,7 +10,7 @@ export const insetfocusRing = tv({
   },
 });
 
-export const focusRing = tv({
+export const focusRing = appTwVariants({
   base: 'outline outline-offset-2 outline-accent-9',
   variants: {
     isFocusVisible: {

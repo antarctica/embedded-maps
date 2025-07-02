@@ -1,9 +1,10 @@
 import React from 'react';
-import { tv } from 'tailwind-variants';
+
+import { appTwVariants } from '@/lib/helpers/tailwind-utils';
 
 import SpinLoader from '../SpinLoader';
 
-const loadingScrim = tv({
+const loadingScrim = appTwVariants({
   base: 'absolute inset-0 h-full w-full place-content-center bg-htmlBackground text-fg opacity-0 transition-[behavior:allow-discrete] duration-[600ms]',
   variants: {
     isLoading: {

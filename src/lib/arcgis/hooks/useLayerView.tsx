@@ -3,15 +3,15 @@ import React from 'react';
 export function useLayerView<Layer extends __esri.Layer, LayerView extends __esri.LayerView>(
   mapView: __esri.View | undefined,
   layer: Layer,
-  removeLayerOnUnmount = true,
+  removeLayerOnUnmount = false,
 ): { layer: Layer; layerView: LayerView | undefined } {
   const [layerView, setLayerView] = React.useState<LayerView | undefined>(undefined);
 
   React.useEffect(() => {
-    if (!mapView) return;
+    if (!mapView || !mapView.map) return;
 
     // Only add the layer if it's not already in the map
-    const isLayerInMap = mapView.map.layers.includes(layer);
+    const isLayerInMap = mapView.map.allLayers.includes(layer);
 
     if (isLayerInMap) {
       mapView.whenLayerView(layer).then((layerView) => {
@@ -26,10 +26,8 @@ export function useLayerView<Layer extends __esri.Layer, LayerView extends __esr
     }
 
     return () => {
-      // Only remove the layer if we added it ourselves and
-      // we want to remove it on unmount
-      if (isLayerInMap && removeLayerOnUnmount) {
-        mapView.map.remove(layer);
+      if (removeLayerOnUnmount) {
+        mapView.map?.remove(layer);
       }
     };
   }, [mapView, layer, removeLayerOnUnmount]);

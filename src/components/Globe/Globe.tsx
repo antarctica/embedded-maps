@@ -10,7 +10,7 @@ import { useCurrentMapView, useWatchEffect } from '@/lib/arcgis/hooks';
 import { isEsriPoint } from '@/lib/arcgis/typings/typeGuards';
 import { isPolarProjection } from '@/lib/config/basemap';
 import { BBox, MapPoint } from '@/lib/config/schema';
-import { isDefined } from '@/lib/helpers/typeGuards';
+import { isDefined } from '@/lib/types/typeGuards';
 
 import { useMapInitialization } from './hooks/useMapInitialization';
 
@@ -62,7 +62,11 @@ const getCorrectedSceneViewpoint = (mapViewpoint: __esri.Viewpoint): __esri.View
     viewPointTargetGeometry,
     SpatialReference.WGS84,
   );
-  if (Array.isArray(globalCRSViewPoint) || !isEsriPoint(globalCRSViewPoint)) {
+  if (
+    !isDefined(globalCRSViewPoint) ||
+    Array.isArray(globalCRSViewPoint) ||
+    !isEsriPoint(globalCRSViewPoint)
+  ) {
     return null;
   }
 

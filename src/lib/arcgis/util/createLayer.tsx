@@ -28,10 +28,10 @@ export function createLayer<
       if (!mapView) return;
       const layer = new LayerConstructor(layerProps as LayerProperties);
       setLayer(layer);
-      mapView.map.add(layer);
+      mapView.map?.add(layer);
 
       return () => {
-        mapView.map.remove(layer);
+        mapView.map?.remove(layer);
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mapView]);

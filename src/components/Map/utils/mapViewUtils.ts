@@ -87,7 +87,7 @@ function updateRotationSettings(
 }
 
 export function applyBasemapConstraints(mapView: __esri.MapView, basemapConfig: BasemapConfig) {
-  if (!mapView.map.basemap) {
+  if (!mapView.map?.basemap) {
     return;
   }
 

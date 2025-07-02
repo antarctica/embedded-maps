@@ -11,9 +11,9 @@ import SvgIcon from '../../SvgIcon';
 const zoomButton = tv({
   slots: {
     wrapper:
-      'pointer-events-auto flex flex-col items-center justify-center overflow-hidden rounded-sm shadow-sm md:rounded-md theme-bsk1:rounded-none',
+      'pointer-events-auto flex flex-col items-center justify-center overflow-hidden rounded-3xl bg-htmlBackground theme-bsk1:rounded-none',
     button:
-      'border-bottom-none theme-bsk1:first-of-type:border-b-0 theme-bsk1:last-of-type:border-t-0',
+      'border-bottom-none h-8 md:h-10 theme-bsk1:first-of-type:border-b-0 theme-bsk1:last-of-type:border-t-0',
   },
 });
 
@@ -30,7 +30,7 @@ function ZoomControl() {
     <div className={wrapper()}>
       <IconButton
         className={button()}
-        icon={<SvgIcon name="icon-add" size={16} />}
+        icon={<SvgIcon name="icon-add" className="h-4 w-4 md:h-5 md:w-5" />}
         aria-label="Zoom In"
         isDisabled={!canZoomIn}
         onPress={() => widget.zoomIn()}
@@ -38,10 +38,10 @@ function ZoomControl() {
         size="md"
         contained
       />
-      <Divider className="bg-gray-1 theme-bsk1:bg-gray-8" orientation="horizontal" />
+      <Divider className="bg-blue-a4 theme-bsk1:bg-gray-8" orientation="horizontal" />
       <IconButton
         className={button()}
-        icon={<SvgIcon name="icon-subtract" size={16} />}
+        icon={<SvgIcon name="icon-subtract" className="h-4 w-4 md:h-5 md:w-5" />}
         aria-label="Zoom Out"
         isDisabled={!canZoomOut}
         onPress={() => widget.zoomOut()}

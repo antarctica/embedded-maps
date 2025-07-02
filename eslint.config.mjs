@@ -1,4 +1,5 @@
 import { FlatCompat } from '@eslint/eslintrc';
+import pluginRouter from '@tanstack/eslint-plugin-router';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import pluginReact from 'eslint-plugin-react';
 import reactCompiler from 'eslint-plugin-react-compiler';
@@ -30,6 +31,9 @@ const eslintConfig = [
       'public/arcgis',
     ],
   },
+
+  // tanstack router
+  ...pluginRouter.configs['flat/recommended'],
 
   // react
   {

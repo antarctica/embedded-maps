@@ -1,7 +1,7 @@
 import { load } from 'cheerio';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
-import { Config, optimize } from 'svgo';
+import { type Config, optimize } from 'svgo';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));

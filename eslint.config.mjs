@@ -29,6 +29,9 @@ const eslintConfig = [
       'node_modules',
       'dist',
       'public/arcgis',
+      'playwright-report/**',
+      'e2e/output/**',
+      'e2e/results/**',
     ],
   },
 

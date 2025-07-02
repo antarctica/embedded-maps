@@ -10,7 +10,7 @@ import MeshComponent from '@arcgis/core/geometry/support/MeshComponent';
 import { isEsriExtent } from '@/lib/arcgis/typings/typeGuards';
 import { getBasemapConfigForMapProjection, MapProjection } from '@/lib/config/basemap';
 import { BBox } from '@/lib/config/schema';
-import { isDefined } from '@/lib/helpers/typeGuards';
+import { isDefined } from '@/lib/types/typeGuards';
 
 /**
  * Reference the BBOX spec to understand the behavior around the antimeridian:

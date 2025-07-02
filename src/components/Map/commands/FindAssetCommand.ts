@@ -12,7 +12,7 @@ import {
 } from '@/lib/config/assetLayer';
 import { getBasemapConfigForMapProjection, getMapProjectionFromBbox } from '@/lib/config/basemap';
 import { BBox } from '@/lib/config/schema';
-import { isDefined } from '@/lib/helpers/typeGuards';
+import { isDefined } from '@/lib/types/typeGuards';
 
 import { applyBasemapConstraints, applyPolarHeadingCorrection } from '../utils/mapViewUtils';
 

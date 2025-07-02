@@ -90,7 +90,7 @@ export function Map({
       >
         {showGraticule && <GraticuleLayer />}
         <arcgis-placement position="top-left">
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 lg:gap-3">
             {showZoomButton && <ZoomControl />}
             {showResetButton && <HomeControl viewPoint={viewPoint} />}
             {showFullscreenButton && <FullScreenControl />}

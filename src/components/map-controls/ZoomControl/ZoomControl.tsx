@@ -13,7 +13,7 @@ const zoomButton = tv({
     wrapper:
       'pointer-events-auto flex flex-col items-center justify-center rounded-3xl bg-htmlBackground shadow-sm theme-bsk1:rounded-none',
     button:
-      'border-bottom-none h-8 shadow-none md:h-10 theme-bsk1:first-of-type:border-b-0 theme-bsk1:last-of-type:border-t-0 theme-bsk2:first-of-type:rounded-t-3xl theme-bsk2:last-of-type:rounded-b-3xl',
+      'border-bottom-none h-8 shadow-none first-of-type:rounded-t-3xl last-of-type:rounded-b-3xl md:h-10 theme-bsk1:rounded-none! theme-bsk1:first-of-type:border-b-0 theme-bsk1:last-of-type:border-t-0',
   },
 });
 

@@ -2,7 +2,7 @@ import { Point, SpatialReference } from '@arcgis/core/geometry';
 import * as projectOperator from '@arcgis/core/geometry/operators/projectOperator.js';
 import VirtualLighting from '@arcgis/core/views/3d/environment/VirtualLighting.js';
 import WebsceneColorBackground from '@arcgis/core/webscene/background/ColorBackground.js';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { tv } from 'tailwind-variants';
 
 import { ArcSceneView } from '@/lib/arcgis/components/ArcView/ArcSceneView';
@@ -17,7 +17,7 @@ import { useMapInitialization } from './hooks/useMapInitialization';
 const globe = tv({
   slots: {
     wrapper:
-      'pointer-events-none absolute top-0 right-0 grid h-[10rem] w-[10rem] place-items-center overflow-hidden rounded-full border-8 border-solid border-white shadow-lg md:h-[16rem] md:w-[16rem] lg:h-[20rem] lg:w-[20rem]',
+      'pointer-events-none absolute top-0 right-0 grid h-[10rem] w-[10rem] place-items-center overflow-hidden rounded-full border-4 border-solid border-seasalt shadow-lg md:h-[16rem] md:w-[16rem] md:border-6 lg:h-[20rem] lg:w-[20rem] lg:border-8 theme-bsk1:border-white',
     sceneContainer:
       'pointer-events-none absolute h-[calc((var(--scale-factor)*101%))] w-[calc((var(--scale-factor)*101%))] pb-[2px]',
     circleDisplayOverlay:
@@ -163,6 +163,30 @@ export function Globe({
     },
   );
 
+  // Prevent focus on ArcSceneView and its children
+  useEffect(() => {
+    if (sceneView) {
+      const container = sceneView.container;
+      if (container) {
+        // Set tabindex on the container itself
+        container.setAttribute('tabindex', '-1');
+
+        // Prevent focus on all child elements recursively
+        const preventFocusOnElement = (element: Element) => {
+          if (element instanceof HTMLElement) {
+            element.setAttribute('tabindex', '-1');
+          }
+
+          // Recursively apply to all children
+          Array.from(element.children).forEach(preventFocusOnElement);
+        };
+
+        // Apply to all existing children
+        preventFocusOnElement(container);
+      }
+    }
+  }, [sceneView]);
+
   if (!map) {
     return null;
   }
@@ -170,9 +194,14 @@ export function Globe({
 
   return (
     <div className={wrapper()}>
-      <div className={sceneContainer()} style={{ '--scale-factor': '1.8' } as React.CSSProperties}>
+      <div
+        tabIndex={-1}
+        className={sceneContainer()}
+        style={{ '--scale-factor': '1.8' } as React.CSSProperties}
+      >
         <ArcSceneView
           id="ref-globe"
+          tabIndex={-1}
           map={map}
           alphaCompositingEnabled={true}
           viewpoint={initialCorrectedViewpoint ?? undefined}

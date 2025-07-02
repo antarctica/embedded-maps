@@ -4,7 +4,7 @@
   "version": "0.2.0",
   "type": "module",
   "scripts": {
-    "prepare": "npm run generate-sprites && husky",
+    "prepare": "husky && npm run generate-sprites && npm run extract-theme-variables",
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --fix",
@@ -13,7 +13,7 @@
     "test:e2e": "cd e2e/config && docker compose run --rm test",
     "test:e2e:update": "cd e2e/config && UPDATE_SNAPSHOTS=true docker compose run --rm test",
     "extract-sprites": "tsx scripts/extract-sprites.ts",
-    "generate-sprites": "tsx scripts/generate-sprites.ts",
+    "extract-theme-variables": "tsx scripts/extract-theme-variables.ts && npm run lint",    "generate-sprites": "tsx scripts/generate-sprites.ts",
     "update-health-check": "tsx scripts/update-health-check.ts"
   },
   "lint-staged": {

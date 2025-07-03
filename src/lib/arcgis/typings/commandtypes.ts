@@ -1,5 +1,8 @@
+export type SceneViewExecuter = (view: __esri.SceneView) => Promise<void> | void;
+export type MapViewExecuter = (view: __esri.MapView) => Promise<void> | void;
+
 export interface ViewCommand {
-  executeOnView: (view: __esri.MapView) => Promise<void> | void;
+  executeOnView: SceneViewExecuter | MapViewExecuter;
 }
 
 export interface MapCommand {

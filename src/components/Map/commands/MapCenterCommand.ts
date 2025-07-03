@@ -1,6 +1,6 @@
 import EsriMap from '@arcgis/core/Map';
 
-import { MapCommand, ViewCommand } from '@/lib/arcgis/typings/commandtypes';
+import { MapCommand } from '@/lib/arcgis/typings/commandtypes';
 import {
   getBasemapConfigForMapProjection,
   getMapProjectionFromPosition,
@@ -10,7 +10,7 @@ import { applyBasemapConstraints } from '../utils/mapViewUtils';
 export class MapCenterCommand implements MapCommand {
   constructor(private center: [number, number]) {}
 
-  async executeOnMap(map: EsriMap): Promise<ViewCommand | void> {
+  async executeOnMap(map: EsriMap) {
     const mapProjection = getMapProjectionFromPosition(this.center);
     const basemapConfig = getBasemapConfigForMapProjection(mapProjection);
     map.basemap = basemapConfig.basemap;

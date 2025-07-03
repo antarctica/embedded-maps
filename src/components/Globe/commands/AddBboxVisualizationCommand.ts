@@ -22,7 +22,7 @@ export class AddBboxVisualizationCommand implements MapCommand {
     return Math.abs((maxX - minX) * (maxY - minY));
   }
 
-  async executeOnMap(map: EsriMap): Promise<void> {
+  async executeOnMap(map: EsriMap) {
     const graphicsLayer = new GraphicsLayer({
       id: 'bboxVisualizationLayer',
     });

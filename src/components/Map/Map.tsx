@@ -1,9 +1,9 @@
 import '@arcgis/map-components/components/arcgis-placement';
 
+import * as reactiveUtils from '@arcgis/core/core/reactiveUtils.js';
 import React from 'react';
 
 import { ArcMapView } from '@/lib/arcgis/components/ArcView/ArcMapView';
-import { GraticuleLayer } from '@/lib/arcgis/customlayers/GraticuleLayer/GraticuleLayer';
 import { BBox, MapPoint } from '@/lib/config/schema';
 
 import { Globe } from '../Globe';
@@ -58,6 +58,7 @@ export function Map({
 }: MapProps) {
   const [viewPoint, setViewPoint] = React.useState<__esri.Viewpoint | undefined>(undefined);
   const [isMapViewLoading, setIsMapViewLoading] = React.useState(true);
+  const [areLayersLoading, setAreLayersLoading] = React.useState(true);
   const { map, error, isMapLoading, handleViewReady } = useMapInitialisation({
     initialAssetId,
     initialAssetType,
@@ -66,8 +67,21 @@ export function Map({
     initialPoints,
     bboxForceRegionalExtent,
     initialShowAssetPopup,
-    postLoadCb: () => {
+    initialShowGraticule: showGraticule,
+    postLoadCb: (view) => {
+      if (!view || !view.map) {
+        return;
+      }
       setIsMapViewLoading(false);
+      const map = view.map;
+      const layers = map.allLayers;
+      Promise.all(layers.map((Layer) => view.whenLayerView(Layer))).then((layerViews) => {
+        Promise.all(
+          layerViews.map((layerView) => reactiveUtils.whenOnce(() => !layerView.updating)),
+        ).then(() => {
+          setAreLayersLoading(false);
+        });
+      });
     },
   });
 
@@ -76,12 +90,9 @@ export function Map({
   }
 
   return (
-    <div
-      className="map-container relative h-full w-full"
-      data-testid="map-container"
-      data-ready={!isMapViewLoading}
-    >
+    <div className="map-container relative h-full w-full" data-testid="map-container">
       <ArcMapView
+        data-ready={(!isMapViewLoading && !areLayersLoading).toString()}
         className="pointer-events-auto h-full w-full"
         map={map}
         onarcgisViewReadyChange={(event) => {
@@ -92,7 +103,6 @@ export function Map({
         scale={initialScale}
         zoom={initialZoom}
       >
-        {showGraticule && <GraticuleLayer />}
         <arcgis-placement position="top-left">
           <div className="flex flex-col gap-2 lg:gap-3">
             {showZoomButton && <ZoomControl />}

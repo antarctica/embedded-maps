@@ -4,6 +4,7 @@ import { type MapCommand } from '@/lib/arcgis/typings/commandtypes';
 import { BBox, MapPoint } from '@/lib/config/schema';
 
 import { AddBboxCommand } from '../commands/AddBboxCommand';
+import { AddGraticuleCommand } from '../commands/AddGraticuleCommand';
 import { AddMapPointsCommand } from '../commands/AddMapPointsCommand';
 import { FindAssetCommand } from '../commands/FindAssetCommand';
 import { MapCenterCommand } from '../commands/MapCenterCommand';
@@ -17,6 +18,7 @@ interface UseMapCommandsProps {
   bboxForceRegionalExtent?: boolean;
   initialShowAssetPopup?: boolean;
   initialShowLayerManager?: boolean;
+  initialShowGraticule?: boolean;
 }
 
 export function useMapCommands({
@@ -27,6 +29,7 @@ export function useMapCommands({
   initialPoints,
   bboxForceRegionalExtent,
   initialShowAssetPopup,
+  initialShowGraticule,
 }: UseMapCommandsProps): MapCommand[] {
   return useMemo((): MapCommand[] => {
     const commands: MapCommand[] = [];
@@ -48,6 +51,9 @@ export function useMapCommands({
     } else if (initialPoints) {
       commands.push(new AddMapPointsCommand(initialPoints));
     }
+    if (initialShowGraticule) {
+      commands.push(new AddGraticuleCommand(initialShowGraticule));
+    }
     return commands;
   }, [
     initialAssetId,
@@ -57,5 +63,6 @@ export function useMapCommands({
     initialPoints,
     bboxForceRegionalExtent,
     initialShowAssetPopup,
+    initialShowGraticule,
   ]);
 }

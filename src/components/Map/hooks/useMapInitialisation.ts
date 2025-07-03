@@ -2,6 +2,7 @@ import EsriMap from '@arcgis/core/Map';
 import React from 'react';
 
 import { useMapSingleton } from '@/lib/arcgis/hooks/useMapSingleton';
+import { MapViewExecuter } from '@/lib/arcgis/typings/commandtypes';
 import { BBox, MapPoint } from '@/lib/config/schema';
 import { useCallbackRef } from '@/lib/hooks/useCallbackRef';
 
@@ -15,7 +16,8 @@ interface UseMapInitializationProps {
   initialPoints?: MapPoint[];
   bboxForceRegionalExtent?: boolean;
   initialShowAssetPopup?: boolean;
-  postLoadCb?: () => void;
+  initialShowGraticule?: boolean;
+  postLoadCb?: (view?: __esri.MapView) => void;
 }
 
 interface UseMapInitializationResult {
@@ -33,6 +35,7 @@ export function useMapInitialisation({
   initialPoints,
   bboxForceRegionalExtent,
   initialShowAssetPopup,
+  initialShowGraticule,
   postLoadCb,
 }: UseMapInitializationProps): UseMapInitializationResult {
   const [initialMap] = React.useState(new EsriMap());
@@ -45,6 +48,7 @@ export function useMapInitialisation({
     initialPoints,
     bboxForceRegionalExtent,
     initialShowAssetPopup,
+    initialShowGraticule,
   });
   const { map, postInitCommands, isMapLoading, error } = useMapSingleton(
     commands,
@@ -53,8 +57,8 @@ export function useMapInitialisation({
   );
 
   const handleViewReady = useCallbackRef(async (view: __esri.MapView) => {
-    await Promise.all(postInitCommands.map((cmd) => cmd.executeOnView(view)));
-    postLoadCb?.();
+    await Promise.all(postInitCommands.map((cmd) => (cmd.executeOnView as MapViewExecuter)(view)));
+    postLoadCb?.(view);
   });
 
   return {

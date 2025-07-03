@@ -2,6 +2,7 @@ import EsriMap from '@arcgis/core/Map';
 import React from 'react';
 
 import { useMapSingleton } from '@/lib/arcgis/hooks/useMapSingleton';
+import { SceneViewExecuter } from '@/lib/arcgis/typings/commandtypes';
 import { BBox, MapPoint } from '@/lib/config/schema';
 import { useCallbackRef } from '@/lib/hooks/useCallbackRef';
 
@@ -12,14 +13,14 @@ interface UseMapInitializationProps {
   initialAssetType?: string;
   initialBbox?: BBox[];
   initialPoints?: MapPoint[];
-  postLoadCb?: () => void;
+  postLoadCb?: (view: __esri.SceneView) => void;
 }
 
 interface UseMapInitializationResult {
   map: EsriMap | null;
   error: Error | null;
   isMapLoading: boolean;
-  handleViewReady: (view: __esri.MapView) => Promise<void>;
+  handleViewReady: (view: __esri.SceneView) => Promise<void>;
 }
 
 export function useMapInitialisation({
@@ -43,9 +44,11 @@ export function useMapInitialisation({
     'globe',
   );
 
-  const handleViewReady = useCallbackRef(async (view: __esri.MapView) => {
-    await Promise.all(postInitCommands.map((cmd) => cmd.executeOnView(view)));
-    postLoadCb?.();
+  const handleViewReady = useCallbackRef(async (view: __esri.SceneView) => {
+    await Promise.all(
+      postInitCommands.map((cmd) => (cmd.executeOnView as SceneViewExecuter)(view)),
+    );
+    postLoadCb?.(view);
   });
 
   return {

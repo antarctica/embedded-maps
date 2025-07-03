@@ -3,7 +3,7 @@ import Graphic from '@arcgis/core/Graphic';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import EsriMap from '@arcgis/core/Map';
 
-import { MapCommand, ViewCommand } from '@/lib/arcgis/typings/commandtypes';
+import { MapCommand } from '@/lib/arcgis/typings/commandtypes';
 import { getBasemapConfigForMapProjection, getMapProjectionFromBbox } from '@/lib/config/basemap';
 import { DEFAULT_POINT_SYMBOL } from '@/lib/config/layerStyles';
 import { BBox, isCoordinatePair, MapPoint } from '@/lib/config/schema';
@@ -52,7 +52,7 @@ export class AddMapPointsCommand implements MapCommand {
     return [minLon, minLat, maxLon, maxLat];
   }
 
-  async executeOnMap(map: EsriMap): Promise<ViewCommand | void> {
+  async executeOnMap(map: EsriMap) {
     const pointGraphics = this.points.map(this.createPointGraphic);
     const envelopeBbox = this.calculateEnvelopeBbox(
       pointGraphics.map((graphic) => graphic.geometry as Point),

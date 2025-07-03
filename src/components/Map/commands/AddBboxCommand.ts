@@ -3,7 +3,7 @@ import EsriMap from '@arcgis/core/Map';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
 
 import { ScaleAwarePolygonLayer } from '@/lib/arcgis/customlayers/ScaleAwarePolygonLayer/ScaleAwarePolygonLayer';
-import { MapCommand, ViewCommand } from '@/lib/arcgis/typings/commandtypes';
+import { MapCommand } from '@/lib/arcgis/typings/commandtypes';
 import { getBasemapConfigForMapProjection, getMapProjectionFromBbox } from '@/lib/config/basemap';
 import { BBox } from '@/lib/config/schema';
 
@@ -19,7 +19,7 @@ export class AddBboxCommand implements MapCommand {
     private showRegion?: boolean,
   ) {}
 
-  async executeOnMap(map: EsriMap): Promise<ViewCommand | void> {
+  async executeOnMap(map: EsriMap) {
     const envelopeBbox = calculateEnvelopeBbox(this.bbox);
     const mapProjection = getMapProjectionFromBbox(envelopeBbox);
     const basemapConfig = getBasemapConfigForMapProjection(mapProjection);

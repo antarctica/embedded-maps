@@ -2,7 +2,7 @@ import { Point, SpatialReference } from '@arcgis/core/geometry';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import EsriMap from '@arcgis/core/Map';
 
-import { MapCommand, ViewCommand } from '@/lib/arcgis/typings/commandtypes';
+import { MapCommand } from '@/lib/arcgis/typings/commandtypes';
 import { isEsriPoint } from '@/lib/arcgis/typings/typeGuards';
 import {
   ASSETIDFIELDNAME,
@@ -82,7 +82,7 @@ export class FindAssetCommand implements MapCommand {
     return [minLon, minLat, maxLon, maxLat];
   }
 
-  async executeOnMap(map: EsriMap): Promise<ViewCommand | void> {
+  async executeOnMap(map: EsriMap) {
     map.add(this.assetLayer);
     const assets = await this.getInitialAssets();
     if (!assets || assets.length === 0) {

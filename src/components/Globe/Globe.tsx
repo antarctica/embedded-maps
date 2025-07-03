@@ -1,3 +1,4 @@
+import * as reactiveUtils from '@arcgis/core/core/reactiveUtils.js';
 import { Point, SpatialReference } from '@arcgis/core/geometry';
 import * as projectOperator from '@arcgis/core/geometry/operators/projectOperator.js';
 import VirtualLighting from '@arcgis/core/views/3d/environment/VirtualLighting.js';
@@ -91,6 +92,8 @@ export function Globe({
 }: GlobeProps) {
   const mapView = useCurrentMapView();
   const [sceneView, setSceneView] = useState<__esri.SceneView>();
+  const [isSceneViewLoading, setIsSceneViewLoading] = React.useState(true);
+  const [areLayersLoading, setAreLayersLoading] = React.useState(true);
 
   const synchroniseSceneView = useCallback(
     (sceneView: __esri.SceneView | undefined) => {
@@ -129,11 +132,26 @@ export function Globe({
     [mapView],
   );
 
-  const { map } = useMapInitialisation({
+  const { map, handleViewReady } = useMapInitialisation({
     initialAssetId,
     initialBbox,
     initialPoints,
     initialAssetType,
+    postLoadCb: (view) => {
+      if (!view || !view.map) {
+        return;
+      }
+      setIsSceneViewLoading(false);
+      const map = view.map;
+      const layers = map.allLayers;
+      Promise.all(layers.map((Layer) => view.whenLayerView(Layer))).then((layerViews) => {
+        Promise.all(
+          layerViews.map((layerView) => reactiveUtils.whenOnce(() => !layerView.updating)),
+        ).then(() => {
+          setAreLayersLoading(false);
+        });
+      });
+    },
   });
 
   useWatchEffect(
@@ -200,6 +218,7 @@ export function Globe({
         style={{ '--scale-factor': '1.8' } as React.CSSProperties}
       >
         <ArcSceneView
+          data-ready={(!isSceneViewLoading && !areLayersLoading).toString()}
           id="ref-globe"
           tabIndex={-1}
           map={map}
@@ -208,6 +227,7 @@ export function Globe({
             const sceneView = event.target.view;
             setSceneView(sceneView);
             synchroniseSceneView(sceneView);
+            handleViewReady(sceneView);
           }}
           environment={
             {

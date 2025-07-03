@@ -1,20 +1,21 @@
+import * as reactiveUtils from '@arcgis/core/core/reactiveUtils.js';
 import { Point, SpatialReference } from '@arcgis/core/geometry';
 import * as projectOperator from '@arcgis/core/geometry/operators/projectOperator.js';
 import VirtualLighting from '@arcgis/core/views/3d/environment/VirtualLighting.js';
 import WebsceneColorBackground from '@arcgis/core/webscene/background/ColorBackground.js';
 import React, { useCallback, useEffect, useState } from 'react';
-import { tv } from 'tailwind-variants';
 
 import { ArcSceneView } from '@/lib/arcgis/components/ArcView/ArcSceneView';
 import { useCurrentMapView, useWatchEffect } from '@/lib/arcgis/hooks';
 import { isEsriPoint } from '@/lib/arcgis/typings/typeGuards';
 import { isPolarProjection } from '@/lib/config/basemap';
 import { BBox, MapPoint } from '@/lib/config/schema';
-import { isDefined } from '@/lib/helpers/typeGuards';
+import { appTwVariants } from '@/lib/helpers/tailwind-utils';
+import { isDefined } from '@/lib/types/typeGuards';
 
-import { useMapInitialization } from './hooks/useMapInitialization';
+import { useMapInitialisation } from './hooks/useMapInitialisation';
 
-const globe = tv({
+const globe = appTwVariants({
   slots: {
     wrapper:
       'pointer-events-none absolute top-0 right-0 grid h-[10rem] w-[10rem] place-items-center overflow-hidden rounded-full border-4 border-solid border-seasalt shadow-lg md:h-[16rem] md:w-[16rem] md:border-6 lg:h-[20rem] lg:w-[20rem] lg:border-8 theme-bsk1:border-white',
@@ -62,7 +63,11 @@ const getCorrectedSceneViewpoint = (mapViewpoint: __esri.Viewpoint): __esri.View
     viewPointTargetGeometry,
     SpatialReference.WGS84,
   );
-  if (Array.isArray(globalCRSViewPoint) || !isEsriPoint(globalCRSViewPoint)) {
+  if (
+    !isDefined(globalCRSViewPoint) ||
+    Array.isArray(globalCRSViewPoint) ||
+    !isEsriPoint(globalCRSViewPoint)
+  ) {
     return null;
   }
 
@@ -87,10 +92,8 @@ export function Globe({
 }: GlobeProps) {
   const mapView = useCurrentMapView();
   const [sceneView, setSceneView] = useState<__esri.SceneView>();
-
-  const initialCorrectedViewpoint = React.useMemo(() => {
-    return getCorrectedSceneViewpoint(mapView.viewpoint);
-  }, [mapView]);
+  const [isSceneViewLoading, setIsSceneViewLoading] = React.useState(true);
+  const [areLayersLoading, setAreLayersLoading] = React.useState(true);
 
   const synchroniseSceneView = useCallback(
     (sceneView: __esri.SceneView | undefined) => {
@@ -105,7 +108,7 @@ export function Globe({
       }
 
       try {
-        sceneView.set('viewpoint', correctedViewpoint);
+        sceneView.viewpoint = correctedViewpoint;
         if (mapView.spatialReference?.wkid && isPolarProjection(mapView.spatialReference.wkid)) {
           const camera = sceneView?.viewpoint.camera?.clone();
           const cameraPosition = camera?.position?.clone();
@@ -129,11 +132,26 @@ export function Globe({
     [mapView],
   );
 
-  const { map } = useMapInitialization({
+  const { map, handleViewReady } = useMapInitialisation({
     initialAssetId,
     initialBbox,
     initialPoints,
     initialAssetType,
+    postLoadCb: (view) => {
+      if (!view || !view.map) {
+        return;
+      }
+      setIsSceneViewLoading(false);
+      const map = view.map;
+      const layers = map.allLayers;
+      Promise.all(layers.map((Layer) => view.whenLayerView(Layer))).then((layerViews) => {
+        Promise.all(
+          layerViews.map((layerView) => reactiveUtils.whenOnce(() => !layerView.updating)),
+        ).then(() => {
+          setAreLayersLoading(false);
+        });
+      });
+    },
   });
 
   useWatchEffect(
@@ -200,15 +218,16 @@ export function Globe({
         style={{ '--scale-factor': '1.8' } as React.CSSProperties}
       >
         <ArcSceneView
+          data-ready={(!isSceneViewLoading && !areLayersLoading).toString()}
           id="ref-globe"
           tabIndex={-1}
           map={map}
           alphaCompositingEnabled={true}
-          viewpoint={initialCorrectedViewpoint ?? undefined}
           onarcgisViewReadyChange={(event) => {
             const sceneView = event.target.view;
             setSceneView(sceneView);
             synchroniseSceneView(sceneView);
+            handleViewReady(sceneView);
           }}
           environment={
             {

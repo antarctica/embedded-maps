@@ -1,9 +1,9 @@
 import React from 'react';
-import { tv } from 'tailwind-variants';
 
-import { IconName } from '@/types/Icons';
+import { appTwVariants } from '@/lib/helpers/tailwind-utils';
+import { IconName } from '@/lib/types/Icons.gen';
 
-const icon = tv({
+const icon = appTwVariants({
   base: 'select-none',
 });
 

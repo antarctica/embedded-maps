@@ -2,7 +2,7 @@ import { Point, SpatialReference } from '@arcgis/core/geometry';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import EsriMap from '@arcgis/core/Map';
 
-import { MapCommand, ViewCommand } from '@/lib/arcgis/typings/commandtypes';
+import { MapCommand } from '@/lib/arcgis/typings/commandtypes';
 import { isEsriPoint } from '@/lib/arcgis/typings/typeGuards';
 import {
   ASSETIDFIELDNAME,
@@ -12,7 +12,7 @@ import {
 } from '@/lib/config/assetLayer';
 import { getBasemapConfigForMapProjection, getMapProjectionFromBbox } from '@/lib/config/basemap';
 import { BBox } from '@/lib/config/schema';
-import { isDefined } from '@/lib/helpers/typeGuards';
+import { isDefined } from '@/lib/types/typeGuards';
 
 import { applyBasemapConstraints, applyPolarHeadingCorrection } from '../utils/mapViewUtils';
 
@@ -39,6 +39,7 @@ export class FindAssetCommand implements MapCommand {
 
     this.assetLayer = new FeatureLayer({
       id: ASSETLAYERMAPID,
+      title: 'asset-layer',
       portalItem: {
         id: ASSETLAYERPORTALID,
       },
@@ -81,7 +82,7 @@ export class FindAssetCommand implements MapCommand {
     return [minLon, minLat, maxLon, maxLat];
   }
 
-  async executeOnMap(map: EsriMap): Promise<ViewCommand | void> {
+  async executeOnMap(map: EsriMap) {
     map.add(this.assetLayer);
     const assets = await this.getInitialAssets();
     if (!assets || assets.length === 0) {

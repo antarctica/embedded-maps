@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { isDefined } from '../typeGuards';
+import { isDefined } from './typeGuards';
 
 describe('isDefined', () => {
   it('should return true for defined values', () => {

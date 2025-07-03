@@ -6,7 +6,7 @@ import Graphic from '@arcgis/core/Graphic';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 
-import { isDefined } from '@/lib/helpers/typeGuards';
+import { isDefined } from '@/lib/types/typeGuards';
 
 export interface ScaleAwarePolygonLayerProperties extends __esri.GraphicsLayerProperties {
   pixelThreshold?: number;

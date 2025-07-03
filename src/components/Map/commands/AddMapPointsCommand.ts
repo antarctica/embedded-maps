@@ -10,7 +10,9 @@ import { BBox, isCoordinatePair, MapPoint } from '@/lib/config/schema';
 
 import { applyBasemapConstraints } from '../utils/mapViewUtils';
 export class AddMapPointsCommand implements MapCommand {
-  private pointGraphicsLayer = new GraphicsLayer();
+  private pointGraphicsLayer = new GraphicsLayer({
+    title: 'point-graphics-layer',
+  });
 
   constructor(private points: MapPoint[]) {}
 

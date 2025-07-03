@@ -10,7 +10,9 @@ import { BBox } from '@/lib/config/schema';
 import { calculateEnvelopeBbox, createGeometryFromBBox } from '../utils/bboxUtils';
 import { applyBasemapConstraints } from '../utils/mapViewUtils';
 export class AddBboxCommand implements MapCommand {
-  private bboxGraphicsLayer = new ScaleAwarePolygonLayer();
+  private bboxGraphicsLayer = new ScaleAwarePolygonLayer({
+    title: 'bbox-graphics-layer',
+  });
 
   constructor(
     private bbox: BBox[],

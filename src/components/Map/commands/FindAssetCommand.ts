@@ -39,6 +39,7 @@ export class FindAssetCommand implements MapCommand {
 
     this.assetLayer = new FeatureLayer({
       id: ASSETLAYERMAPID,
+      title: 'asset-layer',
       portalItem: {
         id: ASSETLAYERPORTALID,
       },

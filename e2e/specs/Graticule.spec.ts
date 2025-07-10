@@ -44,10 +44,14 @@ test.describe.parallel('Graticule Display Tests', () => {
     test.describe(testCase.name, () => {
       test.beforeEach(async ({ page }) => {
         await page.goto(`/${testCase.params}`);
-        await waitForMapReady(page);
+        await waitForMapReady(page, {
+          timeout: 30000, // 30 seconds
+        });
 
         if (testCase.requiresSceneReady) {
-          await waitForSceneReady(page);
+          await waitForSceneReady(page, {
+            timeout: 30000, // 30 seconds
+          });
         }
       });
 

@@ -8,23 +8,24 @@ interface ArcadeHeadingConfig {
 
 export function generateArcadeHeadingScript(config: ArcadeHeadingConfig): string {
   const arcadeScript = `
-// Calculate the projected bearing to pole based on longitude
-function calculateProjectedBearingToPole(longitude, projection) {
-  var centralMeridianCorrection = 0;
-  if (projection == 'antarctic') {
-    centralMeridianCorrection = 0;
-  } else if (projection == 'arctic') {
-    centralMeridianCorrection = -45;
+// Calculate the map rotation angle needed to orient the map so that local north points up
+function calculateLocalNorthRotation(longitude, projection) {
+  // Antarctic (EPSG:3031): Central meridian at 0°, but projection is mirrored (negate longitude)
+  var adjustedLongitude = longitude;
+ if (projection == 'antarctic') {
+    adjustedLongitude = -longitude; // Projection is mirrored
   }
-  return (longitude + centralMeridianCorrection + 360) % 360;
+  
+  return (adjustedLongitude + 360) % 360;
 }
 
-// Get the bearing correction based on the projection
-var bearingToPole = calculateProjectedBearingToPole($feature.${config.longitudeField}, '${config.projection}');
+// Get the projection correction
+var projectionCorrection = calculateLocalNorthRotation($feature.${config.longitudeField}, '${config.projection}');
 var heading = $feature.${config.headingField};
 
 // Calculate the final symbol rotation
-var symbolRotation = (heading + bearingToPole + 360) % 360;
+// Subtract the projection correction to correct for the coordinate system
+var symbolRotation = (heading - projectionCorrection + 360) % 360;
 
 return symbolRotation;
 `.trim();

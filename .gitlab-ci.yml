@@ -73,7 +73,7 @@ test:e2e:
 
 build:
   stage: 🏗️ build
-  image: node:18-alpine
+  image: node:22-alpine
   script:
     - npm ci
     - npm run lint 

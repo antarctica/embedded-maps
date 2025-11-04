@@ -222,7 +222,6 @@ export function Globe({
           id="ref-globe"
           tabIndex={-1}
           map={map}
-          alphaCompositingEnabled={true}
           onarcgisViewReadyChange={(event) => {
             const sceneView = event.target.view;
             setSceneView(sceneView);

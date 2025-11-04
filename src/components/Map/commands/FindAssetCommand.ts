@@ -18,23 +18,26 @@ import { applyBasemapConstraints, applyPolarHeadingCorrection } from '../utils/m
 
 export class FindAssetCommand implements MapCommand {
   private assetLayer: FeatureLayer;
-  private assetId?: string;
-  private assetType?: string;
+  private assetIds?: string[];
+  private assetTypes?: string[];
   private showAssetPopup: boolean = false;
 
-  private getWhereClause(assetId?: string, assetType?: string): string {
-    if (assetId) {
-      return `${ASSETIDFIELDNAME} = '${assetId}'`;
+  private getWhereClause(assetIds?: string[], assetTypes?: string[]): string {
+    const clauses: string[] = [];
+    if (assetIds && assetIds.length > 0) {
+      const quoted = assetIds.map((v) => `'${v}'`).join(', ');
+      clauses.push(`${ASSETIDFIELDNAME} IN (${quoted})`);
     }
-    if (assetType) {
-      return `${ASSETTYPEFIELDNAME} = '${assetType}'`;
+    if (assetTypes && assetTypes.length > 0) {
+      const quoted = assetTypes.map((v) => `'${v}'`).join(', ');
+      clauses.push(`${ASSETTYPEFIELDNAME} IN (${quoted})`);
     }
-    return '';
+    return clauses.length > 1 ? `(${clauses.join(' OR ')})` : (clauses[0] ?? '');
   }
 
-  constructor(props: { assetId?: string; assetType?: string; showAssetPopup?: boolean }) {
-    this.assetId = props.assetId;
-    this.assetType = props.assetType;
+  constructor(props: { assetIds?: string[]; assetTypes?: string[]; showAssetPopup?: boolean }) {
+    this.assetIds = props.assetIds;
+    this.assetTypes = props.assetTypes;
     this.showAssetPopup = props.showAssetPopup ?? false;
 
     this.assetLayer = new FeatureLayer({
@@ -43,7 +46,7 @@ export class FindAssetCommand implements MapCommand {
       portalItem: {
         id: ASSETLAYERPORTALID,
       },
-      definitionExpression: this.getWhereClause(this.assetId, this.assetType),
+      definitionExpression: this.getWhereClause(this.assetIds, this.assetTypes),
       // featureEffect: new FeatureEffect({
       //   filter: new FeatureFilter({
       //     where: `${ASSETFIELDNAME} = '${this.assetId}'`,
@@ -56,7 +59,7 @@ export class FindAssetCommand implements MapCommand {
   private async getInitialAssets(): Promise<__esri.Graphic[] | null> {
     try {
       const query = this.assetLayer.createQuery();
-      query.where = this.getWhereClause(this.assetId, this.assetType);
+      query.where = this.getWhereClause(this.assetIds, this.assetTypes);
       query.returnGeometry = true;
       query.outFields = ['*'];
 
@@ -107,14 +110,6 @@ export class FindAssetCommand implements MapCommand {
 
           await mapView.goTo({ target: assets }, { animate: false });
           if (this.showAssetPopup && mapView.popup) {
-            mapView.popup.dockOptions = {
-              buttonEnabled: false,
-              position: 'bottom-right',
-              breakpoint: {
-                width: Infinity,
-                height: Infinity,
-              },
-            };
             mapView.popup.highlightEnabled = false;
             mapView.openPopup({
               features: assets,

@@ -1,6 +1,7 @@
 import '@arcgis/map-components/components/arcgis-placement';
 
 import * as reactiveUtils from '@arcgis/core/core/reactiveUtils.js';
+import Popup from '@arcgis/core/widgets/Popup.js';
 import React from 'react';
 
 import { ArcMapView } from '@/lib/arcgis/components/ArcView/ArcMapView';
@@ -22,6 +23,7 @@ interface MapProps {
   initialBbox?: BBox[];
   bboxForceRegionalExtent?: boolean;
   initialPoints?: MapPoint[];
+  initialPortalItemIds?: string[];
 
   // UI Controls
   showZoomButton?: boolean;
@@ -32,21 +34,26 @@ interface MapProps {
   showGlobeOverview?: boolean;
 
   // Asset parameters
-  initialAssetId?: string;
-  initialAssetType?: string;
+  initialAssetIds?: string[];
+  initialAssetTypes?: string[];
   initialShowAssetPopup?: boolean;
 
   // Overlays
   showGraticule?: boolean;
 }
 
+const popup = new Popup({
+  defaultPopupTemplateEnabled: true,
+});
+
 export function Map({
-  initialAssetId,
-  initialAssetType,
+  initialAssetIds,
+  initialAssetTypes,
   initialCenter,
   initialZoom,
   initialBbox,
   initialPoints,
+  initialPortalItemIds,
   bboxForceRegionalExtent,
   initialScale,
   showGlobeOverview,
@@ -60,11 +67,12 @@ export function Map({
   const [isMapViewLoading, setIsMapViewLoading] = React.useState(true);
   const [areLayersLoading, setAreLayersLoading] = React.useState(true);
   const { map, error, isMapLoading, handleViewReady } = useMapInitialisation({
-    initialAssetId,
-    initialAssetType,
+    initialAssetIds,
+    initialAssetTypes,
     initialCenter,
     initialBbox,
     initialPoints,
+    initialPortalItemIds,
     bboxForceRegionalExtent,
     initialShowAssetPopup,
     initialShowGraticule: showGraticule,
@@ -100,6 +108,7 @@ export function Map({
             setViewPoint(event.target.view.viewpoint);
           });
         }}
+        popup={popup}
         scale={initialScale}
         zoom={initialZoom}
       >
@@ -116,10 +125,10 @@ export function Map({
         {showGlobeOverview && (
           <arcgis-placement position="top-right">
             <Globe
-              initialAssetId={initialAssetId}
+              initialAssetIds={initialAssetIds}
               initialBbox={initialBbox}
               initialPoints={initialPoints}
-              initialAssetType={initialAssetType}
+              initialAssetTypes={initialAssetTypes}
             />
           </arcgis-placement>
         )}

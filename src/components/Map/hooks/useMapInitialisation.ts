@@ -9,11 +9,12 @@ import { useCallbackRef } from '@/lib/hooks/useCallbackRef';
 import { useMapCommands } from './useMapCommands';
 
 interface UseMapInitializationProps {
-  initialAssetId?: string;
-  initialAssetType?: string;
+  initialAssetIds?: string[];
+  initialAssetTypes?: string[];
   initialCenter?: [number, number];
   initialBbox?: BBox[];
   initialPoints?: MapPoint[];
+  initialPortalItemIds?: string[];
   bboxForceRegionalExtent?: boolean;
   initialShowAssetPopup?: boolean;
   initialShowGraticule?: boolean;
@@ -28,11 +29,12 @@ interface UseMapInitializationResult {
 }
 
 export function useMapInitialisation({
-  initialAssetId,
-  initialAssetType,
+  initialAssetIds,
+  initialAssetTypes,
   initialCenter,
   initialBbox,
   initialPoints,
+  initialPortalItemIds,
   bboxForceRegionalExtent,
   initialShowAssetPopup,
   initialShowGraticule,
@@ -41,11 +43,12 @@ export function useMapInitialisation({
   const [initialMap] = React.useState(new EsriMap());
 
   const commands = useMapCommands({
-    initialAssetId,
-    initialAssetType,
+    initialAssetIds,
+    initialAssetTypes,
     initialCenter,
     initialBbox,
     initialPoints,
+    initialPortalItemIds,
     bboxForceRegionalExtent,
     initialShowAssetPopup,
     initialShowGraticule,

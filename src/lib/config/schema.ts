@@ -127,3 +127,75 @@ export function mapPointParamToArray(mapPointParam: MapPointParam): MapPoint[] {
 
   throw new Error('Invalid map point parameter');
 }
+
+// =========================================
+// Portal Item IDs Types and Validation
+// =========================================
+
+/**
+ * Represents either a single Portal Item ID string or an array of strings
+ */
+export const PortalItemIdsParam = z.union([z.string(), z.array(z.string())]);
+export type PortalItemIdsParam = z.infer<typeof PortalItemIdsParam>;
+
+/**
+ * Converts a portal item IDs parameter to an array of strings
+ * @param idsParam - Single string or array of strings
+ * @returns Array of portal item id strings
+ * @throws Error if the parameter is invalid
+ */
+export function portalItemIdsParamToArray(idsParam: PortalItemIdsParam): string[] {
+  if (typeof idsParam === 'string') {
+    return [idsParam];
+  }
+
+  if (Array.isArray(idsParam) && idsParam.every((v) => typeof v === 'string')) {
+    return idsParam;
+  }
+
+  throw new Error('Invalid portal item IDs parameter');
+}
+
+// =========================================
+// Asset IDs / Types Types and Validation
+// =========================================
+
+/**
+ * Represents either a single Asset ID or an array of Asset IDs
+ */
+export const AssetIdsParam = z.union([z.string(), z.array(z.string())]);
+export type AssetIdsParam = z.infer<typeof AssetIdsParam>;
+
+/**
+ * Converts an asset IDs parameter to an array of strings
+ */
+export function assetIdsParamToArray(idsParam: AssetIdsParam): string[] {
+  if (typeof idsParam === 'string') {
+    return [idsParam];
+  }
+  if (Array.isArray(idsParam) && idsParam.every((v) => typeof v === 'string')) {
+    return idsParam;
+  }
+  throw new Error('Invalid asset IDs parameter');
+}
+
+/**
+ * Represents either a single Asset Type (number) or an array of Asset Types (numbers)
+ * URL query params (strings) are coerced to numbers, then coerced to strings when used in queries
+ */
+export const AssetTypesParam = z.union([z.coerce.number(), z.array(z.coerce.number())]);
+export type AssetTypesParam = z.infer<typeof AssetTypesParam>;
+
+/**
+ * Converts an asset types parameter to an array of strings
+ * Numbers are coerced to strings for use in SQL queries
+ */
+export function assetTypesParamToArray(typesParam: AssetTypesParam): string[] {
+  if (typeof typesParam === 'number') {
+    return [String(typesParam)];
+  }
+  if (Array.isArray(typesParam) && typesParam.every((v) => typeof v === 'number')) {
+    return typesParam.map((v) => String(v));
+  }
+  throw new Error('Invalid asset types parameter');
+}

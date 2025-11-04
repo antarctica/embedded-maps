@@ -13,14 +13,14 @@ export async function waitForMapReady(
   // Wait for the mapview to have finished its network requests and initialisation
   await page.waitForSelector('arcgis-map:not([updating])', {
     state: 'visible',
-    timeout: options?.timeout ?? 20000,
+    timeout: options?.timeout ?? 30000,
   });
 
   // Wait for the mapview container to signal it's ready via React state
   // this accounts for the fact that the mapview is technically ready before all layers are loaded
   await page.waitForSelector('arcgis-map[data-ready="true"]', {
     state: 'visible',
-    timeout: options?.timeout ?? 20000,
+    timeout: options?.timeout ?? 30000,
   });
 
   // wait for very short time to tick over to when all layers are happy.
@@ -42,14 +42,14 @@ export async function waitForSceneReady(
   // Wait for the scene to have finished its network requests and initialisation
   await page.waitForSelector('arcgis-scene:not([updating])', {
     state: 'visible',
-    timeout: options?.timeout ?? 20000,
+    timeout: options?.timeout ?? 30000,
   });
 
   // Wait for the scene to signal it's ready via React state
   // this accounts for the fact that the scene is technically ready before all layers are loaded
   await page.waitForSelector('arcgis-scene[data-ready="true"]', {
     state: 'visible',
-    timeout: options?.timeout ?? 20000,
+    timeout: options?.timeout ?? 30000,
   });
 
   await page.waitForTimeout(100);

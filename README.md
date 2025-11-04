@@ -133,6 +133,17 @@ Set these parameters to visualize one or more points on the map:
 
 
 
+#### Data layer parameters
+
+Set these parameters to add one or more FeatureLayers by ArcGIS Portal Item ID:
+
+| Parameter | Description                                      | Default | Example                                   |
+|-----------|--------------------------------------------------|---------|-------------------------------------------|
+| `layers`  | Single Portal Item ID or array of IDs for layers | -       | `77e95a444681402f94011ad8756c13ac` or `["77e95a444681402f94011ad8756c13ac","02xyz...789"]` |
+
+> [!NOTE]
+> Each ID should reference a FeatureLayer Portal Item. Layers are added during initial map setup.
+
 > [!NOTE]
 > When using styled points, the `color` property accepts any valid CSS color value, and `size` is specified in pts.
 > Multiple points can be mixed between coordinate pairs and styled points in the same array.
@@ -178,8 +189,8 @@ Set these parameters to visualise the last known position of an asset tracked by
 
 | Parameter           | Description                     | Default | Example                      |
 |---------------------|---------------------------------|---------|------------------------------|
-| `asset-id`          | ID of the asset to visualise    | -       | `01JDRYA29AR6PFGXVCZ40V8C74` |
-| `asset-type`        | Type code to filter assets by   | -       | `98` (Snowmobile), `62` (Aeroplane) |
+| `asset-id`          | single or array of IDs of assets to visualise    | -       | `01JDRYA29AR6PFGXVCZ40V8C74` or `["01JDRYA29AR6PFGXVCZ40V8C74", "01JDRYA33CJZ8FQGAJBTFJS4P7"]` |
+| `asset-type`        | single or array of type codes to filter assets by   | -       | `98` (Snowmobile), `62` (Aeroplane) or `[98, 62]` |
 | `asset-force-popup` | Open popup for asset by default | false   | true                         |
 
 > [!TIP]

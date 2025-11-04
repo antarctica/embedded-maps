@@ -6,15 +6,17 @@ import { BBox, MapPoint } from '@/lib/config/schema';
 import { AddBboxCommand } from '../commands/AddBboxCommand';
 import { AddGraticuleCommand } from '../commands/AddGraticuleCommand';
 import { AddMapPointsCommand } from '../commands/AddMapPointsCommand';
+import { AddPortalLayersCommand } from '../commands/AddPortalLayersCommand';
 import { FindAssetCommand } from '../commands/FindAssetCommand';
 import { MapCenterCommand } from '../commands/MapCenterCommand';
 
 interface UseMapCommandsProps {
-  initialAssetId?: string;
-  initialAssetType?: string;
+  initialAssetIds?: string[];
+  initialAssetTypes?: string[];
   initialCenter?: [number, number];
   initialBbox?: BBox[];
   initialPoints?: MapPoint[];
+  initialPortalItemIds?: string[];
   bboxForceRegionalExtent?: boolean;
   initialShowAssetPopup?: boolean;
   initialShowLayerManager?: boolean;
@@ -22,11 +24,12 @@ interface UseMapCommandsProps {
 }
 
 export function useMapCommands({
-  initialAssetId,
-  initialAssetType,
+  initialAssetIds,
+  initialAssetTypes,
   initialCenter,
   initialBbox,
   initialPoints,
+  initialPortalItemIds,
   bboxForceRegionalExtent,
   initialShowAssetPopup,
   initialShowGraticule,
@@ -37,11 +40,14 @@ export function useMapCommands({
     if (initialCenter) {
       commands.push(new MapCenterCommand(initialCenter));
     }
-    if (initialAssetId || initialAssetType) {
+    if (
+      (initialAssetIds && initialAssetIds.length) ||
+      (initialAssetTypes && initialAssetTypes.length)
+    ) {
       commands.push(
         new FindAssetCommand({
-          assetId: initialAssetId,
-          assetType: initialAssetType,
+          assetIds: initialAssetIds,
+          assetTypes: initialAssetTypes,
           showAssetPopup: initialShowAssetPopup,
         }),
       );
@@ -51,16 +57,20 @@ export function useMapCommands({
     } else if (initialPoints) {
       commands.push(new AddMapPointsCommand(initialPoints));
     }
+    if (initialPortalItemIds && initialPortalItemIds.length > 0) {
+      commands.push(new AddPortalLayersCommand(initialPortalItemIds));
+    }
     if (initialShowGraticule) {
       commands.push(new AddGraticuleCommand(initialShowGraticule));
     }
     return commands;
   }, [
-    initialAssetId,
-    initialAssetType,
+    initialAssetIds,
+    initialAssetTypes,
     initialCenter,
     initialBbox,
     initialPoints,
+    initialPortalItemIds,
     bboxForceRegionalExtent,
     initialShowAssetPopup,
     initialShowGraticule,

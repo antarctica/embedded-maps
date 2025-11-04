@@ -16,6 +16,7 @@ export function App() {
     bbox,
     bboxForceRegionalExtent,
     points,
+    portalItemIds,
 
     // UI Controls
     showZoomButton,
@@ -27,8 +28,8 @@ export function App() {
     showGlobeOverview,
 
     // Asset parameters
-    assetId,
-    assetType,
+    assetIds,
+    assetTypes,
     assetForcePopup,
 
     // Overlays
@@ -42,12 +43,13 @@ export function App() {
   return (
     <GeometryToolsLoader>
       <Map
-        initialAssetId={assetId}
-        initialAssetType={assetType?.toString()}
+        initialAssetIds={assetIds}
+        initialAssetTypes={assetTypes}
         initialCenter={centre}
         initialZoom={zoom}
         initialBbox={bbox}
         initialPoints={points}
+        initialPortalItemIds={portalItemIds}
         bboxForceRegionalExtent={bboxForceRegionalExtent}
         initialScale={scale}
         showGraticule={showGraticule}

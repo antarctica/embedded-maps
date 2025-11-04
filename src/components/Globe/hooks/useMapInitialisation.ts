@@ -9,8 +9,8 @@ import { useCallbackRef } from '@/lib/hooks/useCallbackRef';
 import { useMapCommands } from './useMapCommands';
 
 interface UseMapInitializationProps {
-  initialAssetId?: string;
-  initialAssetType?: string;
+  initialAssetIds?: string[];
+  initialAssetTypes?: string[];
   initialBbox?: BBox[];
   initialPoints?: MapPoint[];
   postLoadCb?: (view: __esri.SceneView) => void;
@@ -24,8 +24,8 @@ interface UseMapInitializationResult {
 }
 
 export function useMapInitialisation({
-  initialAssetId,
-  initialAssetType,
+  initialAssetIds,
+  initialAssetTypes,
   initialBbox,
   initialPoints,
   postLoadCb,
@@ -33,8 +33,8 @@ export function useMapInitialisation({
   const [initialMap] = React.useState(new EsriMap());
 
   const commands = useMapCommands({
-    initialAssetId,
-    initialAssetType,
+    initialAssetIds,
+    initialAssetTypes,
     initialBbox,
     initialPoints,
   });

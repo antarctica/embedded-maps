@@ -20,14 +20,14 @@ const assetTypeTestCases = [
   },
 ];
 
-test.describe.parallel('Asset Types', () => {
+test.describe('Asset Types', () => {
   for (const testCase of assetTypeTestCases) {
     test.describe(testCase.name, () => {
       test.beforeEach(async ({ page }) => {
         const harPath = getHarPath(`asset-types/${testCase.name}.har`);
         await page.routeFromHAR(harPath, {
           url: '**/tPxy1hrFDhJfZ0Mf/arcgis/rest/services/ats_latest_assets_position/FeatureServer/0/*',
-          update: false,
+          update: process.env.UPDATE_HARS === 'true',
         });
         await page.goto(`/${testCase.params}`);
         await waitForMapReady(page, { additionalDelay: 4000 });

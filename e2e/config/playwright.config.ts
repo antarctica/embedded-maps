@@ -27,8 +27,8 @@ export default defineConfig({
   forbidOnly: isCI,
   /* Retry on CI only */
   retries: isCI ? 2 : 0,
-  /* Opt out of parallel tests on CI for stability */
-  workers: isCI ? 1 : '75%',
+  /* Run tests in serial for stability */
+  workers: 1,
 
   /* Reporter configuration */
   reporter: isCI

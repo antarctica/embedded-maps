@@ -5,6 +5,7 @@ include:
 
 stages:
   - 🧪 test
+  - 🏗️ build-stage
   - 🏗️ build
   - 🚚 publish
   - 📣 release
@@ -22,7 +23,7 @@ variables:
   CONFIGURATOR_SRC: configurator
 
   # Environment test URLs
-  ENV_STAGE_HREF: https://embedded-maps-testing.data.bas.ac.uk/tests/v1/integration.html
+  ENV_STAGE_HREF: https://embedded-maps-testing.data.bas.ac.uk/tests/integration.html
   ENV_PROD_HREF: https://embedded-maps.data.bas.ac.uk/tests/v1/production.html
 
 image:
@@ -71,7 +72,7 @@ test:e2e:
         - src/**/*
         - e2e/**/*
 
-build:
+build-prod:
   stage: 🏗️ build
   image: node:22-alpine
   script:
@@ -84,14 +85,28 @@ build:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_TAG'
 
-publish-stage:
-  stage: 🚚 publish
-  needs: ['build']
+build-stage:
+  stage: 🏗️ build-stage
+  image: node:22-alpine
   variables:
     VITE_BASE_PATH: /
   script:
-    - aws s3 sync $DEPLOY_SRC/ s3://$S3_BUCKET_STAGE/v1/
-    - aws s3 sync $CONFIGURATOR_SRC/ s3://$S3_BUCKET_STAGE/v1/configurator/
+    - npm ci
+    - npm run lint 
+    - npm run build
+  artifacts:
+    paths:
+      - $DEPLOY_SRC/
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $CI_COMMIT_TAG == null'
+
+
+publish-stage:
+  stage: 🚚 publish
+  needs: ['build-stage']
+  script:
+    - aws s3 sync $DEPLOY_SRC/ s3://$S3_BUCKET_STAGE
+    - aws s3 sync $CONFIGURATOR_SRC/ s3://$S3_BUCKET_STAGE/configurator/
   environment:
     name: staging
     url: $ENV_STAGE_HREF
@@ -100,7 +115,7 @@ publish-stage:
 
 publish-prod:
   stage: 🚚 publish
-  needs: ['build']
+  needs: ['build-prod']
   script:
     - aws s3 sync $DEPLOY_SRC/ s3://$S3_BUCKET_PROD/v1/
     - aws s3 sync $CONFIGURATOR_SRC/ s3://$S3_BUCKET_PROD/v1/configurator/

@@ -189,8 +189,8 @@ Set these parameters to visualise the last known position of an asset tracked by
 
 | Parameter           | Description                     | Default | Example                      |
 |---------------------|---------------------------------|---------|------------------------------|
-| `asset-id`          | ID of the asset to visualise    | -       | `01JDRYA29AR6PFGXVCZ40V8C74` |
-| `asset-type`        | Type code to filter assets by   | -       | `98` (Snowmobile), `62` (Aeroplane) |
+| `asset-id`          | single or array of IDs of assets to visualise    | -       | `01JDRYA29AR6PFGXVCZ40V8C74` or `["01JDRYA29AR6PFGXVCZ40V8C74", "01JDRYA33CJZ8FQGAJBTFJS4P7"]` |
+| `asset-type`        | single or array of type codes to filter assets by   | -       | `98` (Snowmobile), `62` (Aeroplane) or `[98, 62]` |
 | `asset-force-popup` | Open popup for asset by default | false   | true                         |
 
 > [!TIP]

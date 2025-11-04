@@ -89,7 +89,7 @@ build-stage:
   stage: 🏗️ build-stage
   image: node:22-alpine
   variables:
-    VITE_BASE_PATH: /
+    VITE_BASE_PATH: ""
   script:
     - npm ci
     - npm run lint 

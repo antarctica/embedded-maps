@@ -22,7 +22,7 @@ variables:
   CONFIGURATOR_SRC: configurator
 
   # Environment test URLs
-  ENV_STAGE_HREF: https://embedded-maps-testing.data.bas.ac.uk/tests/v1/integration.html
+  ENV_STAGE_HREF: https://embedded-maps-testing.data.bas.ac.uk/tests/integration.html
   ENV_PROD_HREF: https://embedded-maps.data.bas.ac.uk/tests/v1/production.html
 
 image:

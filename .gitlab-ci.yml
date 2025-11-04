@@ -5,6 +5,7 @@ include:
 
 stages:
   - 🧪 test
+  - 🏗️ build-stage
   - 🏗️ build
   - 🚚 publish
   - 📣 release

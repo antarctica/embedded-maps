@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+* Added support for multiple asset IDs and types as array query parameters
+  [#56](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/56)
+* Added support for layers parameter to load feature layers from portal item IDs
+  [#55](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/55)
 * Added bounding box layer to handle display of bounding boxes at different scales
   [#46](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/45)
 * Added support for multiple bounding boxes passed in the url params

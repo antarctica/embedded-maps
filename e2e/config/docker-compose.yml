@@ -30,6 +30,7 @@ services:
       - PW_SERVER_PORT=9323
       - CI=
       - UPDATE_SNAPSHOTS=${UPDATE_SNAPSHOTS:-false}
+      - UPDATE_HARS=${UPDATE_HARS:-false}
     # Using xvfb-run to create a virtual framebuffer, enabling WebGL support
     # This is crucial for ArcGIS WebScene tests that require GPU acceleration
     command: |
@@ -48,6 +49,7 @@ services:
           --config e2e/config/playwright.config.ts \
           --workers=75% \
           $([ "$UPDATE_SNAPSHOTS" = "true" ] && echo "--update-snapshots") \
-          $([ ! -z "$TEST_GREP" ] && echo "--grep=$TEST_GREP")'        
+          $([ ! -z "$TEST_GREP" ] && echo "--grep=$TEST_GREP")'
+
 volumes:
   node_modules:

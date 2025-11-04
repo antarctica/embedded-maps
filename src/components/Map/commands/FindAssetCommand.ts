@@ -110,14 +110,6 @@ export class FindAssetCommand implements MapCommand {
 
           await mapView.goTo({ target: assets }, { animate: false });
           if (this.showAssetPopup && mapView.popup) {
-            mapView.popup.dockOptions = {
-              buttonEnabled: false,
-              position: 'bottom-right',
-              breakpoint: {
-                width: Infinity,
-                height: Infinity,
-              },
-            };
             mapView.popup.highlightEnabled = false;
             mapView.openPopup({
               features: assets,

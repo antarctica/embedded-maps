@@ -23,7 +23,7 @@ const baseTestCases = [
   },
 ];
 
-test.describe.parallel('Map View Parameters', () => {
+test.describe('Map View Parameters', () => {
   for (const testCase of baseTestCases) {
     test.describe(testCase.name, () => {
       test.beforeEach(async ({ page }) => {
@@ -91,7 +91,7 @@ test.describe.parallel('Map View Parameters', () => {
         update: false,
       });
       await page.goto(`/?asset-id=01JDRYA33CJZ8FQGAJBTFJS4P7&zoom=8&asset-force-popup`);
-      await waitForMapReady(page, { additionalDelay: 4000 });
+      await waitForMapReady(page, { additionalDelay: 10000 });
     });
 
     test('snapshot', async ({ page }) => {

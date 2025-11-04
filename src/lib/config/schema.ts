@@ -127,3 +127,31 @@ export function mapPointParamToArray(mapPointParam: MapPointParam): MapPoint[] {
 
   throw new Error('Invalid map point parameter');
 }
+
+// =========================================
+// Portal Item IDs Types and Validation
+// =========================================
+
+/**
+ * Represents either a single Portal Item ID string or an array of strings
+ */
+export const PortalItemIdsParam = z.union([z.string(), z.array(z.string())]);
+export type PortalItemIdsParam = z.infer<typeof PortalItemIdsParam>;
+
+/**
+ * Converts a portal item IDs parameter to an array of strings
+ * @param idsParam - Single string or array of strings
+ * @returns Array of portal item id strings
+ * @throws Error if the parameter is invalid
+ */
+export function portalItemIdsParamToArray(idsParam: PortalItemIdsParam): string[] {
+  if (typeof idsParam === 'string') {
+    return [idsParam];
+  }
+
+  if (Array.isArray(idsParam) && idsParam.every((v) => typeof v === 'string')) {
+    return idsParam;
+  }
+
+  throw new Error('Invalid portal item IDs parameter');
+}

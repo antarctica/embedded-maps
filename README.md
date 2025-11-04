@@ -133,6 +133,17 @@ Set these parameters to visualize one or more points on the map:
 
 
 
+#### Data layer parameters
+
+Set these parameters to add one or more FeatureLayers by ArcGIS Portal Item ID:
+
+| Parameter | Description                                      | Default | Example                                   |
+|-----------|--------------------------------------------------|---------|-------------------------------------------|
+| `layers`  | Single Portal Item ID or array of IDs for layers | -       | `77e95a444681402f94011ad8756c13ac` or `["77e95a444681402f94011ad8756c13ac","02xyz...789"]` |
+
+> [!NOTE]
+> Each ID should reference a FeatureLayer Portal Item. Layers are added during initial map setup.
+
 > [!NOTE]
 > When using styled points, the `color` property accepts any valid CSS color value, and `size` is specified in pts.
 > Multiple points can be mixed between coordinate pairs and styled points in the same array.

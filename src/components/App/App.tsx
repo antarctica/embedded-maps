@@ -16,6 +16,7 @@ export function App() {
     bbox,
     bboxForceRegionalExtent,
     points,
+    portalItemIds,
 
     // UI Controls
     showZoomButton,
@@ -48,6 +49,7 @@ export function App() {
         initialZoom={zoom}
         initialBbox={bbox}
         initialPoints={points}
+        initialPortalItemIds={portalItemIds}
         bboxForceRegionalExtent={bboxForceRegionalExtent}
         initialScale={scale}
         showGraticule={showGraticule}

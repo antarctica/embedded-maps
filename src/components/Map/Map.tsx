@@ -1,6 +1,7 @@
 import '@arcgis/map-components/components/arcgis-placement';
 
 import * as reactiveUtils from '@arcgis/core/core/reactiveUtils.js';
+import Popup from '@arcgis/core/widgets/Popup.js';
 import React from 'react';
 
 import { ArcMapView } from '@/lib/arcgis/components/ArcView/ArcMapView';
@@ -22,6 +23,7 @@ interface MapProps {
   initialBbox?: BBox[];
   bboxForceRegionalExtent?: boolean;
   initialPoints?: MapPoint[];
+  initialPortalItemIds?: string[];
 
   // UI Controls
   showZoomButton?: boolean;
@@ -40,6 +42,10 @@ interface MapProps {
   showGraticule?: boolean;
 }
 
+const popup = new Popup({
+  defaultPopupTemplateEnabled: true,
+});
+
 export function Map({
   initialAssetId,
   initialAssetType,
@@ -47,6 +53,7 @@ export function Map({
   initialZoom,
   initialBbox,
   initialPoints,
+  initialPortalItemIds,
   bboxForceRegionalExtent,
   initialScale,
   showGlobeOverview,
@@ -65,6 +72,7 @@ export function Map({
     initialCenter,
     initialBbox,
     initialPoints,
+    initialPortalItemIds,
     bboxForceRegionalExtent,
     initialShowAssetPopup,
     initialShowGraticule: showGraticule,
@@ -100,6 +108,7 @@ export function Map({
             setViewPoint(event.target.view.viewpoint);
           });
         }}
+        popup={popup}
         scale={initialScale}
         zoom={initialZoom}
       >

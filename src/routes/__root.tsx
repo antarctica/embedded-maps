@@ -4,7 +4,13 @@ import * as React from 'react';
 import { z } from 'zod';
 
 import { DEFAULT_CENTER } from '@/lib/config/mapParamDefaults';
-import { BBoxParam, booleanWithoutValue, CoordinatePair, MapPointParam } from '@/lib/config/schema';
+import {
+  BBoxParam,
+  booleanWithoutValue,
+  CoordinatePair,
+  MapPointParam,
+  PortalItemIdsParam,
+} from '@/lib/config/schema';
 
 const baseSearchSchema = z.object({
   // View parameters
@@ -14,6 +20,9 @@ const baseSearchSchema = z.object({
   bbox: fallback(BBoxParam.optional(), undefined),
   'bbox-force-regional-extent': fallback(booleanWithoutValue().optional(), undefined),
   points: fallback(MapPointParam.optional(), undefined),
+
+  // Data layers
+  layers: fallback(PortalItemIdsParam.optional(), undefined),
 
   // UI Controls
   'ctrl-zoom': fallback(booleanWithoutValue().optional(), undefined),

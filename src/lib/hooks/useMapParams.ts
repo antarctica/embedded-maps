@@ -14,6 +14,7 @@ import {
   bboxParamToArray,
   convertEmptyStringParamToBooleanPresence,
   mapPointParamToArray,
+  portalItemIdsParamToArray,
 } from '../config/schema';
 
 export function useMapParams() {
@@ -24,6 +25,7 @@ export function useMapParams() {
     centre,
     bbox,
     points,
+    layers,
     'bbox-force-regional-extent': bboxForceRegionalExtent = DEFAULT_REGIONAL_EXTENT,
 
     // UI Controls
@@ -51,6 +53,7 @@ export function useMapParams() {
     centre,
     bbox: bbox ? bboxParamToArray(bbox) : undefined,
     points: points ? mapPointParamToArray(points) : undefined,
+    portalItemIds: layers ? portalItemIdsParamToArray(layers) : undefined,
     bboxForceRegionalExtent: convertEmptyStringParamToBooleanPresence(bboxForceRegionalExtent),
 
     // UI Controls

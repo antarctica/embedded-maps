@@ -14,6 +14,7 @@ interface UseMapInitializationProps {
   initialCenter?: [number, number];
   initialBbox?: BBox[];
   initialPoints?: MapPoint[];
+  initialPortalItemIds?: string[];
   bboxForceRegionalExtent?: boolean;
   initialShowAssetPopup?: boolean;
   initialShowGraticule?: boolean;
@@ -33,6 +34,7 @@ export function useMapInitialisation({
   initialCenter,
   initialBbox,
   initialPoints,
+  initialPortalItemIds,
   bboxForceRegionalExtent,
   initialShowAssetPopup,
   initialShowGraticule,
@@ -46,6 +48,7 @@ export function useMapInitialisation({
     initialCenter,
     initialBbox,
     initialPoints,
+    initialPortalItemIds,
     bboxForceRegionalExtent,
     initialShowAssetPopup,
     initialShowGraticule,

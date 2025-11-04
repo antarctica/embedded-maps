@@ -6,6 +6,7 @@ import { BBox, MapPoint } from '@/lib/config/schema';
 import { AddBboxCommand } from '../commands/AddBboxCommand';
 import { AddGraticuleCommand } from '../commands/AddGraticuleCommand';
 import { AddMapPointsCommand } from '../commands/AddMapPointsCommand';
+import { AddPortalLayersCommand } from '../commands/AddPortalLayersCommand';
 import { FindAssetCommand } from '../commands/FindAssetCommand';
 import { MapCenterCommand } from '../commands/MapCenterCommand';
 
@@ -15,6 +16,7 @@ interface UseMapCommandsProps {
   initialCenter?: [number, number];
   initialBbox?: BBox[];
   initialPoints?: MapPoint[];
+  initialPortalItemIds?: string[];
   bboxForceRegionalExtent?: boolean;
   initialShowAssetPopup?: boolean;
   initialShowLayerManager?: boolean;
@@ -27,6 +29,7 @@ export function useMapCommands({
   initialCenter,
   initialBbox,
   initialPoints,
+  initialPortalItemIds,
   bboxForceRegionalExtent,
   initialShowAssetPopup,
   initialShowGraticule,
@@ -51,6 +54,9 @@ export function useMapCommands({
     } else if (initialPoints) {
       commands.push(new AddMapPointsCommand(initialPoints));
     }
+    if (initialPortalItemIds && initialPortalItemIds.length > 0) {
+      commands.push(new AddPortalLayersCommand(initialPortalItemIds));
+    }
     if (initialShowGraticule) {
       commands.push(new AddGraticuleCommand(initialShowGraticule));
     }
@@ -61,6 +67,7 @@ export function useMapCommands({
     initialCenter,
     initialBbox,
     initialPoints,
+    initialPortalItemIds,
     bboxForceRegionalExtent,
     initialShowAssetPopup,
     initialShowGraticule,

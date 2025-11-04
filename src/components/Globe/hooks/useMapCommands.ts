@@ -9,24 +9,27 @@ import { AddPointsLayerCommand } from '../commands/AddPointsLayerCommand';
 import { SetupGlobeMapCommand } from '../commands/SetupGlobeMapCommand';
 
 interface UseMapCommandsProps {
-  initialAssetId?: string;
+  initialAssetIds?: string[];
   initialBbox?: BBox[];
   initialPoints?: MapPoint[];
-  initialAssetType?: string;
+  initialAssetTypes?: string[];
 }
 
 export function useMapCommands({
-  initialAssetId,
+  initialAssetIds,
   initialBbox,
   initialPoints,
-  initialAssetType,
+  initialAssetTypes,
 }: UseMapCommandsProps): MapCommand[] {
   return useMemo((): MapCommand[] => {
     const commands: MapCommand[] = [new SetupGlobeMapCommand()];
 
-    if (initialAssetId || initialAssetType) {
+    if (
+      (initialAssetIds && initialAssetIds.length) ||
+      (initialAssetTypes && initialAssetTypes.length)
+    ) {
       commands.push(
-        new AddAssetLayerCommand({ assetId: initialAssetId, assetType: initialAssetType }),
+        new AddAssetLayerCommand({ assetIds: initialAssetIds, assetTypes: initialAssetTypes }),
       );
     }
 
@@ -38,5 +41,5 @@ export function useMapCommands({
       commands.push(new AddPointsLayerCommand(initialPoints));
     }
     return commands;
-  }, [initialAssetId, initialAssetType, initialBbox, initialPoints]);
+  }, [initialAssetIds, initialAssetTypes, initialBbox, initialPoints]);
 }

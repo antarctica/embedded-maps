@@ -5,6 +5,8 @@ import { z } from 'zod';
 
 import { DEFAULT_CENTER } from '@/lib/config/mapParamDefaults';
 import {
+  AssetIdsParam,
+  AssetTypesParam,
   BBoxParam,
   booleanWithoutValue,
   CoordinatePair,
@@ -37,8 +39,8 @@ const baseSearchSchema = z.object({
   'ctrl-graticule': fallback(booleanWithoutValue().optional(), undefined),
 
   // Asset parameters
-  'asset-id': fallback(z.string().optional(), undefined),
-  'asset-type': fallback(z.number().optional(), undefined),
+  'asset-id': fallback(AssetIdsParam.optional(), undefined),
+  'asset-type': fallback(AssetTypesParam.optional(), undefined),
   'asset-force-popup': fallback(booleanWithoutValue().optional(), undefined),
 });
 

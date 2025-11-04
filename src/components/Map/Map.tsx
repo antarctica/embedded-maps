@@ -34,8 +34,8 @@ interface MapProps {
   showGlobeOverview?: boolean;
 
   // Asset parameters
-  initialAssetId?: string;
-  initialAssetType?: string;
+  initialAssetIds?: string[];
+  initialAssetTypes?: string[];
   initialShowAssetPopup?: boolean;
 
   // Overlays
@@ -47,8 +47,8 @@ const popup = new Popup({
 });
 
 export function Map({
-  initialAssetId,
-  initialAssetType,
+  initialAssetIds,
+  initialAssetTypes,
   initialCenter,
   initialZoom,
   initialBbox,
@@ -67,8 +67,8 @@ export function Map({
   const [isMapViewLoading, setIsMapViewLoading] = React.useState(true);
   const [areLayersLoading, setAreLayersLoading] = React.useState(true);
   const { map, error, isMapLoading, handleViewReady } = useMapInitialisation({
-    initialAssetId,
-    initialAssetType,
+    initialAssetIds,
+    initialAssetTypes,
     initialCenter,
     initialBbox,
     initialPoints,
@@ -125,10 +125,10 @@ export function Map({
         {showGlobeOverview && (
           <arcgis-placement position="top-right">
             <Globe
-              initialAssetId={initialAssetId}
+              initialAssetIds={initialAssetIds}
               initialBbox={initialBbox}
               initialPoints={initialPoints}
-              initialAssetType={initialAssetType}
+              initialAssetTypes={initialAssetTypes}
             />
           </arcgis-placement>
         )}

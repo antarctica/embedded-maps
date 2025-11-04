@@ -28,8 +28,8 @@ export function App() {
     showGlobeOverview,
 
     // Asset parameters
-    assetId,
-    assetType,
+    assetIds,
+    assetTypes,
     assetForcePopup,
 
     // Overlays
@@ -43,8 +43,8 @@ export function App() {
   return (
     <GeometryToolsLoader>
       <Map
-        initialAssetId={assetId}
-        initialAssetType={assetType?.toString()}
+        initialAssetIds={assetIds}
+        initialAssetTypes={assetTypes}
         initialCenter={centre}
         initialZoom={zoom}
         initialBbox={bbox}

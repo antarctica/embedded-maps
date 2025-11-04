@@ -11,6 +11,8 @@ import {
 import { Route } from '@/routes/__root';
 
 import {
+  assetIdsParamToArray,
+  assetTypesParamToArray,
   bboxParamToArray,
   convertEmptyStringParamToBooleanPresence,
   mapPointParamToArray,
@@ -66,8 +68,8 @@ export function useMapParams() {
     showGlobeOverview: convertEmptyStringParamToBooleanPresence(showGlobeOverview),
 
     // Asset parameters
-    assetId,
-    assetType,
+    assetIds: assetId ? assetIdsParamToArray(assetId) : undefined,
+    assetTypes: assetType ? assetTypesParamToArray(assetType) : undefined,
     assetForcePopup: convertEmptyStringParamToBooleanPresence(assetForcePopup),
 
     // Overlays

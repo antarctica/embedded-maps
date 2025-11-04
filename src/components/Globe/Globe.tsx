@@ -27,9 +27,9 @@ const globe = appTwVariants({
 });
 
 interface GlobeProps {
-  initialAssetId?: string;
+  initialAssetIds?: string[];
   initialBbox?: BBox[];
-  initialAssetType?: string;
+  initialAssetTypes?: string[];
   initialPoints?: MapPoint[];
 }
 
@@ -85,10 +85,10 @@ const getCorrectedSceneViewpoint = (mapViewpoint: __esri.Viewpoint): __esri.View
 };
 
 export function Globe({
-  initialAssetId,
+  initialAssetIds,
   initialBbox,
   initialPoints,
-  initialAssetType,
+  initialAssetTypes,
 }: GlobeProps) {
   const mapView = useCurrentMapView();
   const [sceneView, setSceneView] = useState<__esri.SceneView>();
@@ -133,10 +133,10 @@ export function Globe({
   );
 
   const { map, handleViewReady } = useMapInitialisation({
-    initialAssetId,
+    initialAssetIds,
     initialBbox,
     initialPoints,
-    initialAssetType,
+    initialAssetTypes,
     postLoadCb: (view) => {
       if (!view || !view.map) {
         return;

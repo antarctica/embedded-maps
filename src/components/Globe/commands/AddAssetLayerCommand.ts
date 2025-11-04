@@ -12,22 +12,25 @@ import {
 } from '@/lib/config/assetLayer';
 
 export class AddAssetLayerCommand implements MapCommand {
-  private assetId?: string;
-  private assetType?: string;
+  private assetIds?: string[];
+  private assetTypes?: string[];
 
-  constructor(props: { assetId?: string; assetType?: string }) {
-    this.assetId = props.assetId;
-    this.assetType = props.assetType;
+  constructor(props: { assetIds?: string[]; assetTypes?: string[] }) {
+    this.assetIds = props.assetIds;
+    this.assetTypes = props.assetTypes;
   }
 
-  private getWhereClause(assetId?: string, assetType?: string): string {
-    if (assetId) {
-      return `${ASSETIDFIELDNAME} = '${assetId}'`;
+  private getWhereClause(assetIds?: string[], assetTypes?: string[]): string {
+    const clauses: string[] = [];
+    if (assetIds && assetIds.length > 0) {
+      const quoted = assetIds.map((v) => `'${v}'`).join(', ');
+      clauses.push(`${ASSETIDFIELDNAME} IN (${quoted})`);
     }
-    if (assetType) {
-      return `${ASSETTYPEFIELDNAME} = '${assetType}'`;
+    if (assetTypes && assetTypes.length > 0) {
+      const quoted = assetTypes.map((v) => `'${v}'`).join(', ');
+      clauses.push(`${ASSETTYPEFIELDNAME} IN (${quoted})`);
     }
-    return '';
+    return clauses.length > 1 ? `(${clauses.join(' OR ')})` : (clauses[0] ?? '');
   }
 
   async executeOnMap(map: EsriMap): Promise<void> {
@@ -36,7 +39,7 @@ export class AddAssetLayerCommand implements MapCommand {
       portalItem: {
         id: ASSETLAYERPORTALID,
       },
-      definitionExpression: this.getWhereClause(this.assetId, this.assetType),
+      definitionExpression: this.getWhereClause(this.assetIds, this.assetTypes),
       labelingInfo: [],
       renderer: new SimpleRenderer({
         symbol: new SimpleMarkerSymbol({

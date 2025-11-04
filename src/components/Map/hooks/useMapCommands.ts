@@ -11,8 +11,8 @@ import { FindAssetCommand } from '../commands/FindAssetCommand';
 import { MapCenterCommand } from '../commands/MapCenterCommand';
 
 interface UseMapCommandsProps {
-  initialAssetId?: string;
-  initialAssetType?: string;
+  initialAssetIds?: string[];
+  initialAssetTypes?: string[];
   initialCenter?: [number, number];
   initialBbox?: BBox[];
   initialPoints?: MapPoint[];
@@ -24,8 +24,8 @@ interface UseMapCommandsProps {
 }
 
 export function useMapCommands({
-  initialAssetId,
-  initialAssetType,
+  initialAssetIds,
+  initialAssetTypes,
   initialCenter,
   initialBbox,
   initialPoints,
@@ -40,11 +40,14 @@ export function useMapCommands({
     if (initialCenter) {
       commands.push(new MapCenterCommand(initialCenter));
     }
-    if (initialAssetId || initialAssetType) {
+    if (
+      (initialAssetIds && initialAssetIds.length) ||
+      (initialAssetTypes && initialAssetTypes.length)
+    ) {
       commands.push(
         new FindAssetCommand({
-          assetId: initialAssetId,
-          assetType: initialAssetType,
+          assetIds: initialAssetIds,
+          assetTypes: initialAssetTypes,
           showAssetPopup: initialShowAssetPopup,
         }),
       );
@@ -62,8 +65,8 @@ export function useMapCommands({
     }
     return commands;
   }, [
-    initialAssetId,
-    initialAssetType,
+    initialAssetIds,
+    initialAssetTypes,
     initialCenter,
     initialBbox,
     initialPoints,

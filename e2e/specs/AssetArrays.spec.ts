@@ -7,7 +7,7 @@ import {
   waitForMapReady,
 } from '../config/test.utils';
 
-test.describe.parallel('Asset Arrays', () => {
+test.describe('Asset Arrays', () => {
   test.describe('multiple asset-ids', () => {
     test.beforeEach(async ({ page }) => {
       // Note: Record HAR file for multiple asset IDs query
@@ -15,7 +15,7 @@ test.describe.parallel('Asset Arrays', () => {
       const harPath = getHarPath('asset-arrays/multiple-asset-ids.har');
       await page.routeFromHAR(harPath, {
         url: '**/tPxy1hrFDhJfZ0Mf/arcgis/rest/services/ats_latest_assets_position/FeatureServer/0/*',
-        update: false,
+        update: process.env.UPDATE_HARS === 'true',
       });
       await page.goto(
         `/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&asset-id=01JDRYA33CJZ8FQGAJBTFJS4P7&zoom=8`,
@@ -38,7 +38,7 @@ test.describe.parallel('Asset Arrays', () => {
       const harPath = getHarPath('asset-arrays/multiple-asset-types.har');
       await page.routeFromHAR(harPath, {
         url: '**/tPxy1hrFDhJfZ0Mf/arcgis/rest/services/ats_latest_assets_position/FeatureServer/0/*',
-        update: false,
+        update: process.env.UPDATE_HARS === 'true',
       });
       await page.goto(`/?asset-type=98&asset-type=62&zoom=6`);
       await waitForMapReady(page);
@@ -60,7 +60,7 @@ test.describe.parallel('Asset Arrays', () => {
       const harPath = getHarPath('asset-arrays/asset-id-and-type-or.har');
       await page.routeFromHAR(harPath, {
         url: '**/tPxy1hrFDhJfZ0Mf/arcgis/rest/services/ats_latest_assets_position/FeatureServer/0/*',
-        update: false,
+        update: process.env.UPDATE_HARS === 'true',
       });
       await page.goto(`/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&asset-type=62&zoom=8`);
       await waitForMapReady(page);
@@ -82,7 +82,7 @@ test.describe.parallel('Asset Arrays', () => {
       const harPath = getHarPath('asset-arrays/multiple-ids-and-types-or.har');
       await page.routeFromHAR(harPath, {
         url: '**/tPxy1hrFDhJfZ0Mf/arcgis/rest/services/ats_latest_assets_position/FeatureServer/0/*',
-        update: false,
+        update: process.env.UPDATE_HARS === 'true',
       });
       await page.goto(
         `/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&asset-id=01JDRYA33CJZ8FQGAJBTFJS4P7&asset-type=98&asset-type=62&zoom=8`,

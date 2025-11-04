@@ -30,7 +30,7 @@ test.describe('Asset Types', () => {
           update: process.env.UPDATE_HARS === 'true',
         });
         await page.goto(`/${testCase.params}`);
-        await waitForMapReady(page, { additionalDelay: 4000 });
+        await waitForMapReady(page, { additionalDelay: 10000 });
       });
 
       test('snapshot', async ({ page }) => {

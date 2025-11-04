@@ -47,7 +47,6 @@ services:
         xvfb-run --auto-servernum \
           npx playwright test \
           --config e2e/config/playwright.config.ts \
-          --workers=75% \
           $([ "$UPDATE_SNAPSHOTS" = "true" ] && echo "--update-snapshots") \
           $([ ! -z "$TEST_GREP" ] && echo "--grep=$TEST_GREP")'
 

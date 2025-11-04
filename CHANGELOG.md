@@ -7,28 +7,48 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.3.0] 2025-11-04
+
 ### Added
 
-* Added support for multiple asset IDs and types as array query parameters
+* Support for multiple asset IDs and types as array query parameters
   [#56](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/56)
-* Added support for layers parameter to load feature layers from portal item IDs
+* Support for layers parameter to load feature layers from portal item IDs
   [#55](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/55)
-* Added bounding box layer to handle display of bounding boxes at different scales
+* Bounding box layer to handle display of bounding boxes at different scales
   [#46](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/45)
-* Added support for multiple bounding boxes passed in the url params
+* Support for multiple bounding boxes passed in the url params
   [#47](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/47)
-* Added support for graticule layer overlay
+* Support for graticule layer overlay
   [#52](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/52)
-* Added support for points to be passed in the url params
+* Support for points to be passed in the url params
   [#49](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/49)
-* Added support for asset type to be passed in the url params
+* Support for asset type to be passed in the url params
   [#53](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/53)
-* Added support for legacy theme - see `legacy-theme` url param
+* Support for switching between BAS Style Kit versions via themes url param
+  [#51](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/51)
+* Experimental Embedded Maps configurator
+  [#51](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/51)
 
 ### Fixed
-* Fixed bug where bounding box was not being displayed correctly on the globe near the poles.
-  [#54](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/54)
 
+* Bug where bounding box was not being displayed correctly on the globe near the poles.
+  [#54](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/54)
+* Inappropriate version prefix in testing environment
+  [#57](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/57)
+* Stale arcgis versions causing crashes and incorrect rotations in poles
+  [#51](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/51)
+* Broken e2e test snapshot
+  [#51](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/51)
+
+### Changed
+
+* Switched from PandaCSS to Tailwind for consistency with other projects
+  [#51](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/51)
+* Updating to ArcGIS JS SDK 4.33
+  [#51](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/51)
+* CI configuration refactored to use separate build stages for each environment
+  [#51](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/51)
 
 ## [0.2.1] 2025-04-01
 

@@ -71,7 +71,7 @@ test:e2e:
         - src/**/*
         - e2e/**/*
 
-build:
+build-prod:
   stage: 🏗️ build
   image: node:22-alpine
   script:
@@ -84,11 +84,25 @@ build:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_TAG'
 
-publish-stage:
-  stage: 🚚 publish
-  needs: ['build']
+build-stage:
+  stage: 🏗️ build-stage
+  image: node:22-alpine
   variables:
     VITE_BASE_PATH: /
+  script:
+    - npm ci
+    - npm run lint 
+    - npm run build
+  artifacts:
+    paths:
+      - $DEPLOY_SRC/
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $CI_COMMIT_TAG == null'
+
+
+publish-stage:
+  stage: 🚚 publish
+  needs: ['build-stage']
   script:
     - aws s3 sync $DEPLOY_SRC/ s3://$S3_BUCKET_STAGE
     - aws s3 sync $CONFIGURATOR_SRC/ s3://$S3_BUCKET_STAGE/configurator/
@@ -100,7 +114,7 @@ publish-stage:
 
 publish-prod:
   stage: 🚚 publish
-  needs: ['build']
+  needs: ['build-prod']
   script:
     - aws s3 sync $DEPLOY_SRC/ s3://$S3_BUCKET_PROD/v1/
     - aws s3 sync $CONFIGURATOR_SRC/ s3://$S3_BUCKET_PROD/v1/configurator/

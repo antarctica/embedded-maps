@@ -90,8 +90,8 @@ publish-stage:
   variables:
     VITE_BASE_PATH: /
   script:
-    - aws s3 sync $DEPLOY_SRC/ s3://$S3_BUCKET_STAGE/v1/
-    - aws s3 sync $CONFIGURATOR_SRC/ s3://$S3_BUCKET_STAGE/v1/configurator/
+    - aws s3 sync $DEPLOY_SRC/ s3://$S3_BUCKET_STAGE
+    - aws s3 sync $CONFIGURATOR_SRC/ s3://$S3_BUCKET_STAGE/configurator/
   environment:
     name: staging
     url: $ENV_STAGE_HREF

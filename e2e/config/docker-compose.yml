@@ -37,7 +37,7 @@ services:
       /bin/bash -c '
         set -ex
         echo "📦 Installing dependencies and setting up environment..."
-        npm install
+        npm ci
         apt-get update && apt-get install -y xvfb
         
         echo "🎭 Installing Playwright browsers..."

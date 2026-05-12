@@ -331,7 +331,13 @@ Permission to read and/or write remote state information for this project is res
 
 ## Developing
 
-To set up a local development environment (with Node.js installed):
+Install **Node.js 24** (Active LTS) and **npm 11+** so they match [`package.json`](/package.json) `engines`. CI build jobs use [`node:24-alpine`](https://hub.docker.com/_/node); e2e uses the Playwright image in [`.gitlab-ci.yml`](/.gitlab-ci.yml), which ships Node 24 and npm 11.
+
+Committed [`.npmrc`](/.npmrc) applies to every install from this directory: `engine-strict=true`, `min-release-age=5` (reject package versions first published fewer than five days ago), and `allow-git=none` (no `git+` URL dependencies). Lifecycle scripts stay enabled so `prepare` (husky, sprite/theme codegen) can run.
+
+**Day-to-day** (after changing dependencies in `package.json`): run `npm install` and commit both `package.json` and `package-lock.json`.
+
+**Clean / CI-like** (before reproducing CI or when debugging install drift): `rm -rf node_modules && npm ci`, then run builds or tests as needed.
 
 ```shell
 npm install

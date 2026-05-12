@@ -40,14 +40,14 @@ cache:
 
 test:e2e:
   stage: 🧪 test
-  image: mcr.microsoft.com/playwright:v1.50.1-noble
+  image: mcr.microsoft.com/playwright:v1.59.1-noble
   parallel: 4
   variables:
     CI: 'true'
     TZ: 'UTC'
     LANG: 'en_US.UTF-8'
   services:
-    - name: mcr.microsoft.com/playwright:v1.50.1-noble
+    - name: mcr.microsoft.com/playwright:v1.59.1-noble
       command: ["init"]
   script:
     - apt-get update && apt-get install -y xvfb
@@ -74,7 +74,7 @@ test:e2e:
 
 build-prod:
   stage: 🏗️ build
-  image: node:22-alpine
+  image: node:24-alpine
   script:
     - npm ci
     - npm run lint 
@@ -87,7 +87,7 @@ build-prod:
 
 build-stage:
   stage: 🏗️ build-stage
-  image: node:22-alpine
+  image: node:24-alpine
   variables:
     VITE_BASE_PATH: ""
   script:

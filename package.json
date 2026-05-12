@@ -3,6 +3,10 @@
   "private": true,
   "version": "0.2.0",
   "type": "module",
+  "engines": {
+    "node": "^24.0.0",
+    "npm": ">=11.0.0"
+  },
   "scripts": {
     "prepare": "husky && npm run generate-sprites && npm run extract-theme-variables",
     "dev": "vite",
@@ -41,7 +45,7 @@
     "@eslint/compat": "^1.2.5",
     "@eslint/js": "^9.18.0",
     "@tanstack/eslint-plugin-router": "^1.115.0",
-    "@playwright/test": "^1.50.1",
+    "@playwright/test": "^1.59.0",
     "@swc/cli": "^0.6.0",
     "@swc/core": "^1.11.1",
     "@tanstack/router-devtools": "^1.97.3",
@@ -49,7 +53,7 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^14.6.0",
-    "@types/node": "^22.10.7",
+    "@types/node": "^24.0.0",
     "@types/react": "19.0.7",
     "@types/react-dom": "19.0.3",
     "@vitejs/plugin-react-swc": "^3.7.2",

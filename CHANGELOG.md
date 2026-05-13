@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+* CI build jobs use Node 24 (`node:24-alpine`); e2e CI and `e2e/config/Dockerfile.e2e` use Playwright `v1.59.1-noble` so the pipeline matches Node 24 and current `@playwright/test`.
+  [#59](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/59)
+* GitLab install steps and local e2e Docker Compose use `npm ci` for installs from the committed lockfile.
+  [#59](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/59)
+* `package.json` `engines` require Node 24 and npm 11+; `@types/node` aligned with Node 24.
+  [#59](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/59)
+
+### Added
+
+* Committed `.npmrc` with `engine-strict=true`, `min-release-age=5` (release-age policy), and `allow-git=none`.
+  [#59](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/59)
+* README **Developing** section: required Node/npm, what `.npmrc` applies, and when to use `npm install` vs a clean `npm ci`.
+  [#59](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/59)
+
 ## [0.3.0] 2025-11-04
 
 ### Added

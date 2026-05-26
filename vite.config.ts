@@ -1,4 +1,4 @@
-/// <reference types="vitest" />
+/// <reference types="vitest/config" />
 import tailwindcss from '@tailwindcss/vite';
 import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
 import react from '@vitejs/plugin-react-swc';
@@ -14,6 +14,8 @@ export default ({ mode }: { mode: string }) => {
       globals: true,
       setupFiles: './src/test/setup.tsx',
       environment: 'jsdom',
+      dir: './src',
+      restoreMocks: true,
     },
     base: env.VITE_BASE_PATH,
     server: {

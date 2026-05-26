@@ -3,26 +3,22 @@ import { describe, expect, it } from 'vitest';
 import { isDefined } from './typeGuards';
 
 describe('isDefined', () => {
-  it('should return true for defined values', () => {
-    expect(isDefined(0)).toBe(true);
-    expect(isDefined('')).toBe(true);
-    expect(isDefined(false)).toBe(true);
-    expect(isDefined({})).toBe(true);
-    expect(isDefined([])).toBe(true);
+  it.each([
+    [0, true],
+    ['', true],
+    [false, true],
+    [{}, true],
+    [[], true],
+    [null, false],
+    [undefined, false],
+  ] as const)('returns %s for %j', (value, expected) => {
+    expect(isDefined(value)).toBe(expected);
   });
 
-  it('should return false for null and undefined', () => {
-    expect(isDefined(null)).toBe(false);
-    expect(isDefined(undefined)).toBe(false);
-  });
-
-  // Type checking test
-  it('should properly narrow types', () => {
+  it('narrows nullable types', () => {
     const value: string | null = 'test';
     if (isDefined(value)) {
-      // TypeScript should recognize value as string here
-      const length: number = value.length;
-      expect(length).toBe(4);
+      expect(value.length).toBe(4);
     }
   });
 });

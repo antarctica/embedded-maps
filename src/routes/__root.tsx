@@ -1,5 +1,4 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router';
-import { fallback, zodValidator } from '@tanstack/zod-adapter';
 import * as React from 'react';
 import { z } from 'zod';
 
@@ -16,32 +15,32 @@ import {
 
 const baseSearchSchema = z.object({
   // View parameters
-  zoom: fallback(z.number().optional(), undefined),
-  scale: fallback(z.number().optional(), undefined),
-  centre: fallback(CoordinatePair.optional(), undefined),
-  bbox: fallback(BBoxParam.optional(), undefined),
-  'bbox-force-regional-extent': fallback(booleanWithoutValue().optional(), undefined),
-  points: fallback(MapPointParam.optional(), undefined),
+  zoom: z.number().optional().catch(undefined),
+  scale: z.number().optional().catch(undefined),
+  centre: CoordinatePair.optional().catch(undefined),
+  bbox: BBoxParam.optional().catch(undefined),
+  'bbox-force-regional-extent': booleanWithoutValue().optional().catch(undefined),
+  points: MapPointParam.optional().catch(undefined),
 
   // Data layers
-  layers: fallback(PortalItemIdsParam.optional(), undefined),
+  layers: PortalItemIdsParam.optional().catch(undefined),
 
   // UI Controls
-  'ctrl-zoom': fallback(booleanWithoutValue().optional(), undefined),
-  'ctrl-reset': fallback(booleanWithoutValue().optional(), undefined),
-  'ctrl-fullscreen': fallback(booleanWithoutValue().optional(), undefined),
-  theme: fallback(z.enum(['bsk1', 'bsk2']).optional(), undefined),
+  'ctrl-zoom': booleanWithoutValue().optional().catch(undefined),
+  'ctrl-reset': booleanWithoutValue().optional().catch(undefined),
+  'ctrl-fullscreen': booleanWithoutValue().optional().catch(undefined),
+  theme: z.enum(['bsk1', 'bsk2']).optional().catch(undefined),
 
   // Globe overview
-  'globe-overview': fallback(booleanWithoutValue().optional(), undefined),
+  'globe-overview': booleanWithoutValue().optional().catch(undefined),
 
   // Overlays
-  'ctrl-graticule': fallback(booleanWithoutValue().optional(), undefined),
+  'ctrl-graticule': booleanWithoutValue().optional().catch(undefined),
 
   // Asset parameters
-  'asset-id': fallback(AssetIdsParam.optional(), undefined),
-  'asset-type': fallback(AssetTypesParam.optional(), undefined),
-  'asset-force-popup': fallback(booleanWithoutValue().optional(), undefined),
+  'asset-id': AssetIdsParam.optional().catch(undefined),
+  'asset-type': AssetTypesParam.optional().catch(undefined),
+  'asset-force-popup': booleanWithoutValue().optional().catch(undefined),
 });
 
 type SearchParams = z.infer<typeof baseSearchSchema>;
@@ -85,5 +84,5 @@ export const Route = createRootRoute({
       </main>
     </React.Fragment>
   ),
-  validateSearch: zodValidator(assetSearchSchema),
+  validateSearch: assetSearchSchema,
 });

@@ -11,8 +11,10 @@ import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
 import TextSymbol from '@arcgis/core/symbols/TextSymbol';
 
-export interface LabelledGraticuleLayerProperties
-  extends Omit<FeatureLayerProperties, 'renderer' | 'labelingInfo'> {
+export interface LabelledGraticuleLayerProperties extends Omit<
+  FeatureLayerProperties,
+  'renderer' | 'labelingInfo'
+> {
   graticuleBounds?: GraticuleBounds;
   graticuleStyle?: {
     line?: {

@@ -1,8 +1,9 @@
+import type { ImageryTileLayerProperties } from '@arcgis/core/layers/ImageryTileLayer';
 import ImageryTileLayer from '@arcgis/core/layers/ImageryTileLayer';
 
 import { createLayer } from '../../../util/createLayer';
 export const ArcImageryTileLayer = createLayer<
   typeof ImageryTileLayer,
-  __esri.ImageryTileLayerProperties,
+  ImageryTileLayerProperties,
   ImageryTileLayer
 >(ImageryTileLayer);

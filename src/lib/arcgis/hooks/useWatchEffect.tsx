@@ -1,10 +1,11 @@
-import { watch, when } from '@arcgis/core/core/reactiveUtils';
+import type Accessor from '@arcgis/core/core/Accessor';
+import { type ReactiveWatchOptions, watch, when } from '@arcgis/core/core/reactiveUtils';
 import { useCallback, useEffect, useState } from 'react';
 
 export function useWatchEffect<T>(
   getValue: () => T,
-  callback: (newValue: T, oldValue: T | nullish) => void,
-  options?: __esri.ReactiveWatchOptions,
+  callback: (newValue: T, oldValue: T | null | undefined) => void,
+  options?: ReactiveWatchOptions,
 ) {
   useEffect(() => {
     // Watch for changes to value
@@ -19,8 +20,8 @@ export function useWatchEffect<T>(
 
 export function useWhenEffect<T>(
   getValue: () => T,
-  callback: (newValue: T, oldValue: T | nullish) => void,
-  options?: __esri.ReactiveWatchOptions,
+  callback: (newValue: T, oldValue: T | null | undefined) => void,
+  options?: ReactiveWatchOptions,
 ) {
   useEffect(() => {
     // Watch for changes to value
@@ -36,7 +37,7 @@ export function useWhenEffect<T>(
 export function useWatchState<T>(
   getValue: () => T,
   deps?: unknown[],
-  options?: __esri.ReactiveWatchOptions,
+  options?: ReactiveWatchOptions,
 ): T | undefined {
   const [state, setState] = useState<T>();
 
@@ -48,7 +49,7 @@ export function useWatchState<T>(
   return state;
 }
 
-export function useArcState<T extends __esri.Accessor, Property extends keyof T>(
+export function useArcState<T extends Accessor, Property extends keyof T>(
   acc: T,
   property: Property,
 ): [T[Property], React.Dispatch<React.SetStateAction<T[Property]>>] {

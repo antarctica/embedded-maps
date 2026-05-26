@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "ES2024",
     "useDefineForClassFields": false,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["ES2024", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
     "allowJs": true,
@@ -21,15 +21,15 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    
+
     "types": ["vitest/globals"],
 
     "paths": {
       "@/*": ["./src/*"],
       "@styled-system/*": ["./styled-system/*"],
-      "@components/*": ["./src/components/*"],
+      "@components/*": ["./src/components/*"]
     }
   },
-  "include": ["src","__mocks__", "postcss.config.cjs", "scripts"],
+  "include": ["src", "__mocks__", "postcss.config.cjs", "scripts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

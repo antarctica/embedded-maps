@@ -1,6 +1,7 @@
 import Graphic from '@arcgis/core/Graphic';
 import EsriMap from '@arcgis/core/Map';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
+import type MapView from '@arcgis/core/views/MapView';
 
 import { ScaleAwarePolygonLayer } from '@/lib/arcgis/customlayers/ScaleAwarePolygonLayer/ScaleAwarePolygonLayer';
 import { MapCommand } from '@/lib/arcgis/typings/commandtypes';
@@ -9,6 +10,7 @@ import { BBox } from '@/lib/config/schema';
 
 import { calculateEnvelopeBbox, createGeometryFromBBox } from '../utils/bboxUtils';
 import { applyBasemapConstraints } from '../utils/mapViewUtils';
+
 export class AddBboxCommand implements MapCommand {
   private bboxGraphicsLayer = new ScaleAwarePolygonLayer({
     title: 'bbox-graphics-layer',
@@ -43,7 +45,7 @@ export class AddBboxCommand implements MapCommand {
     map.add(this.bboxGraphicsLayer);
 
     return {
-      executeOnView: async (mapView: __esri.MapView) => {
+      executeOnView: async (mapView: MapView) => {
         mapView.set('rotation', basemapConfig.rotation);
         applyBasemapConstraints(mapView, basemapConfig);
         if (this.showRegion) {

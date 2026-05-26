@@ -1,8 +1,10 @@
+import type MapView from '@arcgis/core/views/MapView';
+import type SceneView from '@arcgis/core/views/SceneView';
 import React from 'react';
 
 type MountedViewsContextValue = {
-  views: { [id: string]: __esri.MapView | __esri.SceneView | undefined };
-  onViewMount: (map: __esri.MapView | __esri.SceneView, id: string) => void;
+  views: { [id: string]: MapView | SceneView | undefined };
+  onViewMount: (map: MapView | SceneView, id: string) => void;
   onViewUnmount: (id: string) => void;
 };
 

@@ -1,7 +1,12 @@
 import * as reactiveUtils from '@arcgis/core/core/reactiveUtils.js';
-import { Point, SpatialReference } from '@arcgis/core/geometry';
 import * as projectOperator from '@arcgis/core/geometry/operators/projectOperator.js';
+import Point from '@arcgis/core/geometry/Point';
+import SpatialReference from '@arcgis/core/geometry/SpatialReference';
+import type Viewpoint from '@arcgis/core/Viewpoint';
+import type SceneViewConstraints from '@arcgis/core/views/3d/constraints/Constraints';
+import type SceneViewEnvironment from '@arcgis/core/views/3d/environment/Environment';
 import VirtualLighting from '@arcgis/core/views/3d/environment/VirtualLighting.js';
+import type SceneView from '@arcgis/core/views/SceneView';
 import WebsceneColorBackground from '@arcgis/core/webscene/background/ColorBackground.js';
 import React, { useCallback, useEffect, useState } from 'react';
 
@@ -53,7 +58,7 @@ const correctViewpointForPoles = ([longitude, latitude]: [number, number]): Poin
   return new Point({ longitude, latitude });
 };
 
-const getCorrectedSceneViewpoint = (mapViewpoint: __esri.Viewpoint): __esri.Viewpoint | null => {
+const getCorrectedSceneViewpoint = (mapViewpoint: Viewpoint): Viewpoint | null => {
   const viewPointTargetGeometry = mapViewpoint.targetGeometry;
   if (!viewPointTargetGeometry || !isEsriPoint(viewPointTargetGeometry)) {
     return null;
@@ -91,12 +96,12 @@ export function Globe({
   initialAssetTypes,
 }: GlobeProps) {
   const mapView = useCurrentMapView();
-  const [sceneView, setSceneView] = useState<__esri.SceneView>();
+  const [sceneView, setSceneView] = useState<SceneView>();
   const [isSceneViewLoading, setIsSceneViewLoading] = React.useState(true);
   const [areLayersLoading, setAreLayersLoading] = React.useState(true);
 
   const synchroniseSceneView = useCallback(
-    (sceneView: __esri.SceneView | undefined) => {
+    (sceneView: SceneView | undefined) => {
       if (!sceneView) {
         return;
       }
@@ -236,7 +241,7 @@ export function Globe({
               }),
               starsEnabled: false,
               atmosphereEnabled: false,
-            } as unknown as __esri.SceneViewEnvironment
+            } as unknown as SceneViewEnvironment
           }
           constraints={
             {
@@ -244,7 +249,7 @@ export function Globe({
                 min: 255e5,
                 max: 255e5,
               },
-            } as __esri.SceneViewConstraints
+            } as SceneViewConstraints
           }
           padding={{ top: 0, right: 0, bottom: 0, left: 0 }}
           zoom={0}

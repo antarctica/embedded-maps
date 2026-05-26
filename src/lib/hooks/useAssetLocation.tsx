@@ -1,3 +1,4 @@
+import type Point from '@arcgis/core/geometry/Point';
 import type FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import React from 'react';
 import useSWR from 'swr';
@@ -19,14 +20,14 @@ export function useAssetLocation(
         return null;
       }
 
-      return result.features[0].geometry as __esri.Point;
+      return result.features[0].geometry as Point;
     } catch (e) {
       console.error(e);
       return null;
     }
   }, [featureLayer, assetFieldName, assetId]);
 
-  return useSWR<__esri.Point | null>(assetId, fetcher, {
+  return useSWR<Point | null>(assetId, fetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
   });

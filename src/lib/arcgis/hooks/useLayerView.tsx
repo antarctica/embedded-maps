@@ -1,7 +1,10 @@
+import type layersLayer from '@arcgis/core/layers/Layer';
+import type layersLayerView from '@arcgis/core/views/layers/LayerView';
+import type View from '@arcgis/core/views/View';
 import React from 'react';
 
-export function useLayerView<Layer extends __esri.Layer, LayerView extends __esri.LayerView>(
-  mapView: __esri.View | undefined,
+export function useLayerView<Layer extends layersLayer, LayerView extends layersLayerView>(
+  mapView: View | undefined,
   layer: Layer,
   removeLayerOnUnmount = false,
 ): { layer: Layer; layerView: LayerView | undefined } {

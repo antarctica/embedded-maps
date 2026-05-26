@@ -1,11 +1,12 @@
-import { SpatialReference } from '@arcgis/core/geometry';
 import Extent from '@arcgis/core/geometry/Extent';
 import Mesh from '@arcgis/core/geometry/Mesh';
 import * as projectOperator from '@arcgis/core/geometry/operators/projectOperator.js';
 import * as shapePreservingProjectOperator from '@arcgis/core/geometry/operators/shapePreservingProjectOperator.js';
 import Polygon from '@arcgis/core/geometry/Polygon';
 import Polyline from '@arcgis/core/geometry/Polyline';
+import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 import MeshComponent from '@arcgis/core/geometry/support/MeshComponent';
+import type MeshVertexAttributes from '@arcgis/core/geometry/support/MeshVertexAttributes';
 
 import { isEsriExtent } from '@/lib/arcgis/typings/typeGuards';
 import { getBasemapConfigForMapProjection, MapProjection } from '@/lib/config/basemap';
@@ -41,7 +42,7 @@ import { isDefined } from '@/lib/types/typeGuards';
  * @param projection - Target map projection for the resulting polygon
  * @returns ArcGIS Polygon geometry in the specified projection
  */
-export function createGeometryFromBBox(bbox: BBox, projection: MapProjection): __esri.Polygon {
+export function createGeometryFromBBox(bbox: BBox, projection: MapProjection): Polygon {
   const [minLon, minLat, maxLon, maxLat] = bbox;
   const crossesAntimeridian = minLon > maxLon;
 
@@ -64,7 +65,7 @@ export function createGeometryFromBBox(bbox: BBox, projection: MapProjection): _
     getBasemapConfigForMapProjection(projection).spatialReference,
   );
 
-  return projectedBboxPolygon as __esri.Polygon;
+  return projectedBboxPolygon as Polygon;
 }
 
 /**
@@ -82,7 +83,7 @@ export function createMeshGeometryFromBBox(
   [minLon, minLat, maxLon, maxLat]: BBox,
   height: number = 5000,
   segments: number = 1000,
-): { mesh: __esri.Mesh; outline: __esri.Polyline } {
+): { mesh: Mesh; outline: Polyline } {
   const crossesAntimeridian = minLon > maxLon;
 
   const vertices: number[] = [];
@@ -142,7 +143,7 @@ export function createMeshGeometryFromBBox(
   }
 
   const component = new MeshComponent({
-    faces,
+    faces: new Uint32Array(faces),
   });
 
   // create the mesh geometry
@@ -150,7 +151,7 @@ export function createMeshGeometryFromBBox(
     components: [component],
     vertexAttributes: {
       position: new Float64Array(vertices),
-    } as __esri.MeshVertexAttributes,
+    } as MeshVertexAttributes,
     spatialReference: { wkid: 4326 },
     vertexSpace: {
       type: 'georeferenced',

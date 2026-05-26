@@ -1,6 +1,9 @@
-import { Point, SpatialReference } from '@arcgis/core/geometry';
+import Point from '@arcgis/core/geometry/Point';
+import SpatialReference from '@arcgis/core/geometry/SpatialReference';
+import type Graphic from '@arcgis/core/Graphic';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import EsriMap from '@arcgis/core/Map';
+import type MapView from '@arcgis/core/views/MapView';
 
 import { MapCommand } from '@/lib/arcgis/typings/commandtypes';
 import { isEsriPoint } from '@/lib/arcgis/typings/typeGuards';
@@ -56,7 +59,7 @@ export class FindAssetCommand implements MapCommand {
     });
   }
 
-  private async getInitialAssets(): Promise<__esri.Graphic[] | null> {
+  private async getInitialAssets(): Promise<Graphic[] | null> {
     try {
       const query = this.assetLayer.createQuery();
       query.where = this.getWhereClause(this.assetIds, this.assetTypes);
@@ -102,7 +105,7 @@ export class FindAssetCommand implements MapCommand {
       map.basemap = basemapConfig.basemap;
 
       return {
-        executeOnView: async (mapView: __esri.MapView) => {
+        executeOnView: async (mapView: MapView) => {
           mapView.set('rotation', basemapConfig.rotation);
           applyBasemapConstraints(mapView, basemapConfig);
           // wait for the map to be ready

@@ -1,28 +1,26 @@
+import type Layer from '@arcgis/core/layers/Layer';
+import type LayerView from '@arcgis/core/views/layers/LayerView';
 import { useEffect, useState } from 'react';
 
 import { useCurrentView } from '../hooks';
-import { useEventHandlers } from '../hooks/useEventHandlers';
-import { EventHandlers } from '../typings/EsriTypes';
 import { ArcReactiveProp } from './ArcReactiveProp';
 
 export function createLayer<
   LayerConstructorType extends new (props: LayerProperties | undefined) => LayerInstance,
   LayerProperties,
-  LayerInstance extends __esri.Layer,
+  LayerInstance extends Layer,
 >(LayerConstructor: LayerConstructorType) {
   return function ArcLayer({
     onLayerCreated,
-    eventHandlers,
     children,
     ...layerProps
   }: {
     onLayerCreated?: (layer: LayerInstance) => void;
-    eventHandlers?: EventHandlers<LayerInstance>;
     children?: React.ReactNode;
   } & LayerProperties) {
     const mapView = useCurrentView();
     const [layer, setLayer] = useState<LayerInstance>();
-    const [layerView, setLayerView] = useState<__esri.LayerView>();
+    const [layerView, setLayerView] = useState<LayerView>();
 
     useEffect(() => {
       if (!mapView) return;
@@ -45,8 +43,6 @@ export function createLayer<
         });
       });
     }, [layer, mapView, onLayerCreated]);
-
-    useEventHandlers(layer, eventHandlers);
 
     return (
       <>

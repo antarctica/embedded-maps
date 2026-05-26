@@ -1,14 +1,18 @@
 import { property, subclass } from '@arcgis/core/core/accessorSupport/decorators';
+import type { ResourceHandle } from '@arcgis/core/core/Handles';
 import * as reactiveUtils from '@arcgis/core/core/reactiveUtils';
-import { Point } from '@arcgis/core/geometry';
 import * as labelPointOperator from '@arcgis/core/geometry/operators/labelPointOperator.js';
+import Point from '@arcgis/core/geometry/Point';
 import Graphic from '@arcgis/core/Graphic';
+import type { GraphicsLayerProperties } from '@arcgis/core/layers/GraphicsLayer';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
+import type MapView from '@arcgis/core/views/MapView';
+import type SceneView from '@arcgis/core/views/SceneView';
 
 import { isDefined } from '@/lib/types/typeGuards';
 
-export interface ScaleAwarePolygonLayerProperties extends __esri.GraphicsLayerProperties {
+export interface ScaleAwarePolygonLayerProperties extends GraphicsLayerProperties {
   pixelThreshold?: number;
   defaultPointSymbol?: SimpleMarkerSymbol;
 }
@@ -34,7 +38,7 @@ export class ScaleAwarePolygonLayer extends GraphicsLayer {
   });
 
   private _polygonDisplayMap: Map<Graphic, PolygonDisplayOptions> = new Map();
-  private _scaleWatcher: __esri.Handle | undefined;
+  private _scaleWatcher: ResourceHandle | undefined;
 
   constructor(properties?: ScaleAwarePolygonLayerProperties) {
     super(properties);
@@ -49,7 +53,7 @@ export class ScaleAwarePolygonLayer extends GraphicsLayer {
 
     this.addHandles([
       this.on('layerview-create', (event) => {
-        const view = event.view as __esri.MapView | __esri.SceneView;
+        const view = event.view as MapView | SceneView;
         this._scaleWatcher = reactiveUtils.watch(
           () => view.scale,
           () => {
@@ -69,10 +73,7 @@ export class ScaleAwarePolygonLayer extends GraphicsLayer {
     ]);
   }
 
-  private calculatePolygonPixelDiagonal(
-    polygon: Graphic,
-    mapView: __esri.MapView | __esri.SceneView,
-  ): number {
+  private calculatePolygonPixelDiagonal(polygon: Graphic, mapView: MapView | SceneView): number {
     const extent = polygon.geometry?.extent;
     if (!isDefined(extent)) {
       return 0;
@@ -103,18 +104,12 @@ export class ScaleAwarePolygonLayer extends GraphicsLayer {
     );
   }
 
-  private shouldShowPolygon(
-    polygonGraphic: Graphic,
-    mapView: __esri.MapView | __esri.SceneView,
-  ): boolean {
+  private shouldShowPolygon(polygonGraphic: Graphic, mapView: MapView | SceneView): boolean {
     const pixelDiagonal = this.calculatePolygonPixelDiagonal(polygonGraphic, mapView);
     return pixelDiagonal >= this.pixelThreshold;
   }
 
-  private handleGraphicDisplay(
-    polygonGraphic: Graphic,
-    mapView: __esri.MapView | __esri.SceneView,
-  ): void {
+  private handleGraphicDisplay(polygonGraphic: Graphic, mapView: MapView | SceneView): void {
     const polygonDisplayOptions = this._polygonDisplayMap.get(polygonGraphic);
     if (!polygonDisplayOptions) {
       return;
@@ -135,9 +130,9 @@ export class ScaleAwarePolygonLayer extends GraphicsLayer {
     }
   }
 
-  public add(polygonGraphic: Graphic, fallBackPointSymbol?: SimpleMarkerSymbol): void {
+  public add(polygonGraphic: Graphic, fallBackPointSymbol?: SimpleMarkerSymbol): this {
     if (!isDefined(polygonGraphic.geometry)) {
-      return;
+      return this;
     }
 
     const pointGraphic = new Graphic({
@@ -150,7 +145,7 @@ export class ScaleAwarePolygonLayer extends GraphicsLayer {
       center: pointGraphic,
     });
 
-    super.add(polygonGraphic);
+    return super.add(polygonGraphic);
   }
 
   public remove(polygonGraphic: Graphic): void {

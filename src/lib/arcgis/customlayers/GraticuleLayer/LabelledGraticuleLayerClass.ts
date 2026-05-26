@@ -1,30 +1,31 @@
 import Color from '@arcgis/core/Color';
 import { property, subclass } from '@arcgis/core/core/accessorSupport/decorators';
-import { SpatialReference } from '@arcgis/core/geometry';
 import Polyline from '@arcgis/core/geometry/Polyline';
+import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 import Graphic from '@arcgis/core/Graphic';
+import type { FeatureLayerProperties } from '@arcgis/core/layers/FeatureLayer';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import DisplayFilterInfo from '@arcgis/core/layers/support/DisplayFilterInfo';
 import LabelClass from '@arcgis/core/layers/support/LabelClass';
-import { SimpleRenderer } from '@arcgis/core/renderers';
-import { TextSymbol } from '@arcgis/core/symbols';
+import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
+import TextSymbol from '@arcgis/core/symbols/TextSymbol';
 
 export interface LabelledGraticuleLayerProperties
-  extends Omit<__esri.FeatureLayerProperties, 'renderer' | 'labelingInfo'> {
+  extends Omit<FeatureLayerProperties, 'renderer' | 'labelingInfo'> {
   graticuleBounds?: GraticuleBounds;
   graticuleStyle?: {
     line?: {
-      color?: __esri.Color;
+      color?: Color;
       width?: number;
     };
     label?: {
-      color?: __esri.Color;
+      color?: Color;
       font?: {
         family?: string;
         size?: number;
       };
-      haloColor?: __esri.Color;
+      haloColor?: Color;
       haloSize?: number;
     };
   };
@@ -37,11 +38,11 @@ type GraticuleBounds = {
 };
 
 type GraticuleStyle = {
-  line: { color: __esri.Color; width: number };
+  line: { color: Color; width: number };
   label: {
-    color: __esri.Color;
+    color: Color;
     font: { family: string; size: number };
-    haloColor: __esri.Color;
+    haloColor: Color;
     haloSize: number;
   };
 };

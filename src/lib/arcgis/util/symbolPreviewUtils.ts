@@ -1,4 +1,6 @@
 import * as symbolUtils from '@arcgis/core/symbols/support/symbolUtils';
+import type Symbol from '@arcgis/core/symbols/Symbol';
+import type { SymbolUnion } from '@arcgis/core/symbols/types';
 
 export interface SymbolDimensions {
   width: number;
@@ -8,7 +10,7 @@ export interface SymbolDimensions {
 /**
  * Renders a symbol to HTML using ArcGIS symbol utilities
  */
-export async function renderPreviewHTML(symbol: __esri.SymbolUnion, size: number) {
+export async function renderPreviewHTML(symbol: SymbolUnion, size: number) {
   if (symbol.type === 'cim' || symbol.type === 'picture-marker' || symbol.type === 'picture-fill') {
     return symbolUtils.renderPreviewHTML(symbol, {
       size: {
@@ -50,7 +52,7 @@ export function createZigzagPath(size: number, padding: number): string {
  */
 export function processSvgContentForLineSymbol(
   svgContent: string,
-  symbol: __esri.Symbol,
+  symbol: Symbol,
   width: number,
   padding: number,
 ): string {

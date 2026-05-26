@@ -1,21 +1,27 @@
+import type Extent from '@arcgis/core/geometry/Extent';
+import type Point from '@arcgis/core/geometry/Point';
+import type Polygon from '@arcgis/core/geometry/Polygon';
+import type Polyline from '@arcgis/core/geometry/Polyline';
+import type { GeometryUnion } from '@arcgis/core/geometry/types';
+
 // type gaurd to narrow down a geometry to a specific type
-export function isEsriPoint(geometry: __esri.GeometryUnion): geometry is __esri.Point {
+export function isEsriPoint(geometry: GeometryUnion): geometry is Point {
   return geometry.type === 'point';
 }
-export function isEsriPolygon(geometry: __esri.GeometryUnion): geometry is __esri.Polygon {
+export function isEsriPolygon(geometry: GeometryUnion): geometry is Polygon {
   return geometry.type === 'polygon';
 }
 
-export function isEsriPolyline(geometry: __esri.GeometryUnion): geometry is __esri.Polyline {
+export function isEsriPolyline(geometry: GeometryUnion): geometry is Polyline {
   return geometry.type === 'polyline';
 }
 
-export function isEsriExtent(geometry: __esri.GeometryUnion): geometry is __esri.Extent {
+export function isEsriExtent(geometry: GeometryUnion): geometry is Extent {
   return geometry.type === 'extent';
 }
 
 export function isValid2DCoordinate(
-  coordinate: (number | nullish)[],
+  coordinate: (number | null | undefined)[],
 ): coordinate is [number, number] {
   if (coordinate.length !== 2) {
     return false;

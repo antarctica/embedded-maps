@@ -10,8 +10,8 @@ vi.mock('@arcgis/core/widgets/Zoom/ZoomViewModel');
 vi.mock('@arcgis/core/views/MapView');
 
 describe('ZoomControl', () => {
-  let mapView: __esri.MapView;
-  let zoomVM: __esri.ZoomViewModel;
+  let mapView: MapView;
+  let zoomVM: ZoomViewModel;
 
   beforeEach(() => {
     mapView = new MapView();

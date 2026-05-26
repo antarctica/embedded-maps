@@ -1,4 +1,5 @@
 import EsriMap from '@arcgis/core/Map';
+import type MapView from '@arcgis/core/views/MapView';
 import React from 'react';
 
 import { useMapSingleton } from '@/lib/arcgis/hooks/useMapSingleton';
@@ -18,14 +19,14 @@ interface UseMapInitializationProps {
   bboxForceRegionalExtent?: boolean;
   initialShowAssetPopup?: boolean;
   initialShowGraticule?: boolean;
-  postLoadCb?: (view?: __esri.MapView) => void;
+  postLoadCb?: (view?: MapView) => void;
 }
 
 interface UseMapInitializationResult {
   map: EsriMap | null;
   error: Error | null;
   isMapLoading: boolean;
-  handleViewReady: (view: __esri.MapView) => Promise<void>;
+  handleViewReady: (view: MapView) => Promise<void>;
 }
 
 export function useMapInitialisation({
@@ -59,7 +60,7 @@ export function useMapInitialisation({
     'map',
   );
 
-  const handleViewReady = useCallbackRef(async (view: __esri.MapView) => {
+  const handleViewReady = useCallbackRef(async (view: MapView) => {
     await Promise.all(postInitCommands.map((cmd) => (cmd.executeOnView as MapViewExecuter)(view)));
     postLoadCb?.(view);
   });

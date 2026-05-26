@@ -1,6 +1,6 @@
-import { Point } from '@arcgis/core/geometry';
-import { SpatialReference } from '@arcgis/core/geometry';
 import * as projectOperator from '@arcgis/core/geometry/operators/projectOperator.js';
+import Point from '@arcgis/core/geometry/Point';
+import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 
 import { isDefined } from '@/lib/types/typeGuards';
 export function getLonLatFromMapPoint(

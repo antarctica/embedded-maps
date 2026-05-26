@@ -1,3 +1,4 @@
+import type Viewpoint from '@arcgis/core/Viewpoint';
 import HomeVM from '@arcgis/core/widgets/Home/HomeViewModel';
 import * as React from 'react';
 
@@ -6,7 +7,7 @@ import { useCurrentMapView, useWatchState } from '@/lib/arcgis/hooks';
 import { IconButton } from '../../Button/IconButton';
 import SvgIcon from '../../SvgIcon';
 
-function HomeControl({ viewPoint }: { viewPoint?: __esri.Viewpoint }) {
+function HomeControl({ viewPoint }: { viewPoint?: Viewpoint }) {
   const mapView = useCurrentMapView();
   const widget = React.useMemo(
     () => new HomeVM({ view: mapView, viewpoint: viewPoint }),

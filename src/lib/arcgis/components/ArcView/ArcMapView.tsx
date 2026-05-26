@@ -1,16 +1,17 @@
 import '@arcgis/map-components/components/arcgis-map';
 
-import { ArcgisMapCustomEvent } from '@arcgis/map-components';
-import React, { JSX } from 'react';
+import type { ArcgisMapCustomEvent } from '@arcgis/map-components';
+import React, { type JSX } from 'react';
 
 import { ArcInternalViewProvider } from '../../contexts/InternalViewContext/ArcInternalViewProvider';
 import { useCreateView } from '../../hooks/useCreateView';
 
-export function ArcMapView({
+export const ArcMapView = ({
   children,
   onarcgisViewReadyChange,
+  ref,
   ...props
-}: JSX.IntrinsicElements['arcgis-map']) {
+}: JSX.IntrinsicElements['arcgis-map']) => {
   const { view, onViewReady } = useCreateView(props.id);
   const containerRef = React.useRef<HTMLArcgisMapElement>(null);
 
@@ -23,11 +24,24 @@ export function ArcMapView({
     [onViewReady, onarcgisViewReadyChange],
   );
 
+  const setRef = React.useCallback(
+    (mapRef: HTMLArcgisMapElement | null) => {
+      containerRef.current = mapRef;
+
+      if (typeof ref === 'function') {
+        ref(mapRef);
+      } else if (ref) {
+        ref.current = mapRef;
+      }
+    },
+    [ref],
+  );
+
   return (
     <ArcInternalViewProvider view={view}>
-      <arcgis-map ref={containerRef} {...props} onarcgisViewReadyChange={arcgisViewReadyCb}>
+      <arcgis-map ref={setRef} {...props} onarcgisViewReadyChange={arcgisViewReadyCb}>
         {view && children}
       </arcgis-map>
     </ArcInternalViewProvider>
   );
-}
+};

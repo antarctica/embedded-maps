@@ -28,6 +28,7 @@
     "@arcgis/core": "~5.0.0",
     "@arcgis/map-components": "~5.0.0",
     "@fontsource-variable/work-sans": "^5.2.5",
+    "@mantine/hooks": "^9.2.1",
     "@tailwindcss/vite": "^4.1.7",
     "@tanstack/react-router": "^1.97.3",
     "@tanstack/zod-adapter": "^1.97.3",
@@ -42,9 +43,9 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.1",
-    "@tanstack/eslint-plugin-router": "^1.115.0",
     "@playwright/test": "^1.59.0",
     "@swc/core": "^1.11.1",
+    "@tanstack/eslint-plugin-router": "^1.115.0",
     "@tanstack/router-devtools": "^1.97.3",
     "@tanstack/router-plugin": "^1.97.3",
     "@testing-library/jest-dom": "^6.6.3",

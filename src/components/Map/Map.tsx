@@ -1,5 +1,4 @@
 import * as reactiveUtils from '@arcgis/core/core/reactiveUtils.js';
-import type Viewpoint from '@arcgis/core/Viewpoint';
 import Popup from '@arcgis/core/widgets/Popup.js';
 import React from 'react';
 
@@ -62,7 +61,6 @@ export function Map({
   showGraticule,
   initialShowAssetPopup,
 }: MapProps) {
-  const [viewPoint, setViewPoint] = React.useState<Viewpoint | undefined>(undefined);
   const [isMapViewLoading, setIsMapViewLoading] = React.useState(true);
   const [areLayersLoading, setAreLayersLoading] = React.useState(true);
   const { map, error, isMapLoading, handleViewReady } = useMapInitialisation({
@@ -103,9 +101,7 @@ export function Map({
         className="pointer-events-auto h-full w-full"
         map={map}
         onarcgisViewReadyChange={(event) => {
-          handleViewReady(event.target.view).then(() => {
-            setViewPoint(event.target.view.viewpoint);
-          });
+          handleViewReady(event.target.view);
         }}
         popup={popup}
         scale={initialScale}
@@ -113,7 +109,7 @@ export function Map({
       >
         <div slot="top-left" className="flex flex-col gap-2 lg:gap-3">
           {showZoomButton && <ZoomControl />}
-          {showResetButton && <HomeControl viewPoint={viewPoint} />}
+          {showResetButton && <HomeControl />}
           {showFullscreenButton && <FullScreenControl />}
         </div>
         <div slot="bottom-left">

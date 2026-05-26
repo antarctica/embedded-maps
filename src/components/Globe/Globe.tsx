@@ -1,7 +1,5 @@
 import * as reactiveUtils from '@arcgis/core/core/reactiveUtils.js';
-import * as projectOperator from '@arcgis/core/geometry/operators/projectOperator.js';
 import Point from '@arcgis/core/geometry/Point';
-import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 import type Viewpoint from '@arcgis/core/Viewpoint';
 import type SceneViewConstraints from '@arcgis/core/views/3d/constraints/Constraints';
 import type SceneViewEnvironment from '@arcgis/core/views/3d/environment/Environment';
@@ -12,7 +10,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { ArcSceneView } from '@/lib/arcgis/components/ArcView/ArcSceneView';
 import { useCurrentMapView, useWatchEffect } from '@/lib/arcgis/hooks';
-import { isEsriPoint } from '@/lib/arcgis/typings/typeGuards';
+import { isEsriPoint } from '@/lib/arcgis/util/geometry';
+import { getLonLatFromMapPoint } from '@/lib/arcgis/util/geometry';
 import { isPolarProjection } from '@/lib/config/basemap';
 import { BBox, MapPoint } from '@/lib/config/schema';
 import { appTwVariants } from '@/lib/helpers/tailwind-utils';
@@ -64,27 +63,13 @@ const getCorrectedSceneViewpoint = (mapViewpoint: Viewpoint): Viewpoint | null =
     return null;
   }
 
-  const globalCRSViewPoint = projectOperator.execute(
-    viewPointTargetGeometry,
-    SpatialReference.WGS84,
-  );
-  if (
-    !isDefined(globalCRSViewPoint) ||
-    Array.isArray(globalCRSViewPoint) ||
-    !isEsriPoint(globalCRSViewPoint)
-  ) {
-    return null;
-  }
-
-  if (!isDefined(globalCRSViewPoint.longitude) || !isDefined(globalCRSViewPoint.latitude)) {
+  const lonLat = getLonLatFromMapPoint(viewPointTargetGeometry);
+  if (!lonLat) {
     return null;
   }
 
   const newViewPoint = mapViewpoint.clone();
-  newViewPoint.targetGeometry = correctViewpointForPoles([
-    globalCRSViewPoint.longitude,
-    globalCRSViewPoint.latitude,
-  ]);
+  newViewPoint.targetGeometry = correctViewpointForPoles([lonLat.longitude, lonLat.latitude]);
 
   return newViewPoint;
 };

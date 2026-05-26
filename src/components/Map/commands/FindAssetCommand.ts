@@ -6,7 +6,7 @@ import EsriMap from '@arcgis/core/Map';
 import type MapView from '@arcgis/core/views/MapView';
 
 import { MapCommand } from '@/lib/arcgis/typings/commandtypes';
-import { isEsriPoint } from '@/lib/arcgis/typings/typeGuards';
+import { isEsriPoint } from '@/lib/arcgis/util/geometry';
 import {
   ASSETIDFIELDNAME,
   ASSETLAYERMAPID,

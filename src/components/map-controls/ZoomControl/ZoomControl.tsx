@@ -1,6 +1,3 @@
-import ZoomVM from '@arcgis/core/widgets/Zoom/ZoomViewModel';
-import * as React from 'react';
-
 import { IconButton } from '@/components/Button/IconButton';
 import { Divider } from '@/components/Divider/Divider';
 import { useCurrentMapView, useWatchState } from '@/lib/arcgis/hooks';
@@ -19,10 +16,8 @@ const zoomButton = appTwVariants({
 
 function ZoomControl() {
   const mapView = useCurrentMapView();
-  const widget = React.useMemo(() => new ZoomVM({ view: mapView }), [mapView]);
-
-  const canZoomIn = useWatchState(() => widget.canZoomIn) ?? false;
-  const canZoomOut = useWatchState(() => widget.canZoomOut) ?? false;
+  const canZoomIn = useWatchState(() => mapView?.canZoomIn, [mapView]) ?? false;
+  const canZoomOut = useWatchState(() => mapView?.canZoomOut, [mapView]) ?? false;
 
   const { wrapper, button } = zoomButton();
 
@@ -33,7 +28,7 @@ function ZoomControl() {
         icon={<SvgIcon name="icon-add" />}
         aria-label="Zoom In"
         isDisabled={!canZoomIn}
-        onPress={() => widget.zoomIn()}
+        onPress={() => mapView?.zoomIn()}
         variant="mapButton"
         size="md"
         contained
@@ -44,7 +39,7 @@ function ZoomControl() {
         icon={<SvgIcon name="icon-subtract" />}
         aria-label="Zoom Out"
         isDisabled={!canZoomOut}
-        onPress={() => widget.zoomOut()}
+        onPress={() => mapView?.zoomOut()}
         variant="mapButton"
         size="md"
         contained

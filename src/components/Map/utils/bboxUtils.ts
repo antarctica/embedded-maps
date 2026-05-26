@@ -8,7 +8,7 @@ import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 import MeshComponent from '@arcgis/core/geometry/support/MeshComponent';
 import type MeshVertexAttributes from '@arcgis/core/geometry/support/MeshVertexAttributes';
 
-import { isEsriExtent } from '@/lib/arcgis/typings/typeGuards';
+import { isEsriExtent } from '@/lib/arcgis/util/geometry';
 import { getBasemapConfigForMapProjection, MapProjection } from '@/lib/config/basemap';
 import { BBox } from '@/lib/config/schema';
 import { isDefined } from '@/lib/types/typeGuards';

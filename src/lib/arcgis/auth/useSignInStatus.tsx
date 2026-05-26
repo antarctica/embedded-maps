@@ -4,13 +4,15 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { checkSignInStatus, loadPortal, registerAppWithOAuth } from './utils';
 
-export enum SignInStatus {
-  Idle = 'idle',
-  Working = 'working',
-  SignedOut = 'signedout',
-  SignedIn = 'signedin',
-  Error = 'error',
-}
+export const SignInStatus = {
+  Idle: 'idle',
+  Working: 'working',
+  SignedOut: 'signedout',
+  SignedIn: 'signedin',
+  Error: 'error',
+} as const;
+
+export type SignInStatus = (typeof SignInStatus)[keyof typeof SignInStatus];
 
 const useSignInStatus = (appId: string = ''): [SignInStatus, Portal | undefined] => {
   const [status, setStatus] = useState<SignInStatus>(SignInStatus.Idle);

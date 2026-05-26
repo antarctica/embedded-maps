@@ -1,18 +1,23 @@
-import type { EventedCallback } from '@arcgis/core/core/Evented';
+import type { EventedCallback, EventedMixin, EventNames } from '@arcgis/core/core/Evented';
+import type { ResourceHandle } from '@arcgis/core/core/Handles';
 import { useEffect } from 'react';
 
-import { EsriEvented, EventHandlers } from '../typings/EsriTypes';
+import type { EventHandlers } from '../typings/EsriTypes';
 
-export const useEventHandlers = <View extends EsriEvented>(
+export const useEventHandlers = <View extends EventedMixin>(
   accessor?: View,
   eventHandlers?: EventHandlers<View>,
 ): void => {
   useEffect(() => {
     if (!accessor || !eventHandlers) return;
 
-    const handles = Object.entries(eventHandlers).map(([event, handler]) =>
-      accessor.on(event, handler as EventedCallback),
-    );
+    const handles: ResourceHandle[] = [];
+
+    for (const event in eventHandlers) {
+      const handler = eventHandlers[event as keyof EventHandlers<View>];
+      if (!handler) continue;
+      handles.push(accessor.on(event as EventNames<View>, handler as EventedCallback));
+    }
 
     return () => {
       for (const handle of handles) handle.remove();

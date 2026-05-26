@@ -3,13 +3,15 @@ import tailwindcss from '@tailwindcss/vite';
 import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
 import react from '@vitejs/plugin-react-swc';
 import { defineConfig, loadEnv } from 'vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vitejs.dev/config/
 export default ({ mode }: { mode: string }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return defineConfig({
-    plugins: [react({ tsDecorators: true }), tsconfigPaths(), TanStackRouterVite(), tailwindcss()],
+    plugins: [react({ tsDecorators: true }), TanStackRouterVite(), tailwindcss()],
+    resolve: {
+      tsconfigPaths: true,
+    },
     test: {
       globals: true,
       setupFiles: './src/test/setup.tsx',

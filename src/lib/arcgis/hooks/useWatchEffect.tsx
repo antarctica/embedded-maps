@@ -41,7 +41,9 @@ export function useWatchState<T>(
 ): T | undefined {
   const [state, setState] = useState<T>();
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // getValue is intentionally memoized against caller-supplied deps, which cannot
+  // be expressed as a static array literal in this generic hook.
+  // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/use-memo
   const cb = useCallback(getValue, deps ?? []);
 
   useWatchEffect(cb, setState, options);

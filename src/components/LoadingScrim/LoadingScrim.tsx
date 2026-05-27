@@ -22,20 +22,23 @@ const loadingScrim = tv({
 });
 
 function LoadingScrim({ isLoading, error }: { isLoading: boolean; error?: string }) {
-  const [shouldShow, setShouldShow] = React.useState(false);
-  const styles = loadingScrim({ isLoading: shouldShow });
+  const [debounceElapsed, setDebounceElapsed] = React.useState(false);
 
   React.useEffect(() => {
-    let timeoutId: number;
-    if (isLoading) {
-      timeoutId = window.setTimeout(() => {
-        setShouldShow(true);
-      }, 100);
-    } else {
-      setShouldShow(false);
+    if (!isLoading) {
+      return;
     }
-    return () => clearTimeout(timeoutId);
+    const timeoutId = window.setTimeout(() => {
+      setDebounceElapsed(true);
+    }, 100);
+    return () => {
+      clearTimeout(timeoutId);
+      setDebounceElapsed(false);
+    };
   }, [isLoading]);
+
+  const shouldShow = isLoading && debounceElapsed;
+  const styles = loadingScrim({ isLoading: shouldShow });
 
   return (
     <div className={styles.root()}>

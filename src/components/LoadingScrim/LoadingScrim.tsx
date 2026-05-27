@@ -4,17 +4,26 @@ import { tv } from 'tailwind-variants';
 import SpinLoader from '../SpinLoader';
 
 const loadingScrim = tv({
-  base: 'absolute inset-0 h-full w-full place-content-center bg-htmlBackground text-fg opacity-0 transition-[behavior:allow-discrete] duration-[600ms]',
+  slots: {
+    root: 'absolute inset-0 h-full w-full place-content-center bg-htmlBackground text-fg opacity-0 transition-[behavior:allow-discrete] duration-[600ms]',
+    spinner: 'text-fg',
+    error: 'text-fg',
+  },
   variants: {
     isLoading: {
-      true: 'grid opacity-100',
-      false: 'hidden opacity-0',
+      true: {
+        root: 'grid opacity-100',
+      },
+      false: {
+        root: 'hidden opacity-0',
+      },
     },
   },
 });
 
 function LoadingScrim({ isLoading, error }: { isLoading: boolean; error?: string }) {
   const [shouldShow, setShouldShow] = React.useState(false);
+  const styles = loadingScrim({ isLoading: shouldShow });
 
   React.useEffect(() => {
     let timeoutId: number;
@@ -29,11 +38,11 @@ function LoadingScrim({ isLoading, error }: { isLoading: boolean; error?: string
   }, [isLoading]);
 
   return (
-    <div className={loadingScrim({ isLoading: shouldShow })}>
+    <div className={styles.root()}>
       {error ? (
-        <h2>{`Error initializing map: ${error}`}</h2>
+        <h2 className={styles.error()}>{`Error initializing map: ${error}`}</h2>
       ) : (
-        <SpinLoader className="text-fg" size={140}></SpinLoader>
+        <SpinLoader className={styles.spinner()} size={140}></SpinLoader>
       )}
     </div>
   );

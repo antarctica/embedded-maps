@@ -1,5 +1,4 @@
-import '@arcgis/map-components';
-
+/// <reference types="@arcgis/map-components/types/react" />
 import { test } from '@playwright/test';
 
 import { runAccessibilityCheck, testSnapshot, waitForMapReady } from '../config/test.utils';

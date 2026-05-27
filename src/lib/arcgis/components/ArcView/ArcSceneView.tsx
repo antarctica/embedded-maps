@@ -26,7 +26,12 @@ export function ArcSceneView({
 
   return (
     <ArcInternalViewProvider view={view}>
-      <arcgis-scene ref={containerRef} {...props} onarcgisViewReadyChange={arcgisViewReadyCb}>
+      <arcgis-scene
+        hideAttribution
+        ref={containerRef}
+        {...props}
+        onarcgisViewReadyChange={arcgisViewReadyCb}
+      >
         {view && children}
       </arcgis-scene>
     </ArcInternalViewProvider>

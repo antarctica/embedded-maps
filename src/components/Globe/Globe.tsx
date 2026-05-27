@@ -25,7 +25,7 @@ const globe = tv({
       // Layout/positioning
       'pointer-events-none absolute top-0 right-0 grid place-items-center overflow-hidden',
       // Sizing
-      'size-24 max-h-[min(50cqw,50cqh)] max-w-[min(50cqw,50cqh)] @sm/map-container:size-40 @lg/map-container:size-64 @xl/map-container:size-80',
+      'size-24 max-h-[min(50cqw,50cqh)] max-w-[min(50cqw,50cqh)] @sm/map-container:size-40 @xl/map-container:size-56 @4xl/map-container:size-72',
 
       // Circular and border
       'rounded-full border-4 border-solid border-seasalt @sm/map-container:border-6 @lg/map-container:border-8 theme-bsk1:border-white',

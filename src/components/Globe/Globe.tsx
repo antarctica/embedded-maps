@@ -7,6 +7,7 @@ import VirtualLighting from '@arcgis/core/views/3d/environment/VirtualLighting.j
 import type SceneView from '@arcgis/core/views/SceneView';
 import WebsceneColorBackground from '@arcgis/core/webscene/background/ColorBackground.js';
 import React, { useCallback, useEffect, useState } from 'react';
+import { tv } from 'tailwind-variants';
 
 import { ArcSceneView } from '@/lib/arcgis/components/ArcView/ArcSceneView';
 import { useCurrentMapView, useWatchEffect } from '@/lib/arcgis/hooks';
@@ -14,12 +15,11 @@ import { isEsriPoint } from '@/lib/arcgis/util/geometry';
 import { getLonLatFromMapPoint } from '@/lib/arcgis/util/geometry';
 import { isPolarProjection } from '@/lib/config/basemap';
 import { BBox, MapPoint } from '@/lib/config/schema';
-import { appTwVariants } from '@/lib/helpers/tailwind-utils';
 import { isDefined } from '@/lib/types/typeGuards';
 
 import { useMapInitialisation } from './hooks/useMapInitialisation';
 
-const globe = appTwVariants({
+const globe = tv({
   slots: {
     wrapper: [
       // Layout/positioning

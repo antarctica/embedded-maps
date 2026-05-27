@@ -1,10 +1,10 @@
 import * as reactiveUtils from '@arcgis/core/core/reactiveUtils.js';
 import Viewpoint from '@arcgis/core/Viewpoint';
 import React from 'react';
+import { tv } from 'tailwind-variants';
 
 import { ArcMapView } from '@/lib/arcgis/components/ArcView/ArcMapView';
 import { BBox, MapPoint } from '@/lib/config/schema';
-import { appTwVariants } from '@/lib/helpers/tailwind-utils';
 
 import { Globe } from '../Globe';
 import LoadingScrim from '../LoadingScrim';
@@ -50,7 +50,7 @@ const popupOptions = {
   },
 };
 
-const mapStyles = appTwVariants({
+const mapStyles = tv({
   base: 'pointer-events-auto h-full w-full [--arcgis-layout-overlay-space-bottom:16px] [--arcgis-layout-overlay-space-left:0] [--arcgis-layout-overlay-space-right:0] [--arcgis-layout-overlay-space-top:0]',
 });
 

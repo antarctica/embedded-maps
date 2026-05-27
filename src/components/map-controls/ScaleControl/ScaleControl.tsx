@@ -1,12 +1,11 @@
 import '@arcgis/map-components/components/arcgis-scale-bar';
 
 import type * as React from 'react';
-
-import { appTwVariants } from '@/lib/helpers/tailwind-utils';
+import { tv } from 'tailwind-variants';
 
 type ScaleControlProps = React.JSX.IntrinsicElements['arcgis-scale-bar'];
 
-const scaleControl = appTwVariants({
+const scaleControl = tv({
   base: [
     'scale-control',
     '[--calcite-color-foreground-1:var(--scalebar-bg)]',

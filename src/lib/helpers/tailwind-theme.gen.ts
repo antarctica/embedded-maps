@@ -75,6 +75,7 @@ export const generatedThemeConfig = {
         'white',
       ],
       shadow: ['lg', 'md', 'sm', 'xl'],
+      breakpoint: ['xs'],
     },
   },
 } as const;

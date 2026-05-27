@@ -1,13 +1,13 @@
 import { useMergedRef, useResizeObserver } from '@mantine/hooks';
 import * as React from 'react';
 import { Button, composeRenderProps } from 'react-aria-components';
+import { tv } from 'tailwind-variants';
 
-import { appTwVariants } from '@/lib/helpers/tailwind-utils';
 import { focusRing, insetfocusRing } from '@/styles/recipes/focusRing';
 
 import SvgIcon from '../../SvgIcon';
 
-const attributionControl = appTwVariants({
+const attributionControl = tv({
   base: 'absolute bottom-0 left-0 z-10 flex w-full gap-2 bg-accent-a9 px-3 text-accent-contrast theme-bsk1:bg-gray-12 theme-bsk1:text-gray-1',
   variants: {
     isExpanded: {
@@ -17,16 +17,16 @@ const attributionControl = appTwVariants({
   },
 });
 
-const attributionRegion = appTwVariants({
+const attributionRegion = tv({
   base: 'min-w-0 flex-1',
 });
 
-const attributionToggle = appTwVariants({
+const attributionToggle = tv({
   extend: insetfocusRing,
   base: 'min-w-0 flex-1 cursor-pointer text-left outline-white',
 });
 
-const attributionText = appTwVariants({
+const attributionText = tv({
   base: 'block text-xs',
   variants: {
     isExpanded: {
@@ -36,15 +36,15 @@ const attributionText = appTwVariants({
   },
 });
 
-const poweredBy = appTwVariants({
+const poweredBy = tv({
   base: 'text-xs whitespace-nowrap',
 });
 
-const esriLink = appTwVariants({
+const esriLink = tv({
   base: 'underline hover:no-underline',
 });
 
-const infoButton = appTwVariants({
+const infoButton = tv({
   extend: focusRing,
   base: 'shrink-0 cursor-pointer rounded-full opacity-80 outline-white hover:opacity-100',
 });

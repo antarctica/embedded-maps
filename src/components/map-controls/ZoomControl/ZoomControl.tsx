@@ -1,11 +1,12 @@
+import { tv } from 'tailwind-variants';
+
 import { IconButton } from '@/components/Button/IconButton';
 import { Divider } from '@/components/Divider/Divider';
 import { useCurrentMapView, useWatchState } from '@/lib/arcgis/hooks';
-import { appTwVariants } from '@/lib/helpers/tailwind-utils';
 
 import SvgIcon from '../../SvgIcon';
 
-const zoomButton = appTwVariants({
+const zoomButton = tv({
   slots: {
     wrapper:
       'pointer-events-auto flex flex-col items-center justify-center rounded-3xl bg-htmlBackground shadow-sm theme-bsk1:rounded-none',

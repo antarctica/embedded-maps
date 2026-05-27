@@ -1,6 +1,6 @@
 /// <reference types="vitest/config" />
 import tailwindcss from '@tailwindcss/vite';
-import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
+import { tanstackRouter } from '@tanstack/router-plugin/vite';
 import react from '@vitejs/plugin-react-swc';
 import { defineConfig, loadEnv } from 'vite';
 
@@ -8,7 +8,7 @@ import { defineConfig, loadEnv } from 'vite';
 export default ({ mode }: { mode: string }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return defineConfig({
-    plugins: [react({ tsDecorators: true }), TanStackRouterVite(), tailwindcss()],
+    plugins: [react({ tsDecorators: true }), tanstackRouter(), tailwindcss()],
     resolve: {
       tsconfigPaths: true,
     },

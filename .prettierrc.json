@@ -7,5 +7,5 @@
   "endOfLine": "auto",
   "plugins": ["prettier-plugin-tailwindcss"],
   "tailwindStylesheet": "./src/styles/index.css",
-  "tailwindFunctions": ["tv"]
+  "tailwindFunctions": ["tv", "appTwVariants", "cn"]
 }

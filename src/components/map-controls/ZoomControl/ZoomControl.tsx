@@ -33,7 +33,7 @@ function ZoomControl() {
         size="md"
         contained
       />
-      <Divider className="bg-accent-a4 theme-bsk1:bg-gray-8" orientation="horizontal" />
+      <Divider className="bg-accent-9/80 theme-bsk1:bg-gray-8" orientation="horizontal" />
       <IconButton
         className={button()}
         icon={<SvgIcon name="icon-subtract" />}

@@ -1,12 +1,14 @@
 import * as reactiveUtils from '@arcgis/core/core/reactiveUtils.js';
-import Popup from '@arcgis/core/widgets/Popup.js';
+import Viewpoint from '@arcgis/core/Viewpoint';
 import React from 'react';
 
 import { ArcMapView } from '@/lib/arcgis/components/ArcView/ArcMapView';
 import { BBox, MapPoint } from '@/lib/config/schema';
+import { appTwVariants } from '@/lib/helpers/tailwind-utils';
 
 import { Globe } from '../Globe';
 import LoadingScrim from '../LoadingScrim';
+import { CombinedAttributionControl } from '../map-controls/AttributionControl';
 import FullScreenControl from '../map-controls/FullScreenControl/FullScreenControl';
 import HomeControl from '../map-controls/HomeControl';
 import ScaleControl from '../map-controls/ScaleControl/ScaleControl';
@@ -40,8 +42,16 @@ interface MapProps {
   showGraticule?: boolean;
 }
 
-const popup = new Popup({
+const popupOptions = {
   defaultPopupTemplateEnabled: true,
+  includeDefaultActionsDisabled: true,
+  dockOptions: {
+    buttonEnabled: false,
+  },
+};
+
+const mapStyles = appTwVariants({
+  base: 'pointer-events-auto h-full w-full [--arcgis-layout-overlay-space-bottom:16px] [--arcgis-layout-overlay-space-left:0] [--arcgis-layout-overlay-space-right:0] [--arcgis-layout-overlay-space-top:0]',
 });
 
 export function Map({
@@ -63,6 +73,7 @@ export function Map({
 }: MapProps) {
   const [isMapViewLoading, setIsMapViewLoading] = React.useState(true);
   const [areLayersLoading, setAreLayersLoading] = React.useState(true);
+  const [initialViewpoint, setInitialViewpoint] = React.useState<Viewpoint | undefined>(undefined);
   const { map, error, isMapLoading, handleViewReady } = useMapInitialisation({
     initialAssetIds,
     initialAssetTypes,
@@ -95,21 +106,24 @@ export function Map({
   }
 
   return (
-    <div className="map-container relative h-full w-full" data-testid="map-container">
+    <div className="map-container" data-testid="map-container">
       <ArcMapView
         data-ready={(!isMapViewLoading && !areLayersLoading).toString()}
-        className="pointer-events-auto h-full w-full"
+        className={mapStyles()}
         map={map}
         onarcgisViewReadyChange={(event) => {
-          handleViewReady(event.target.view);
+          handleViewReady(event.target.view).then(() => {
+            setInitialViewpoint(event.target.view.viewpoint);
+          });
         }}
-        popup={popup}
         scale={initialScale}
         zoom={initialZoom}
+        hideAttribution
       >
-        <div slot="top-left" className="flex flex-col gap-2 lg:gap-3">
+        <arcgis-popup slot="popup" {...popupOptions}></arcgis-popup>
+        <div slot="top-left" className="flex flex-col gap-2">
           {showZoomButton && <ZoomControl />}
-          {showResetButton && <HomeControl />}
+          {showResetButton && <HomeControl viewPoint={initialViewpoint} />}
           {showFullscreenButton && <FullScreenControl />}
         </div>
         <div slot="bottom-left">
@@ -125,6 +139,7 @@ export function Map({
             />
           </div>
         )}
+        <CombinedAttributionControl />
       </ArcMapView>
     </div>
   );

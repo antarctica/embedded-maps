@@ -21,10 +21,19 @@ import { useMapInitialisation } from './hooks/useMapInitialisation';
 
 const globe = appTwVariants({
   slots: {
-    wrapper:
-      'pointer-events-none absolute top-0 right-0 grid h-[10rem] w-[10rem] place-items-center overflow-hidden rounded-full border-4 border-solid border-seasalt shadow-lg md:h-[16rem] md:w-[16rem] md:border-6 lg:h-[20rem] lg:w-[20rem] lg:border-8 theme-bsk1:border-white',
+    wrapper: [
+      // Layout/positioning
+      'pointer-events-none absolute top-0 right-0 grid place-items-center overflow-hidden',
+      // Sizing
+      'size-24 max-h-[min(50cqw,50cqh)] max-w-[min(50cqw,50cqh)] @sm/map-container:size-40 @lg/map-container:size-64 @xl/map-container:size-80',
+
+      // Circular and border
+      'rounded-full border-4 border-solid border-seasalt @sm/map-container:border-6 @lg/map-container:border-8 theme-bsk1:border-white',
+      // Shadow
+      'shadow-lg',
+    ],
     sceneContainer:
-      'pointer-events-none absolute h-[calc((var(--scale-factor)*101%))] w-[calc((var(--scale-factor)*101%))] pb-[2px]',
+      'pointer-events-none absolute size-[calc((var(--scale-factor)*101%))] max-h-[min(cqw,cqh)] max-w-[min(cqw,cqh)] pb-[2px]',
     circleDisplayOverlay:
       'pointer-events-auto z-1 h-full w-full rounded-full bg-[radial-gradient(circle_at_20px_20px,#ffffff8d_20%,#000_80%)] opacity-40 mix-blend-hard-light',
   },

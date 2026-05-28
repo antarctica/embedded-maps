@@ -1,9 +1,11 @@
+import type MapView from '@arcgis/core/views/MapView';
+import type SceneView from '@arcgis/core/views/SceneView';
 import { useCallback, useContext, useEffect, useId, useState } from 'react';
 
 import { ArcViewContext } from '../contexts/ArcViewContext/ArcViewContext';
 
 export function useCreateView(id?: string) {
-  const [view, setView] = useState<__esri.MapView | __esri.SceneView>();
+  const [view, setView] = useState<MapView | SceneView>();
 
   const internalId = useId();
   const mapId = id ?? internalId;
@@ -12,7 +14,7 @@ export function useCreateView(id?: string) {
   const { onViewMount, onViewUnmount } = mountedViewsContext ?? {};
 
   const onViewReady = useCallback(
-    (view: __esri.MapView | __esri.SceneView) => {
+    (view: MapView | SceneView) => {
       setView(view);
       onViewMount?.(view, mapId);
     },

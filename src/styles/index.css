@@ -1,20 +1,18 @@
-@import "https://js.arcgis.com/4.32/@arcgis/core/assets/esri/themes/light/main.css";
+@import 'https://js.arcgis.com/5.0/@arcgis/core/assets/esri/themes/light/main.css';
 
-@import "./colors.css";
-@import "./animations.css";
-@import "./esri-overides/map.css";
-@import "./esri-overides/scale-control.css";
-@import "./shadow.css";
-@import "tailwindcss";
+@import './colors.css';
+@import './animations.css';
+@import './shadow.css';
+@import 'tailwindcss';
 
 @custom-variant theme-bsk1 {
-  &:where([data-theme="bsk1"] *) {
+  &:where([data-theme='bsk1'] *) {
     @slot;
   }
 }
 
 @custom-variant theme-bsk2 {
-  &:where([data-theme="bsk2"] *) {
+  &:where([data-theme='bsk2'] *) {
     @slot;
   }
 }
@@ -24,7 +22,7 @@
   --font-sans: 'Work Sans Variable', sans-serif;
 
   /* Colors */
-  --color-*: initial; 
+  --color-*: initial;
 
   --color-white: #fff;
   --color-black: #000;
@@ -103,6 +101,8 @@
   --shadow-lg: var(--app-shadow-lg);
   --shadow-xl: var(--app-shadow-xl);
 
+  /* Breakpoints */
+  --breakpoint-xs: 480px;
 }
 
 @theme inline {
@@ -113,8 +113,27 @@
   --color-border: var(--color-accent-3);
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   width: 100%;
 }
 
+.map-container {
+  @apply relative h-full w-full;
+  container-type: size;
+  container-name: map-container;
+}
+
+.scale-control {
+  --scalebar-text: var(--color-accent-9);
+  --scalebar-bg: var(--color-accent-surface);
+  --scalebar-line-color: var(--color-accent-9);
+}
+
+html[data-theme='bsk1'] .scale-control {
+  --scalebar-text: var(--color-gray-11);
+  --scalebar-bg: var(--color-gray-surface);
+  --scalebar-line-color: var(--color-gray-11);
+}

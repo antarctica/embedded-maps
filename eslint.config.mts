@@ -1,4 +1,3 @@
-import { FlatCompat } from '@eslint/eslintrc';
 import pluginRouter from '@tanstack/eslint-plugin-router';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import pluginReact from 'eslint-plugin-react';
@@ -7,16 +6,7 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import globals from 'globals';
-import { dirname } from 'path';
 import { configs as tsConfigs } from 'typescript-eslint';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
 
 const eslintConfig = [
   // ignore patterns
@@ -53,7 +43,7 @@ const eslintConfig = [
   },
 
   // react hooks
-  ...compat.config(reactHooks.configs.recommended),
+  reactHooks.configs.flat.recommended,
 
   // react compiler
   {

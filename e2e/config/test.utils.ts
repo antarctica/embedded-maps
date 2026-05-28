@@ -60,7 +60,35 @@ export async function waitForSceneReady(
   }
 }
 
+export async function waitForAttribution(page: Page, options?: { timeout?: number }) {
+  await expect(page.getByTestId('map-attribution')).not.toHaveText('', {
+    timeout: options?.timeout ?? 30000,
+  });
+}
+
+/**
+ * Waits for the map and any optional companion components (Globe SceneView,
+ * attribution) to be ready before a snapshot or accessibility scan. Keeps these
+ * checks in one place so callers don't have to remember which waits to apply.
+ *
+ * `waitForMapReady` is called unconditionally because it gates on the React
+ * shell mounting (`[data-testid="map-container"]`). After it resolves, the rest
+ * of the tree is in the DOM, so the conditional `count()` checks below are
+ * reliable. If we count() first, `page.goto`'s load event can fire before React
+ * has rendered, leading to false negatives and blank screenshots.
+ */
+async function waitForSnapshotReady(page: Page, options?: { timeout?: number }) {
+  await waitForMapReady(page, options);
+  if ((await page.locator('arcgis-scene').count()) > 0) {
+    await waitForSceneReady(page, options);
+  }
+  if ((await page.getByTestId('map-attribution').count()) > 0) {
+    await waitForAttribution(page, options);
+  }
+}
+
 export async function testSnapshot(page: Page, name: string) {
+  await waitForSnapshotReady(page);
   await expect(page).toHaveScreenshot(`${name.replace(/\s+/g, '-')}.png`, {
     fullPage: true,
     maxDiffPixels: 200,
@@ -68,6 +96,7 @@ export async function testSnapshot(page: Page, name: string) {
 }
 
 export async function runAccessibilityCheck(page: Page) {
+  await waitForSnapshotReady(page);
   const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
   expect(accessibilityScanResults.violations).toEqual([]);
 }

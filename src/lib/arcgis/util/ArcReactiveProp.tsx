@@ -1,3 +1,4 @@
+import type Accessor from '@arcgis/core/core/Accessor';
 import { memo, useEffect } from 'react';
 
 import { isEqual } from './isEqual';
@@ -7,7 +8,7 @@ function ArcReactivePropBase({
   property,
   value,
 }: {
-  accessor: __esri.Accessor;
+  accessor: Accessor;
   property: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value: any;

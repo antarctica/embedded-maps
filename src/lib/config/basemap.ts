@@ -1,5 +1,6 @@
 import Basemap from '@arcgis/core/Basemap';
-import { Polygon, SpatialReference } from '@arcgis/core/geometry';
+import Polygon from '@arcgis/core/geometry/Polygon';
+import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 
 import {
   convertBboxObjectToBBox,

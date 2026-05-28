@@ -1,7 +1,8 @@
-import { appTwVariants } from '@/lib/helpers/tailwind-utils';
+import { tv } from 'tailwind-variants';
+
 import { focusRing } from '@/styles/recipes/focusRing';
 
-export const buttonRecipe = appTwVariants({
+export const buttonRecipe = tv({
   extend: focusRing,
   base: 'border-1px inline-flex h-fit cursor-pointer items-center justify-center no-underline',
   variants: {

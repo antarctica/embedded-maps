@@ -1,6 +1,7 @@
 import esriConfig from '@arcgis/core/config';
 import type Credential from '@arcgis/core/identity/Credential';
 import esriId from '@arcgis/core/identity/IdentityManager';
+import type { GetCredentialOptions } from '@arcgis/core/identity/IdentityManagerBase';
 import OAuthInfo from '@arcgis/core/identity/OAuthInfo';
 import Portal from '@arcgis/core/portal/Portal';
 
@@ -109,7 +110,7 @@ export async function checkSignInStatus({
  */
 export async function signIn(
   portalUrl: string = '',
-  options: __esri.IdentityManagerGetCredentialOptions = {},
+  options: GetCredentialOptions = {},
 ): Promise<Credential> {
   const url: string = cleanUrl(portalUrl);
   try {

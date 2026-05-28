@@ -1,26 +1,39 @@
 import * as reactiveUtils from '@arcgis/core/core/reactiveUtils.js';
-import { Point, SpatialReference } from '@arcgis/core/geometry';
-import * as projectOperator from '@arcgis/core/geometry/operators/projectOperator.js';
+import Point from '@arcgis/core/geometry/Point';
+import type Viewpoint from '@arcgis/core/Viewpoint';
+import type SceneViewConstraints from '@arcgis/core/views/3d/constraints/Constraints';
+import type SceneViewEnvironment from '@arcgis/core/views/3d/environment/Environment';
 import VirtualLighting from '@arcgis/core/views/3d/environment/VirtualLighting.js';
+import type SceneView from '@arcgis/core/views/SceneView';
 import WebsceneColorBackground from '@arcgis/core/webscene/background/ColorBackground.js';
 import React, { useCallback, useEffect, useState } from 'react';
+import { tv } from 'tailwind-variants';
 
 import { ArcSceneView } from '@/lib/arcgis/components/ArcView/ArcSceneView';
 import { useCurrentMapView, useWatchEffect } from '@/lib/arcgis/hooks';
-import { isEsriPoint } from '@/lib/arcgis/typings/typeGuards';
+import { isEsriPoint } from '@/lib/arcgis/util/geometry';
+import { getLonLatFromMapPoint } from '@/lib/arcgis/util/geometry';
 import { isPolarProjection } from '@/lib/config/basemap';
 import { BBox, MapPoint } from '@/lib/config/schema';
-import { appTwVariants } from '@/lib/helpers/tailwind-utils';
 import { isDefined } from '@/lib/types/typeGuards';
 
 import { useMapInitialisation } from './hooks/useMapInitialisation';
 
-const globe = appTwVariants({
+const globe = tv({
   slots: {
-    wrapper:
-      'pointer-events-none absolute top-0 right-0 grid h-[10rem] w-[10rem] place-items-center overflow-hidden rounded-full border-4 border-solid border-seasalt shadow-lg md:h-[16rem] md:w-[16rem] md:border-6 lg:h-[20rem] lg:w-[20rem] lg:border-8 theme-bsk1:border-white',
+    wrapper: [
+      // Layout/positioning
+      'pointer-events-none absolute top-0 right-0 grid place-items-center overflow-hidden',
+      // Sizing
+      'size-24 max-h-[min(50cqw,50cqh)] max-w-[min(50cqw,50cqh)] @sm/map-container:size-40 @xl/map-container:size-56 @4xl/map-container:size-72',
+
+      // Circular and border
+      'rounded-full border-4 border-solid border-seasalt @sm/map-container:border-6 @lg/map-container:border-8 theme-bsk1:border-white',
+      // Shadow
+      'shadow-lg',
+    ],
     sceneContainer:
-      'pointer-events-none absolute h-[calc((var(--scale-factor)*101%))] w-[calc((var(--scale-factor)*101%))] pb-[2px]',
+      'pointer-events-none absolute size-[calc((var(--scale-factor)*101%))] max-h-[min(cqw,cqh)] max-w-[min(cqw,cqh)] pb-[2px]',
     circleDisplayOverlay:
       'pointer-events-auto z-1 h-full w-full rounded-full bg-[radial-gradient(circle_at_20px_20px,#ffffff8d_20%,#000_80%)] opacity-40 mix-blend-hard-light',
   },
@@ -53,33 +66,19 @@ const correctViewpointForPoles = ([longitude, latitude]: [number, number]): Poin
   return new Point({ longitude, latitude });
 };
 
-const getCorrectedSceneViewpoint = (mapViewpoint: __esri.Viewpoint): __esri.Viewpoint | null => {
+const getCorrectedSceneViewpoint = (mapViewpoint: Viewpoint): Viewpoint | null => {
   const viewPointTargetGeometry = mapViewpoint.targetGeometry;
   if (!viewPointTargetGeometry || !isEsriPoint(viewPointTargetGeometry)) {
     return null;
   }
 
-  const globalCRSViewPoint = projectOperator.execute(
-    viewPointTargetGeometry,
-    SpatialReference.WGS84,
-  );
-  if (
-    !isDefined(globalCRSViewPoint) ||
-    Array.isArray(globalCRSViewPoint) ||
-    !isEsriPoint(globalCRSViewPoint)
-  ) {
-    return null;
-  }
-
-  if (!isDefined(globalCRSViewPoint.longitude) || !isDefined(globalCRSViewPoint.latitude)) {
+  const lonLat = getLonLatFromMapPoint(viewPointTargetGeometry);
+  if (!lonLat) {
     return null;
   }
 
   const newViewPoint = mapViewpoint.clone();
-  newViewPoint.targetGeometry = correctViewpointForPoles([
-    globalCRSViewPoint.longitude,
-    globalCRSViewPoint.latitude,
-  ]);
+  newViewPoint.targetGeometry = correctViewpointForPoles([lonLat.longitude, lonLat.latitude]);
 
   return newViewPoint;
 };
@@ -91,12 +90,12 @@ export function Globe({
   initialAssetTypes,
 }: GlobeProps) {
   const mapView = useCurrentMapView();
-  const [sceneView, setSceneView] = useState<__esri.SceneView>();
+  const [sceneView, setSceneView] = useState<SceneView>();
   const [isSceneViewLoading, setIsSceneViewLoading] = React.useState(true);
   const [areLayersLoading, setAreLayersLoading] = React.useState(true);
 
   const synchroniseSceneView = useCallback(
-    (sceneView: __esri.SceneView | undefined) => {
+    (sceneView: SceneView | undefined) => {
       if (!sceneView) {
         return;
       }
@@ -236,7 +235,7 @@ export function Globe({
               }),
               starsEnabled: false,
               atmosphereEnabled: false,
-            } as unknown as __esri.SceneViewEnvironment
+            } as unknown as SceneViewEnvironment
           }
           constraints={
             {
@@ -244,7 +243,7 @@ export function Globe({
                 min: 255e5,
                 max: 255e5,
               },
-            } as __esri.SceneViewConstraints
+            } as SceneViewConstraints
           }
           padding={{ top: 0, right: 0, bottom: 0, left: 0 }}
           zoom={0}

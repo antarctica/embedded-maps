@@ -2,6 +2,7 @@ import Point from '@arcgis/core/geometry/Point';
 import Graphic from '@arcgis/core/Graphic';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import EsriMap from '@arcgis/core/Map';
+import type MapView from '@arcgis/core/views/MapView';
 
 import { MapCommand } from '@/lib/arcgis/typings/commandtypes';
 import { getBasemapConfigForMapProjection, getMapProjectionFromBbox } from '@/lib/config/basemap';
@@ -9,6 +10,7 @@ import { DEFAULT_POINT_SYMBOL } from '@/lib/config/layerStyles';
 import { BBox, isCoordinatePair, MapPoint } from '@/lib/config/schema';
 
 import { applyBasemapConstraints } from '../utils/mapViewUtils';
+
 export class AddMapPointsCommand implements MapCommand {
   private pointGraphicsLayer = new GraphicsLayer({
     title: 'point-graphics-layer',
@@ -65,7 +67,7 @@ export class AddMapPointsCommand implements MapCommand {
     map.add(this.pointGraphicsLayer);
 
     return {
-      executeOnView: async (mapView: __esri.MapView) => {
+      executeOnView: async (mapView: MapView) => {
         mapView.set('rotation', basemapConfig.rotation);
         applyBasemapConstraints(mapView, basemapConfig);
         await mapView.goTo({ target: pointGraphics }, { animate: false });

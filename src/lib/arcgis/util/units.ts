@@ -1,7 +1,9 @@
+import type { AreaUnit, LengthUnit } from '@arcgis/core/core/units';
+
 /**
  * Converts a measurement unit to its display abbreviation
  */
-export function getDisplayUnit(unit: __esri.LengthUnit | __esri.AreaUnit): string {
+export function getDisplayUnit(unit: LengthUnit | AreaUnit): string {
   switch (unit) {
     // Length units
     case 'millimeters':

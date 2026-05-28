@@ -1,12 +1,7 @@
 /// <reference types="@arcgis/map-components/types/react" />
 import { test } from '@playwright/test';
 
-import {
-  runAccessibilityCheck,
-  testSnapshot,
-  waitForMapReady,
-  waitForSceneReady,
-} from '../config/test.utils';
+import { runAccessibilityCheck, testSnapshot } from '../config/test.utils';
 
 function createPointsParam(points: unknown[]): string {
   return `?points=${encodeURIComponent(JSON.stringify(points))}`;
@@ -66,8 +61,6 @@ test.describe.parallel('Map Points', () => {
       test.describe('default view', () => {
         test.beforeEach(async ({ page }) => {
           await page.goto(`/${testCase.params}&globe-overview`);
-          await waitForMapReady(page);
-          await waitForSceneReady(page);
         });
 
         test('snapshot', async ({ page }) => {

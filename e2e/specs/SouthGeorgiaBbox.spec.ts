@@ -1,6 +1,6 @@
 import { test } from '@playwright/test';
 
-import { runAccessibilityCheck, testSnapshot, waitForMapReady } from '../config/test.utils';
+import { runAccessibilityCheck, testSnapshot } from '../config/test.utils';
 
 const bboxes = [
   [-38.643677, -55.200717, -35.271423, -53.641972],
@@ -12,7 +12,6 @@ test.describe.parallel('Mercator Bounding Boxes', () => {
     test.describe(`bbox=${bbox}`, () => {
       test.beforeEach(async ({ page }) => {
         await page.goto(`/?bbox=[${bbox.join(',')}]`);
-        await waitForMapReady(page);
       });
 
       test('snapshot', async ({ page }) => {

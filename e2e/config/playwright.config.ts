@@ -10,6 +10,8 @@ import { fileURLToPath } from 'url';
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 const isCI = !!process.env.CI;
+const workersFromEnv = Number.parseInt(process.env.PW_WORKERS ?? '2', 10);
+const workerCount = Number.isNaN(workersFromEnv) ? 1 : Math.max(1, workersFromEnv);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '../..');
@@ -27,8 +29,8 @@ export default defineConfig({
   forbidOnly: isCI,
   /* Retry on CI only */
   retries: isCI ? 2 : 0,
-  /* Run tests in serial for stability */
-  workers: 1,
+  /* Default to two workers and never allow zero/invalid worker count. */
+  workers: workerCount,
 
   /* Reporter configuration */
   reporter: isCI

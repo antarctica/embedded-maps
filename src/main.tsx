@@ -1,10 +1,12 @@
 import './styles/index.css';
 // Supports weights 100-900
-import '@fontsource-variable/work-sans';
+import '@fontsource-variable/work-sans/index.css';
 
 import { createRouter, RouterProvider } from '@tanstack/react-router';
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
+
+import { setupTailwindVariants } from '@/lib/helpers/tailwind-utils';
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen';
@@ -23,6 +25,7 @@ declare module '@tanstack/react-router' {
 const rootElement = document.getElementById('root');
 if (!rootElement) throw new Error('No root element found');
 if (!rootElement.innerHTML) {
+  setupTailwindVariants();
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>

@@ -1,10 +1,11 @@
 import '@arcgis/map-components/components/arcgis-scene';
 
-import { ArcgisSceneCustomEvent } from '@arcgis/map-components';
-import React, { JSX } from 'react';
+import type { ArcgisSceneCustomEvent } from '@arcgis/map-components';
+import React, { type JSX } from 'react';
+
+import { useCreateView } from '@/lib/arcgis/hooks/useCreateView';
 
 import { ArcInternalViewProvider } from '../../contexts/InternalViewContext/ArcInternalViewProvider';
-import { useCreateView } from '../../hooks/useCreateView';
 
 export function ArcSceneView({
   children,
@@ -26,10 +27,10 @@ export function ArcSceneView({
   return (
     <ArcInternalViewProvider view={view}>
       <arcgis-scene
+        hideAttribution
         ref={containerRef}
         {...props}
         onarcgisViewReadyChange={arcgisViewReadyCb}
-        alphaCompositingEnabled={true}
       >
         {view && children}
       </arcgis-scene>

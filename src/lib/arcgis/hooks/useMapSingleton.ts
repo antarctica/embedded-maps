@@ -1,4 +1,5 @@
 import EsriMap from '@arcgis/core/Map';
+import type WebMap from '@arcgis/core/WebMap';
 import { useEffect, useState } from 'react';
 
 import { useMapCommandExecuter } from '@/lib/arcgis/hooks/useMapCommandExecuter';
@@ -14,7 +15,7 @@ interface UseMapSingletonResult {
 
 export function useMapSingleton(
   commands: MapCommand[],
-  initialMap?: EsriMap | __esri.WebMap,
+  initialMap?: EsriMap | WebMap,
   id?: string,
 ): UseMapSingletonResult {
   const { error, isExecuting, executeCommands } = useMapCommandExecuter();

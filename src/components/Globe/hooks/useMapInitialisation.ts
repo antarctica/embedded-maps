@@ -1,4 +1,6 @@
+import * as reactiveUtils from '@arcgis/core/core/reactiveUtils';
 import EsriMap from '@arcgis/core/Map';
+import type SceneView from '@arcgis/core/views/SceneView';
 import React from 'react';
 
 import { useMapSingleton } from '@/lib/arcgis/hooks/useMapSingleton';
@@ -13,14 +15,14 @@ interface UseMapInitializationProps {
   initialAssetTypes?: string[];
   initialBbox?: BBox[];
   initialPoints?: MapPoint[];
-  postLoadCb?: (view: __esri.SceneView) => void;
+  postLoadCb?: (view: SceneView) => void;
 }
 
 interface UseMapInitializationResult {
   map: EsriMap | null;
   error: Error | null;
   isMapLoading: boolean;
-  handleViewReady: (view: __esri.SceneView) => Promise<void>;
+  handleViewReady: (view: SceneView) => Promise<void>;
 }
 
 export function useMapInitialisation({
@@ -44,7 +46,17 @@ export function useMapInitialisation({
     'globe',
   );
 
-  const handleViewReady = useCallbackRef(async (view: __esri.SceneView) => {
+  const handleViewReady = useCallbackRef(async (view: SceneView) => {
+    const fatalErrorHandler = reactiveUtils.when(
+      () => view.fatalError,
+      () => {
+        // A fatal error can occur if the webgl context is cleaned up, for example when the browser
+        // does automatic memory management. There is a built in method to recover from this.
+        console.error('Fatal Error! View has lost its WebGL context. Attempting to recover...');
+        view.tryFatalErrorRecovery();
+      },
+    );
+    view.addHandles(fatalErrorHandler);
     await Promise.all(
       postInitCommands.map((cmd) => (cmd.executeOnView as SceneViewExecuter)(view)),
     );

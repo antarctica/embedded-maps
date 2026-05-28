@@ -1,4 +1,5 @@
 import EsriMap from '@arcgis/core/Map';
+import type MapView from '@arcgis/core/views/MapView';
 
 import { LabelledGraticuleLayer } from '@/lib/arcgis/customlayers/GraticuleLayer/LabelledGraticuleLayerClass';
 import { GRATICULE_LIGHT_STYLE } from '@/lib/arcgis/customlayers/GraticuleLayer/styles';
@@ -10,7 +11,7 @@ export class AddGraticuleCommand implements MapCommand {
 
   async executeOnMap(map: EsriMap) {
     return {
-      executeOnView: async (mapView: __esri.MapView) => {
+      executeOnView: async (mapView: MapView) => {
         if (!this.showGraticule) {
           return;
         }

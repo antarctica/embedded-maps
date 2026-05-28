@@ -1,8 +1,7 @@
 import { useSeparator } from 'react-aria';
+import { tv } from 'tailwind-variants';
 
-import { appTwVariants } from '@/lib/helpers/tailwind-utils';
-
-const dividerRecipe = appTwVariants({
+const dividerRecipe = tv({
   base: 'bg-gray-3',
   variants: {
     orientation: {

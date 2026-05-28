@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   [#59](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/59)
 * `package.json` `engines` require Node 24 and npm 11+; `@types/node` aligned with Node 24.
   [#59](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/59)
+* Upgraded the core dependencies (mapping SDK, UI framework, styling, validation) and the build, test, and lint toolchain to their current major versions, adapting application code to the new APIs and conventions
+* Refactored tailwind variants usage to follow best practices and utilise slots in more cases.
+* Modernised the React hooks lint setup to the native flat config and reworked the affected hooks to satisfy the stricter effect and state rules
 
 ### Added
 
@@ -22,6 +25,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   [#59](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/59)
 * README **Developing** section: required Node/npm, what `.npmrc` applies, and when to use `npm install` vs a clean `npm ci`.
   [#59](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/59)
+* Custom map attribution control, replacing reliance on the default Esri attribution widget which cannot be easily customised.
+* Unit test npm scripts
+
+### Fixed
+
+* Globe component sizing and responsive behaviour
+
+### Removed
+
+* Deprecated ArcGIS widget and layer wrappers, replaced by a shared `createWidget` utility, along with now-unused typings and Esri override stylesheets
 
 ## [0.3.0] 2025-11-04
 

@@ -1,11 +1,10 @@
+import type MapView from '@arcgis/core/views/MapView';
+import type SceneView from '@arcgis/core/views/SceneView';
+
 import { ArcViewContext } from '@/lib/arcgis/contexts/ArcViewContext/ArcViewContext';
 import { ArcInternalViewProvider } from '@/lib/arcgis/contexts/InternalViewContext/ArcInternalViewProvider';
 
-export const withInternalViewProvider = ({
-  mapView,
-}: {
-  mapView: __esri.MapView | __esri.SceneView;
-}) => {
+export const withInternalViewProvider = ({ mapView }: { mapView: MapView | SceneView }) => {
   const withMapProviderWrapper = ({ children }: { children: React.ReactNode }) => {
     return <ArcInternalViewProvider view={mapView}>{children}</ArcInternalViewProvider>;
   };
@@ -17,7 +16,7 @@ export const withMountedViewsProvider = ({
   mapview,
   id,
 }: {
-  mapview: __esri.MapView | __esri.SceneView;
+  mapview: MapView | SceneView;
   id: string;
 }) => {
   const withMountedViewsProviderWrapper = ({ children }: { children: React.ReactNode }) => {

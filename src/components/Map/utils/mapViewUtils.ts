@@ -1,8 +1,15 @@
+import type FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import TileLayer from '@arcgis/core/layers/TileLayer';
+import type Renderer from '@arcgis/core/renderers/Renderer';
+import type SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
+import type UniqueValueRenderer from '@arcgis/core/renderers/UniqueValueRenderer';
+import type RotationVariable from '@arcgis/core/renderers/visualVariables/RotationVariable';
+import type MapView from '@arcgis/core/views/MapView';
 
 import { ASSETHEADINGFIELD, ASSETLONGITUDEFIELD } from '@/lib/config/assetLayer';
 import { BasemapConfig, MapProjection } from '@/lib/config/basemap';
 import { generateArcadeHeadingScript } from '@/lib/config/generateArcadeHeadingScript';
+
 /**
  * Applies heading correction for assets in polar map projections
  * @param featureLayer - The ESRI FeatureLayer instance
@@ -10,7 +17,7 @@ import { generateArcadeHeadingScript } from '@/lib/config/generateArcadeHeadingS
  * @throws {Error} If feature layer is not found
  */
 export async function applyPolarHeadingCorrection(
-  featureLayer: __esri.FeatureLayer,
+  featureLayer: FeatureLayer,
   mapProjection: MapProjection,
 ): Promise<void> {
   if (!requiresHeadingCorrection(mapProjection)) {
@@ -35,7 +42,7 @@ function requiresHeadingCorrection(
  * Applies rotation settings to the renderer if applicable
  */
 async function applyRotationToRenderer(
-  featureLayer: __esri.FeatureLayer,
+  featureLayer: FeatureLayer,
   mapProjection: MapProjection.ANTARCTIC | MapProjection.ARCTIC,
 ): Promise<void> {
   const { renderer } = featureLayer;
@@ -54,8 +61,8 @@ async function applyRotationToRenderer(
  * Checks if the renderer is compatible for rotation
  */
 function isCompatibleRenderer(
-  renderer: __esri.Renderer,
-): renderer is __esri.SimpleRenderer | __esri.UniqueValueRenderer {
+  renderer: Renderer,
+): renderer is SimpleRenderer | UniqueValueRenderer {
   return renderer.type === 'simple' || renderer.type === 'unique-value';
 }
 
@@ -63,10 +70,10 @@ function isCompatibleRenderer(
  * Finds the rotation variable in the renderer
  */
 function findRotationVariable(
-  renderer: __esri.SimpleRenderer | __esri.UniqueValueRenderer,
-): __esri.RotationVariable | undefined {
+  renderer: SimpleRenderer | UniqueValueRenderer,
+): RotationVariable | undefined {
   return (renderer.visualVariables ?? []).find((visVar) => visVar.type === 'rotation') as
-    | __esri.RotationVariable
+    | RotationVariable
     | undefined;
 }
 
@@ -74,7 +81,7 @@ function findRotationVariable(
  * Updates the rotation settings for the visual variable
  */
 function updateRotationSettings(
-  rotationVisualVariable: __esri.RotationVariable,
+  rotationVisualVariable: RotationVariable,
   mapProjection: MapProjection.ANTARCTIC | MapProjection.ARCTIC,
 ): void {
   rotationVisualVariable.valueExpression = generateArcadeHeadingScript({
@@ -86,7 +93,7 @@ function updateRotationSettings(
   rotationVisualVariable.rotationType = 'geographic';
 }
 
-export function applyBasemapConstraints(mapView: __esri.MapView, basemapConfig: BasemapConfig) {
+export function applyBasemapConstraints(mapView: MapView, basemapConfig: BasemapConfig) {
   if (!mapView.map?.basemap) {
     return;
   }

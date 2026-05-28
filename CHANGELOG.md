@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.4.0] 2026-05-28
+
 ### Changed
 
 * CI build jobs use Node 24 (`node:24-alpine`); e2e CI and `e2e/config/Dockerfile.e2e` use Playwright `v1.59.1-noble` so the pipeline matches Node 24 and current `@playwright/test`.

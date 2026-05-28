@@ -1,11 +1,6 @@
 import { test } from '@playwright/test';
 
-import {
-  runAccessibilityCheck,
-  testSnapshot,
-  waitForMapReady,
-  waitForSceneReady,
-} from '../config/test.utils';
+import { runAccessibilityCheck, testSnapshot } from '../config/test.utils';
 
 const testCases = [
   {
@@ -27,7 +22,6 @@ const testCases = [
   {
     name: 'globe overview with graticule',
     params: '?globe-overview=true&ctrl-graticule=true',
-    requiresSceneReady: true,
   },
   {
     name: 'graticule with custom zoom',
@@ -44,15 +38,6 @@ test.describe.parallel('Graticule Display Tests', () => {
     test.describe(testCase.name, () => {
       test.beforeEach(async ({ page }) => {
         await page.goto(`/${testCase.params}`);
-        await waitForMapReady(page, {
-          timeout: 30000, // 30 seconds
-        });
-
-        if (testCase.requiresSceneReady) {
-          await waitForSceneReady(page, {
-            timeout: 30000, // 30 seconds
-          });
-        }
       });
 
       test('snapshot', async ({ page }) => {

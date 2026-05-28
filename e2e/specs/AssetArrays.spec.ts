@@ -1,11 +1,6 @@
 import { test } from '@playwright/test';
 
-import {
-  getHarPath,
-  runAccessibilityCheck,
-  testSnapshot,
-  waitForMapReady,
-} from '../config/test.utils';
+import { getHarPath, runAccessibilityCheck, testSnapshot } from '../config/test.utils';
 
 test.describe('Asset Arrays', () => {
   test.describe('multiple asset-ids', () => {
@@ -20,7 +15,6 @@ test.describe('Asset Arrays', () => {
       await page.goto(
         `/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&asset-id=01JDRYA33CJZ8FQGAJBTFJS4P7&zoom=8`,
       );
-      await waitForMapReady(page);
     });
 
     test('snapshot', async ({ page }) => {
@@ -41,7 +35,6 @@ test.describe('Asset Arrays', () => {
         update: process.env.UPDATE_HARS === 'true',
       });
       await page.goto(`/?asset-type=98&asset-type=62&zoom=6`);
-      await waitForMapReady(page);
     });
 
     test('snapshot', async ({ page }) => {
@@ -63,7 +56,6 @@ test.describe('Asset Arrays', () => {
         update: process.env.UPDATE_HARS === 'true',
       });
       await page.goto(`/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&asset-type=62&zoom=8`);
-      await waitForMapReady(page);
     });
 
     test('snapshot', async ({ page }) => {
@@ -87,7 +79,6 @@ test.describe('Asset Arrays', () => {
       await page.goto(
         `/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&asset-id=01JDRYA33CJZ8FQGAJBTFJS4P7&asset-type=98&asset-type=62&zoom=8`,
       );
-      await waitForMapReady(page);
     });
 
     test('snapshot', async ({ page }) => {

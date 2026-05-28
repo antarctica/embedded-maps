@@ -37,6 +37,8 @@ interface AttributionControlProps {
 }
 
 export function AttributionControl({ attribution }: AttributionControlProps): React.ReactElement {
+  console.log('AttributionControl', attribution);
+
   const [isExpanded, setIsExpanded] = React.useState(false);
   const [isOverflowing, setIsOverflowing] = React.useState(false);
   const [showPoweredBy, setShowPoweredBy] = React.useState(false);
@@ -66,7 +68,7 @@ export function AttributionControl({ attribution }: AttributionControlProps): Re
   );
 
   return (
-    <div className={styles.control()}>
+    <div data-testid="map-attribution" className={styles.control()}>
       {isInteractive ? (
         <Button
           className={composeRenderProps(

@@ -66,6 +66,10 @@ test:e2e:
     paths:
       - e2e/results/
       - e2e/output/
+    exclude:
+    # Exclude large trace files
+      - e2e/output/**/*.zip
+      - e2e/output/**/trace.zip
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       changes:

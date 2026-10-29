@@ -94,19 +94,18 @@ export function AttributionControl({
       )}
 
       <div className="flex items-center gap-2">
-        {showPoweredBy && (
-          <span id={poweredById} className={styles.poweredBy()}>
-            Powered by{' '}
-            <a
-              className={styles.esriLink()}
-              href="https://www.esri.com"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Esri
-            </a>
-          </span>
-        )}
+        {/* Kept mounted and toggled with `hidden` so the button's aria-controls always resolves. */}
+        <span id={poweredById} className={styles.poweredBy()} hidden={!showPoweredBy}>
+          Powered by{' '}
+          <a
+            className={styles.esriLink()}
+            href="https://www.esri.com"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Esri
+          </a>
+        </span>
         <ToggleButton
           className={composeRenderProps(
             '',

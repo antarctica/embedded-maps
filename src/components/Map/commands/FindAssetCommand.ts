@@ -58,12 +58,6 @@ export class FindAssetCommand implements MapCommand {
         id: ASSETLAYERPORTALID,
       },
       definitionExpression: this.getWhereClause(this.assetIds, this.assetTypes),
-      // featureEffect: new FeatureEffect({
-      //   filter: new FeatureFilter({
-      //     where: `${ASSETFIELDNAME} = '${this.assetId}'`,
-      //   }),
-      //   excludedEffect: 'opacity(0%)',
-      // }),Change this logic so that if there is just an asset ID it gets a singular asset via a query. [BLANK_AUDIO]
     });
   }
 

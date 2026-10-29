@@ -26,6 +26,10 @@ function PopupControl({ className, ...props }: PopupControlProps): React.ReactEl
 
   return (
     <arcgis-popup
+      // The dialog's aria-label is bound to `heading`, not the displayed feature title, so an
+      // unset heading leaves the dialog unnamed. A feature's PopupTemplate title still takes
+      // precedence for the visible heading.
+      heading="Feature details"
       defaultPopupTemplateEnabled
       includeDefaultActionsDisabled
       {...props}

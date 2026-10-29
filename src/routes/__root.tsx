@@ -47,7 +47,7 @@ type SearchParams = z.infer<typeof baseSearchSchema>;
 
 function resolveInitialViewpoint(data: SearchParams): SearchParams {
   // Asset location takes precedence over all other viewpoint parameters
-  if (data['asset-id']) {
+  if (data['asset-id'] || data['asset-type']) {
     return { ...data, bbox: undefined, centre: undefined };
   }
   // Bounding box takes precedence over center point

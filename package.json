@@ -29,8 +29,8 @@
     "src/**/*.{js,jsx,ts,tsx}": "eslint --fix"
   },
   "dependencies": {
-    "@arcgis/core": "~5.0.19",
-    "@arcgis/map-components": "~5.0.19",
+    "@arcgis/core": "~5.1.15",
+    "@arcgis/map-components": "~5.1.15",
     "@fontsource-variable/work-sans": "^5.2.8",
     "@mantine/hooks": "^9.2.1",
     "@tailwindcss/vite": "^4.3.0",

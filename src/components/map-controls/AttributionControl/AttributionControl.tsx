@@ -1,6 +1,6 @@
 import { useMergedRef, useResizeObserver } from '@mantine/hooks';
 import * as React from 'react';
-import { Button, composeRenderProps } from 'react-aria-components';
+import { Button, composeRenderProps, ToggleButton } from 'react-aria-components';
 import { cn, tv } from 'tailwind-variants';
 
 import { focusRing, insetfocusRing } from '@/styles/recipes/focusRing';
@@ -34,11 +34,13 @@ const attributionStyles = tv({
 
 interface AttributionControlProps {
   attribution?: string;
+  ref?: React.Ref<HTMLDivElement>;
 }
 
-export function AttributionControl({ attribution }: AttributionControlProps): React.ReactElement {
-  console.log('AttributionControl', attribution);
-
+export function AttributionControl({
+  attribution,
+  ref,
+}: AttributionControlProps): React.ReactElement {
   const [isExpanded, setIsExpanded] = React.useState(false);
   const [isOverflowing, setIsOverflowing] = React.useState(false);
   const [showPoweredBy, setShowPoweredBy] = React.useState(false);
@@ -68,7 +70,7 @@ export function AttributionControl({ attribution }: AttributionControlProps): Re
   );
 
   return (
-    <div data-testid="map-attribution" className={styles.control()}>
+    <div ref={ref} data-testid="map-attribution" className={styles.control()}>
       {isInteractive ? (
         <Button
           className={composeRenderProps(
@@ -92,20 +94,19 @@ export function AttributionControl({ attribution }: AttributionControlProps): Re
       )}
 
       <div className="flex items-center gap-2">
-        {showPoweredBy && (
-          <span id={poweredById} className={styles.poweredBy()}>
-            Powered by{' '}
-            <a
-              className={styles.esriLink()}
-              href="https://www.esri.com"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Esri
-            </a>
-          </span>
-        )}
-        <Button
+        {/* Kept mounted and toggled with `hidden` so the button's aria-controls always resolves. */}
+        <span id={poweredById} className={styles.poweredBy()} hidden={!showPoweredBy}>
+          Powered by{' '}
+          <a
+            className={styles.esriLink()}
+            href="https://www.esri.com"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Esri
+          </a>
+        </span>
+        <ToggleButton
           className={composeRenderProps(
             '',
             (className, renderProps) =>
@@ -116,12 +117,12 @@ export function AttributionControl({ attribution }: AttributionControlProps): Re
               ) ?? '',
           )}
           aria-label={showPoweredBy ? 'Hide Esri attribution' : 'Show Esri attribution'}
-          aria-expanded={showPoweredBy}
           aria-controls={poweredById}
-          onPress={() => setShowPoweredBy((shown) => !shown)}
+          isSelected={showPoweredBy}
+          onChange={setShowPoweredBy}
         >
           <SvgIcon name="icon-info" size={16} />
-        </Button>
+        </ToggleButton>
       </div>
     </div>
   );

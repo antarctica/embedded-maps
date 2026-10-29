@@ -1,8 +1,8 @@
-import { useSeparator } from 'react-aria';
+import { Separator } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
 const dividerRecipe = tv({
-  base: 'bg-gray-3',
+  base: 'border-none bg-gray-3',
   variants: {
     orientation: {
       vertical: 'h-full w-[1px]',
@@ -10,13 +10,12 @@ const dividerRecipe = tv({
     },
   },
 });
-export function Divider(props: { orientation: 'vertical' | 'horizontal'; className?: string }) {
-  const { separatorProps } = useSeparator(props);
 
+export function Divider(props: { orientation: 'vertical' | 'horizontal'; className?: string }) {
   return (
-    <div
+    <Separator
+      orientation={props.orientation}
       className={dividerRecipe({ orientation: props.orientation, className: props.className })}
-      {...separatorProps}
     />
   );
 }

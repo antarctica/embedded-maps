@@ -133,7 +133,7 @@ export function generateCircleRings(
 export const ANTARCTIC_BASEMAP_CONFIG: BasemapConfig = {
   basemap: new Basemap({
     portalItem: {
-      id: '435e23642bf94b83b07d1d3fc0c5c9d5',
+      id: '979d2024dbad4a309d09978565d02985',
     },
   }),
   rotation: 0,

@@ -1,9 +1,8 @@
-import { watch } from '@arcgis/core/core/reactiveUtils';
 import type MapView from '@arcgis/core/views/MapView';
 import type SceneView from '@arcgis/core/views/SceneView';
 import * as React from 'react';
 
-import { useViews } from '@/lib/arcgis/hooks';
+import { useViews, useWatchState } from '@/lib/arcgis/hooks';
 
 import { AttributionControl } from './AttributionControl';
 
@@ -22,27 +21,23 @@ function combineAttribution(views: View[]): string {
  * feeds their combined, de-duplicated attribution into the presentational
  * AttributionControl.
  *
- * Each view's `attributionItems` is a reactive Collection. Reading it inside a
- * `watch` getter (via `forEach`/`map`) tracks both collection-level changes
- * (items added/removed) and each item's `text`, so the callback re-runs whenever
- * the underlying attribution changes — no need to proxy through `view.updating`.
+ * Each view's `attributionItems` is a reactive Collection. Reading it inside the
+ * watched getter (via `forEach`) tracks both collection-level changes (items
+ * added/removed) and each item's `text`, so the value updates whenever the
+ * underlying attribution changes — no need to proxy through `view.updating`.
+ * The combined value is a string, so it is a stable snapshot between changes.
  */
-export function CombinedAttributionControl(): React.ReactElement {
+export function CombinedAttributionControl({
+  ref,
+}: {
+  ref?: React.Ref<HTMLDivElement>;
+}): React.ReactElement {
   const views = useViews();
-  const [attribution, setAttribution] = React.useState<string>('');
+  const liveViews = React.useMemo(
+    () => Object.values(views).filter((v): v is View => !!v),
+    [views],
+  );
+  const attribution = useWatchState(() => combineAttribution(liveViews), [liveViews]);
 
-  React.useEffect(() => {
-    const liveViews = Object.values(views).filter((v): v is View => !!v);
-    const recompute = () => setAttribution(combineAttribution(liveViews));
-
-    const handles = liveViews.map((view) =>
-      watch(() => view.attributionItems.map((item) => item.text), recompute, {
-        initial: true,
-      }),
-    );
-
-    return () => handles.forEach((handle) => handle.remove());
-  }, [views]);
-
-  return <AttributionControl attribution={attribution} />;
+  return <AttributionControl ref={ref} attribution={attribution} />;
 }

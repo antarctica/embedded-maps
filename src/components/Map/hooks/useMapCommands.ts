@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 
+import { useArcPopup } from '@/lib/arcgis/contexts/ArcPopupContext';
 import { type MapCommand } from '@/lib/arcgis/typings/commandtypes';
 import { BBox, MapPoint } from '@/lib/config/schema';
 
@@ -34,6 +35,8 @@ export function useMapCommands({
   initialShowAssetPopup,
   initialShowGraticule,
 }: UseMapCommandsProps): MapCommand[] {
+  const { popupRef } = useArcPopup();
+
   return useMemo((): MapCommand[] => {
     const commands: MapCommand[] = [];
 
@@ -49,6 +52,7 @@ export function useMapCommands({
           assetIds: initialAssetIds,
           assetTypes: initialAssetTypes,
           showAssetPopup: initialShowAssetPopup,
+          popupRef,
         }),
       );
     }
@@ -74,5 +78,6 @@ export function useMapCommands({
     bboxForceRegionalExtent,
     initialShowAssetPopup,
     initialShowGraticule,
+    popupRef,
   ]);
 }

@@ -1,14 +1,17 @@
 import * as reactiveUtils from '@arcgis/core/core/reactiveUtils';
 import EsriMap from '@arcgis/core/Map';
 import type MapView from '@arcgis/core/views/MapView';
-import React from 'react';
 
-import { useMapSingleton } from '@/lib/arcgis/hooks/useMapSingleton';
+import { useMapBuild } from '@/lib/arcgis/hooks';
 import { MapViewExecuter } from '@/lib/arcgis/typings/commandtypes';
 import { BBox, MapPoint } from '@/lib/config/schema';
 import { useCallbackRef } from '@/lib/hooks/useCallbackRef';
 
 import { useMapCommands } from './useMapCommands';
+
+function createMap(): EsriMap {
+  return new EsriMap();
+}
 
 interface UseMapInitializationProps {
   initialAssetIds?: string[];
@@ -42,8 +45,6 @@ export function useMapInitialisation({
   initialShowGraticule,
   postLoadCb,
 }: UseMapInitializationProps): UseMapInitializationResult {
-  const [initialMap] = React.useState(new EsriMap());
-
   const commands = useMapCommands({
     initialAssetIds,
     initialAssetTypes,
@@ -55,11 +56,7 @@ export function useMapInitialisation({
     initialShowAssetPopup,
     initialShowGraticule,
   });
-  const { map, postInitCommands, isMapLoading, error } = useMapSingleton(
-    commands,
-    initialMap,
-    'map',
-  );
+  const { map, postInitCommands, isMapLoading, error } = useMapBuild(commands, createMap);
 
   const handleViewReady = useCallbackRef(async (view: MapView) => {
     const fatalErrorHandler = reactiveUtils.when(

@@ -1,14 +1,17 @@
 import * as reactiveUtils from '@arcgis/core/core/reactiveUtils';
 import EsriMap from '@arcgis/core/Map';
 import type SceneView from '@arcgis/core/views/SceneView';
-import React from 'react';
 
-import { useMapSingleton } from '@/lib/arcgis/hooks/useMapSingleton';
+import { useMapBuild } from '@/lib/arcgis/hooks';
 import { SceneViewExecuter } from '@/lib/arcgis/typings/commandtypes';
 import { BBox, MapPoint } from '@/lib/config/schema';
 import { useCallbackRef } from '@/lib/hooks/useCallbackRef';
 
 import { useMapCommands } from './useMapCommands';
+
+function createMap(): EsriMap {
+  return new EsriMap();
+}
 
 interface UseMapInitializationProps {
   initialAssetIds?: string[];
@@ -32,19 +35,13 @@ export function useMapInitialisation({
   initialPoints,
   postLoadCb,
 }: UseMapInitializationProps): UseMapInitializationResult {
-  const [initialMap] = React.useState(new EsriMap());
-
   const commands = useMapCommands({
     initialAssetIds,
     initialAssetTypes,
     initialBbox,
     initialPoints,
   });
-  const { map, postInitCommands, isMapLoading, error } = useMapSingleton(
-    commands,
-    initialMap,
-    'globe',
-  );
+  const { map, postInitCommands, isMapLoading, error } = useMapBuild(commands, createMap);
 
   const handleViewReady = useCallbackRef(async (view: SceneView) => {
     const fatalErrorHandler = reactiveUtils.when(

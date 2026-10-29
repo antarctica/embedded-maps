@@ -4,6 +4,7 @@ import type Graphic from '@arcgis/core/Graphic';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import EsriMap from '@arcgis/core/Map';
 import type MapView from '@arcgis/core/views/MapView';
+import type * as React from 'react';
 
 import { MapCommand } from '@/lib/arcgis/typings/commandtypes';
 import { isEsriPoint } from '@/lib/arcgis/util/geometry';
@@ -17,13 +18,14 @@ import { getBasemapConfigForMapProjection, getMapProjectionFromBbox } from '@/li
 import { BBox } from '@/lib/config/schema';
 import { isDefined } from '@/lib/types/typeGuards';
 
-import { applyBasemapConstraints, applyPolarHeadingCorrection } from '../utils/mapViewUtils';
+import { applyBasemapConstraints } from '../utils/mapViewUtils';
 
 export class FindAssetCommand implements MapCommand {
   private assetLayer: FeatureLayer;
   private assetIds?: string[];
   private assetTypes?: string[];
   private showAssetPopup: boolean = false;
+  private popupRef?: React.RefObject<HTMLArcgisPopupElement | null>;
 
   private getWhereClause(assetIds?: string[], assetTypes?: string[]): string {
     const clauses: string[] = [];
@@ -38,10 +40,16 @@ export class FindAssetCommand implements MapCommand {
     return clauses.length > 1 ? `(${clauses.join(' OR ')})` : (clauses[0] ?? '');
   }
 
-  constructor(props: { assetIds?: string[]; assetTypes?: string[]; showAssetPopup?: boolean }) {
+  constructor(props: {
+    assetIds?: string[];
+    assetTypes?: string[];
+    showAssetPopup?: boolean;
+    popupRef?: React.RefObject<HTMLArcgisPopupElement | null>;
+  }) {
     this.assetIds = props.assetIds;
     this.assetTypes = props.assetTypes;
     this.showAssetPopup = props.showAssetPopup ?? false;
+    this.popupRef = props.popupRef;
 
     this.assetLayer = new FeatureLayer({
       id: ASSETLAYERMAPID,
@@ -101,7 +109,6 @@ export class FindAssetCommand implements MapCommand {
     if (bbox) {
       const mapProjection = getMapProjectionFromBbox(bbox);
       const basemapConfig = getBasemapConfigForMapProjection(mapProjection);
-      applyPolarHeadingCorrection(this.assetLayer, mapProjection);
       map.basemap = basemapConfig.basemap;
 
       return {
@@ -112,12 +119,15 @@ export class FindAssetCommand implements MapCommand {
           await mapView.when();
 
           await mapView.goTo({ target: assets }, { animate: false });
-          if (this.showAssetPopup && mapView.popup) {
-            mapView.popup.highlightEnabled = false;
-            mapView.openPopup({
-              features: assets,
-              updateLocationEnabled: true,
-            });
+          // Open the slotted arcgis-popup rather than mapView.openPopup(), which uses the view's
+          // internal popup and renders beneath the map controls.
+          const popup = this.popupRef?.current;
+          if (this.showAssetPopup && popup) {
+            popup.highlightDisabled = true;
+            popup.updateLocationEnabled = true;
+            popup.features = assets;
+            popup.location = assets[0]?.geometry?.type === 'point' ? assets[0].geometry : undefined;
+            popup.open = true;
           }
         },
       };

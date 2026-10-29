@@ -17,14 +17,14 @@ Features include:
 Examples:
 
 <p align="center">
-  <a href="https://embedded-maps.data.bas.ac.uk/v2/?bbox=[-180,-90,180,-60]"><img src="docs/example-1.png" alt="Antarctic bounding box map" width="48%" /></a>
-  <a href="https://embedded-maps.data.bas.ac.uk/v2/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&scale=500000&globe-overview"><img src="docs/example-2.png" alt="Ship tracking with globe overview" width="48%" /></a>
+  <a href="https://embedded-maps.data.bas.ac.uk/v1/?bbox=[-180,-90,180,-60]"><img src="docs/example-1.png" alt="Antarctic bounding box map" width="48%" /></a>
+  <a href="https://embedded-maps.data.bas.ac.uk/v1/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&scale=500000&globe-overview"><img src="docs/example-2.png" alt="Ship tracking with globe overview" width="48%" /></a>
 </p>
 
 <p align="center">
-  <a href="https://embedded-maps.data.bas.ac.uk/v2/?bbox=[-180,-90,180,-60]"><code>?bbox=[-180, -90, 180, -60]</code></a>
+  <a href="https://embedded-maps.data.bas.ac.uk/v1/?bbox=[-180,-90,180,-60]"><code>?bbox=[-180, -90, 180, -60]</code></a>
   &nbsp;·&nbsp;
-  <a href="https://embedded-maps.data.bas.ac.uk/v2/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&scale=500000&globe-overview"><code>?asset-id=…&amp;scale=500000&amp;globe-overview</code></a>
+  <a href="https://embedded-maps.data.bas.ac.uk/v1/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&scale=500000&globe-overview"><code>?asset-id=…&amp;scale=500000&amp;globe-overview</code></a>
 </p>
 
 > [!TIP]
@@ -51,7 +51,7 @@ project members respectively. Contact the [Project Maintainer](#project-maintain
 This service is accessed from a base endpoint and configured using one or more [Parameters](#parameters), including the 
 target location / feature / asset for the map and which UI controls are visible.
 
-Base endpoint: https://embedded-maps.data.bas.ac.uk/v2/
+Base endpoint: https://embedded-maps.data.bas.ac.uk/v1/
 
 [OpenAPI schema](/docs/openapi.yml).
 
@@ -197,61 +197,61 @@ Set these parameters to visualise the last known position of an asset tracked by
 Centre map at a specific location and zoom level:
 
 ```
-https://embedded-maps.data.bas.ac.uk/v2/?centre=[0.1218,52.2053]&zoom=4
+https://embedded-maps.data.bas.ac.uk/v1/?centre=[0.1218,52.2053]&zoom=4
 ```
 
 Show a bounding box with a globe overview for orientation:
 
 ```
-https://embedded-maps.data.bas.ac.uk/v2/?bbox=[-68.3359,-67.5894,-68.0677,-67.4869]&globe-overview
+https://embedded-maps.data.bas.ac.uk/v1/?bbox=[-68.3359,-67.5894,-68.0677,-67.4869]&globe-overview
 ```
 
 Show multiple bounding boxes with a globe overview:
 
 ```
-https://embedded-maps.data.bas.ac.uk/v2/?bbox=[[-68.3359,-67.5894,-68.0677,-67.4869],[-67.5894,-66.5894,-67.0677,-66.4869]]&globe-overview
+https://embedded-maps.data.bas.ac.uk/v1/?bbox=[[-68.3359,-67.5894,-68.0677,-67.4869],[-67.5894,-66.5894,-67.0677,-66.4869]]&globe-overview
 ```
 
 Show a bounding box, zoomed out to show the full basemap:
 
 ```
-https://embedded-maps.data.bas.ac.uk/v2/?bbox=[10.0,74.0,35.0,81.0]&bbox-force-regional-extent
+https://embedded-maps.data.bas.ac.uk/v1/?bbox=[10.0,74.0,35.0,81.0]&bbox-force-regional-extent
 ```
 
 Show multiple points with different styles and a globe overview:
 
 ```
-https://embedded-maps.data.bas.ac.uk/v2/?points=[[-68.3359,-67.5894],{"longitude":106.8,"latitude":-75.1,"color":"green","size":15}]&globe-overview
+https://embedded-maps.data.bas.ac.uk/v1/?points=[[-68.3359,-67.5894],{"longitude":106.8,"latitude":-75.1,"color":"green","size":15}]&globe-overview
 ```
 
 Enable all available map controls (zoom and reset are also shown by default):
 
 ```
-https://embedded-maps.data.bas.ac.uk/v2/?ctrl-zoom&ctrl-reset&ctrl-fullscreen
+https://embedded-maps.data.bas.ac.uk/v1/?ctrl-zoom&ctrl-reset&ctrl-fullscreen
 ```
 
 Disable all optional map controls:
 
 ```
-https://embedded-maps.data.bas.ac.uk/v2/?ctrl-zoom=false&ctrl-reset=false&ctrl-fullscreen=false
+https://embedded-maps.data.bas.ac.uk/v1/?ctrl-zoom=false&ctrl-reset=false&ctrl-fullscreen=false
 ```
 
 Show the latest position of the SDA:
 
 ```
-https://embedded-maps.data.bas.ac.uk/v2/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&scale=500000&globe-overview
+https://embedded-maps.data.bas.ac.uk/v1/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&scale=500000&globe-overview
 ```
 
 Show the latest position of the SDA on a non-interactive display:
 
 ```
-https://embedded-maps.data.bas.ac.uk/v2/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&asset-force-popup&scale=500000&globe-overview&ctrl-zoom=false&ctrl-reset=false&ctrl-fullscreen=false
+https://embedded-maps.data.bas.ac.uk/v1/?asset-id=01JDRYA29AR6PFGXVCZ40V8C74&asset-force-popup&scale=500000&globe-overview&ctrl-zoom=false&ctrl-reset=false&ctrl-fullscreen=false
 ```
 
 Show all snowmobiles with a globe overview:
 
 ```
-https://embedded-maps.data.bas.ac.uk/v2/?asset-type=98&globe-overview
+https://embedded-maps.data.bas.ac.uk/v1/?asset-type=98&globe-overview
 ```
 
 ### Embedding
@@ -261,7 +261,7 @@ Maps can be embedded in other applications and websites using an iframe.
 For example:
 
 ```html
-<iframe src="https://embedded-maps.data.bas.ac.uk/v2/?center=[-180, -90]" style="border:none;"></iframe>
+<iframe src="https://embedded-maps.data.bas.ac.uk/v1/?center=[-180, -90]" style="border:none;"></iframe>
 ```
 
 > [!IMPORTANT]
@@ -270,7 +270,7 @@ For example:
 
 ```html
 <iframe 
-  src="https://embedded-maps.data.bas.ac.uk/v2/?center=[-180, -90]&zoom=6&globe_overview=true" 
+  src="https://embedded-maps.data.bas.ac.uk/v1/?center=[-180, -90]&zoom=6&globe_overview=true" 
   style="border:none;" allowfullscreen="true" allow="fullscreen"
 ></iframe>
 ```
@@ -389,7 +389,7 @@ To update reference screenshots:
 
 ### Testing environment
 
-Base endpoint for testing: https://embedded-maps-testing.data.bas.ac.uk/v2/
+Base endpoint for testing: https://embedded-maps-testing.data.bas.ac.uk/v1/
 
 > [!WARNING]
 > The test endpoint is used for prototyping upcoming changes and is not stable. Do not use it unless you are told to.

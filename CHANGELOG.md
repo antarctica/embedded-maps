@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+* Upgraded the ArcGIS Maps SDK (`@arcgis/core`, `@arcgis/map-components`) to 5.1
+* Bumped app and toolchain dependencies; e2e CI and `e2e/config/Dockerfile.e2e` use Playwright `v1.64.1-noble` to match `@playwright/test`
+* Map popups open above the map controls and scale bar; when docked on small maps they sit above the attribution bar, which stays visible
+* Asset heading rotation on polar maps is handled by the hosted asset layer renderer instead of the app. Requires the renderer update on the `ats_latest_assets_position` item, which also corrects Arctic (EPSG:5936) headings
+* Replaced the shared map singleton with a per-component map build (`useMapBuild`), aligning the shared ArcGIS library with SIIS
+* ArcGIS watch hooks (`useWatchState`, `useArcState`) use `useSyncExternalStore` and return the current value on the first render
+* Home button is disabled until the initial view has loaded
+* Updated the Antarctic basemap
+  [#61](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/61)
+* README points at the v2 endpoint and uses updated example images
+
+### Added
+
+* Unit tests for the map build and ArcGIS watch hooks
+
+### Removed
+
+* App-side polar heading correction (`generateArcadeHeadingScript`, `applyPolarHeadingCorrection`)
+* `MapSingleton`, `useMapSingleton` and `useMapCommandExecuter`
+* Unused ArcGIS test mocks
+* Debug logging in the attribution control
+
 ## [0.4.1] 2026-05-28
 
 ### Changed

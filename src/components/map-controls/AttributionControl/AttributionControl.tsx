@@ -1,6 +1,6 @@
 import { useMergedRef, useResizeObserver } from '@mantine/hooks';
 import * as React from 'react';
-import { Button, composeRenderProps } from 'react-aria-components';
+import { Button, composeRenderProps, ToggleButton } from 'react-aria-components';
 import { cn, tv } from 'tailwind-variants';
 
 import { focusRing, insetfocusRing } from '@/styles/recipes/focusRing';
@@ -107,7 +107,7 @@ export function AttributionControl({
             </a>
           </span>
         )}
-        <Button
+        <ToggleButton
           className={composeRenderProps(
             '',
             (className, renderProps) =>
@@ -118,12 +118,12 @@ export function AttributionControl({
               ) ?? '',
           )}
           aria-label={showPoweredBy ? 'Hide Esri attribution' : 'Show Esri attribution'}
-          aria-expanded={showPoweredBy}
           aria-controls={poweredById}
-          onPress={() => setShowPoweredBy((shown) => !shown)}
+          isSelected={showPoweredBy}
+          onChange={setShowPoweredBy}
         >
           <SvgIcon name="icon-info" size={16} />
-        </Button>
+        </ToggleButton>
       </div>
     </div>
   );

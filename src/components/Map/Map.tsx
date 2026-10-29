@@ -1,5 +1,6 @@
 import * as reactiveUtils from '@arcgis/core/core/reactiveUtils.js';
 import Viewpoint from '@arcgis/core/Viewpoint';
+import { useElementSize } from '@mantine/hooks';
 import React from 'react';
 import { tv } from 'tailwind-variants';
 
@@ -11,6 +12,7 @@ import LoadingScrim from '../LoadingScrim';
 import { CombinedAttributionControl } from '../map-controls/AttributionControl';
 import FullScreenControl from '../map-controls/FullScreenControl/FullScreenControl';
 import HomeControl from '../map-controls/HomeControl';
+import PopupControl from '../map-controls/PopupControl';
 import ScaleControl from '../map-controls/ScaleControl/ScaleControl';
 import ZoomControl from '../map-controls/ZoomControl';
 import { useMapInitialisation } from './hooks/useMapInitialisation';
@@ -42,13 +44,8 @@ interface MapProps {
   showGraticule?: boolean;
 }
 
-const popupOptions = {
-  defaultPopupTemplateEnabled: true,
-  includeDefaultActionsDisabled: true,
-  dockOptions: {
-    buttonEnabled: false,
-  },
-};
+// Module-level so the observer is not recreated each render; border-box includes the padding.
+const borderBoxObserver: ResizeObserverOptions = { box: 'border-box' };
 
 const mapStyles = tv({
   base: 'pointer-events-auto h-full w-full [--arcgis-layout-overlay-space-bottom:16px] [--arcgis-layout-overlay-space-left:0] [--arcgis-layout-overlay-space-right:0] [--arcgis-layout-overlay-space-top:0]',
@@ -72,6 +69,8 @@ export function Map({
   initialShowAssetPopup,
 }: MapProps) {
   const [isMapViewLoading, setIsMapViewLoading] = React.useState(true);
+  const { ref: attributionRef, height: attributionHeight } =
+    useElementSize<HTMLDivElement>(borderBoxObserver);
   const [areLayersLoading, setAreLayersLoading] = React.useState(true);
   const [initialViewpoint, setInitialViewpoint] = React.useState<Viewpoint | undefined>(undefined);
   const { map, error, isMapLoading, handleViewReady } = useMapInitialisation({
@@ -106,7 +105,12 @@ export function Map({
   }
 
   return (
-    <div className="map-container" data-testid="map-container">
+    <div
+      className="map-container"
+      data-testid="map-container"
+      // Read by overlays such as PopupControl so they can stop above the attribution bar.
+      style={{ '--attribution-height': `${attributionHeight}px` } as React.CSSProperties}
+    >
       <ArcMapView
         data-ready={(!isMapViewLoading && !areLayersLoading).toString()}
         className={mapStyles()}
@@ -120,10 +124,10 @@ export function Map({
         zoom={initialZoom}
         hideAttribution
       >
-        <arcgis-popup slot="popup" {...popupOptions}></arcgis-popup>
+        <PopupControl />
         <div slot="top-left" className="flex flex-col gap-2">
           {showZoomButton && <ZoomControl />}
-          {showResetButton && <HomeControl viewPoint={initialViewpoint} />}
+          {showResetButton && <HomeControl viewpoint={initialViewpoint} />}
           {showFullscreenButton && <FullScreenControl />}
         </div>
         <div slot="bottom-left">
@@ -139,7 +143,7 @@ export function Map({
             />
           </div>
         )}
-        <CombinedAttributionControl />
+        <CombinedAttributionControl ref={attributionRef} />
       </ArcMapView>
     </div>
   );

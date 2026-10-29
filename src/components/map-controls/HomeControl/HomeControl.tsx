@@ -1,31 +1,19 @@
 import type Viewpoint from '@arcgis/core/Viewpoint';
 import * as React from 'react';
 
-import { useCurrentMapView, useWatchState } from '@/lib/arcgis/hooks';
+import { useCurrentMapView } from '@/lib/arcgis/hooks';
 
 import { IconButton } from '../../Button/IconButton';
 import SvgIcon from '../../SvgIcon';
 
-const watcherOptions = {
-  initial: true,
-  once: true,
-};
+interface HomeControlProps {
+  viewpoint?: Viewpoint;
+}
 
-function HomeControl({ viewPoint }: { viewPoint?: Viewpoint }): React.ReactElement {
+function HomeControl({ viewpoint }: HomeControlProps): React.ReactElement {
   const mapView = useCurrentMapView();
-
-  // Capture the view's initial viewpoint once it is ready, as a fallback home target.
-  const capturedViewpoint = useWatchState(
-    () => (mapView.ready ? mapView.viewpoint?.clone() : undefined),
-    [mapView],
-    watcherOptions,
-  );
-
-  // An explicitly passed viewpoint takes precedence over the captured one.
-  const homeViewpoint = viewPoint ?? capturedViewpoint;
-
-  const [abortController, setAbortController] = React.useState<AbortController | null>(null);
-  const isDisabled = !homeViewpoint;
+  // Only read in the press handler, so a ref avoids re-rendering on every goTo.
+  const abortControllerRef = React.useRef<AbortController | null>(null);
 
   return (
     <IconButton
@@ -33,26 +21,29 @@ function HomeControl({ viewPoint }: { viewPoint?: Viewpoint }): React.ReactEleme
       size="md"
       icon={<SvgIcon name="icon-home" />}
       aria-label="Home"
-      isDisabled={isDisabled}
+      isDisabled={!viewpoint}
       onPress={() => {
-        if (!homeViewpoint) return;
+        if (!viewpoint) return;
 
-        if (abortController) {
-          abortController.abort();
-          setAbortController(null);
+        // A second press while the animation is running cancels it.
+        if (abortControllerRef.current) {
+          abortControllerRef.current.abort();
+          abortControllerRef.current = null;
           return;
         }
 
         const controller = new AbortController();
-        setAbortController(controller);
+        abortControllerRef.current = controller;
 
         void mapView
-          .goTo(homeViewpoint, { signal: controller.signal })
+          .goTo(viewpoint, { signal: controller.signal })
           .catch(() => {
             // ignore goTo errors (e.g. user interaction or abort)
           })
           .finally(() => {
-            setAbortController((current) => (current === controller ? null : current));
+            if (abortControllerRef.current === controller) {
+              abortControllerRef.current = null;
+            }
           });
       }}
     />

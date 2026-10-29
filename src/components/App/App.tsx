@@ -3,6 +3,7 @@ import '@arcgis/core/assets/esri/themes/light/main.css?inline';
 import { useEffect } from 'react';
 
 import GeometryToolsLoader from '@/lib/arcgis/components/GeometryToolsLoader';
+import { ArcPopupProvider } from '@/lib/arcgis/contexts/ArcPopupContext';
 import { ArcViewProvider } from '@/lib/arcgis/contexts/ArcViewContext/ArcViewProvider';
 import { useMapParams } from '@/lib/hooks/useMapParams';
 
@@ -44,23 +45,25 @@ export function App() {
   return (
     <GeometryToolsLoader>
       <ArcViewProvider>
-        <Map
-          initialAssetIds={assetIds}
-          initialAssetTypes={assetTypes}
-          initialCenter={centre}
-          initialZoom={zoom}
-          initialBbox={bbox}
-          initialPoints={points}
-          initialPortalItemIds={portalItemIds}
-          bboxForceRegionalExtent={bboxForceRegionalExtent}
-          initialScale={scale}
-          showGraticule={showGraticule}
-          showGlobeOverview={showGlobeOverview}
-          showZoomButton={showZoomButton}
-          showResetButton={showResetButton}
-          showFullscreenButton={showFullscreenButton}
-          initialShowAssetPopup={assetForcePopup}
-        />
+        <ArcPopupProvider>
+          <Map
+            initialAssetIds={assetIds}
+            initialAssetTypes={assetTypes}
+            initialCenter={centre}
+            initialZoom={zoom}
+            initialBbox={bbox}
+            initialPoints={points}
+            initialPortalItemIds={portalItemIds}
+            bboxForceRegionalExtent={bboxForceRegionalExtent}
+            initialScale={scale}
+            showGraticule={showGraticule}
+            showGlobeOverview={showGlobeOverview}
+            showZoomButton={showZoomButton}
+            showResetButton={showResetButton}
+            showFullscreenButton={showFullscreenButton}
+            initialShowAssetPopup={assetForcePopup}
+          />
+        </ArcPopupProvider>
       </ArcViewProvider>
     </GeometryToolsLoader>
   );

@@ -34,11 +34,13 @@ const attributionStyles = tv({
 
 interface AttributionControlProps {
   attribution?: string;
+  ref?: React.Ref<HTMLDivElement>;
 }
 
-export function AttributionControl({ attribution }: AttributionControlProps): React.ReactElement {
-  console.log('AttributionControl', attribution);
-
+export function AttributionControl({
+  attribution,
+  ref,
+}: AttributionControlProps): React.ReactElement {
   const [isExpanded, setIsExpanded] = React.useState(false);
   const [isOverflowing, setIsOverflowing] = React.useState(false);
   const [showPoweredBy, setShowPoweredBy] = React.useState(false);
@@ -68,7 +70,7 @@ export function AttributionControl({ attribution }: AttributionControlProps): Re
   );
 
   return (
-    <div data-testid="map-attribution" className={styles.control()}>
+    <div ref={ref} data-testid="map-attribution" className={styles.control()}>
       {isInteractive ? (
         <Button
           className={composeRenderProps(

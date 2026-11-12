@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.5.0] 2026-11-12
+
 ### Changed
 
 * Upgraded the ArcGIS Maps SDK (`@arcgis/core`, `@arcgis/map-components`) to 5.1

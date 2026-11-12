@@ -1,6 +1,6 @@
 {
   "status": "pass",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "releaseId": "-",
   "description": "Embeddable maps for visualising simple features on a suitable basemap.",
   "links": {

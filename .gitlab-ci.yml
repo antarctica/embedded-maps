@@ -109,8 +109,8 @@ publish-stage:
   stage: 🚚 publish
   needs: ['build-stage']
   script:
-    - aws s3 sync $DEPLOY_SRC/ s3://$S3_BUCKET_STAGE
-    - aws s3 sync $CONFIGURATOR_SRC/ s3://$S3_BUCKET_STAGE/configurator/
+    - aws s3 sync $DEPLOY_SRC/ s3://$S3_BUCKET_STAGE/v1/
+    - aws s3 sync $CONFIGURATOR_SRC/ s3://$S3_BUCKET_STAGE/v1/configurator/
   environment:
     name: staging
     url: $ENV_STAGE_HREF

@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 * CI pipeline incorrectly triggering production builds outside of a production build
   [#64](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/64)
+* Inconsistency in use of `v1/` URL prefix between testing and live environments
+  [#65](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/65)
 
 ## [0.5.0] 2026-11-12
 

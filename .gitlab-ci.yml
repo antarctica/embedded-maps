@@ -22,9 +22,11 @@ variables:
   DEPLOY_SRC: dist
   CONFIGURATOR_SRC: configurator
 
+  BASE_PATH: "/v1"
+
   # Environment test URLs
-  ENV_STAGE_HREF: https://embedded-maps-testing.data.bas.ac.uk/tests/v1/integration.html
-  ENV_PROD_HREF: https://embedded-maps.data.bas.ac.uk/tests/v1/production.html
+  ENV_STAGE_HREF: https://embedded-maps-testing.data.bas.ac.uk$BASE_PATH/?bbox=[-180,-90,180,-60]
+  ENV_PROD_HREF: https://embedded-maps.data.bas.ac.uk$BASE_PATH/?bbox=[-180,-90,180,-60]
 
 image:
   name: governmentpaas/awscli:latest
@@ -108,8 +110,8 @@ publish-stage:
   stage: 🚚 publish
   needs: ['build-stage']
   script:
-    - aws s3 sync $DEPLOY_SRC/ s3://$S3_BUCKET_STAGE/v1/
-    - aws s3 sync $CONFIGURATOR_SRC/ s3://$S3_BUCKET_STAGE/v1/configurator/
+    - aws s3 sync $DEPLOY_SRC/ s3://$S3_BUCKET_STAGE$BASE_PATH/
+    - aws s3 sync $CONFIGURATOR_SRC/ s3://$S3_BUCKET_STAGE$BASE_PATH/configurator/
   environment:
     name: staging
     url: $ENV_STAGE_HREF
@@ -120,8 +122,8 @@ publish-prod:
   stage: 🚚 publish
   needs: ['build-prod']
   script:
-    - aws s3 sync $DEPLOY_SRC/ s3://$S3_BUCKET_PROD/v1/
-    - aws s3 sync $CONFIGURATOR_SRC/ s3://$S3_BUCKET_PROD/v1/configurator/
+    - aws s3 sync $DEPLOY_SRC/ s3://$S3_BUCKET_PROD$BASE_PATH/
+    - aws s3 sync $CONFIGURATOR_SRC/ s3://$S3_BUCKET_PROD$BASE_PATH/configurator/
   environment:
     name: production
     url: $ENV_PROD_HREF

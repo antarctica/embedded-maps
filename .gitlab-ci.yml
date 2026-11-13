@@ -111,7 +111,7 @@ publish-stage:
   needs: ['build-stage']
   script:
     - aws s3 sync $DEPLOY_SRC/ s3://$S3_BUCKET_STAGE$BASE_PATH/
-    - aws s3 sync $DEPLOY_SRC/robots.txt s3://$S3_BUCKET_STAGE/robots.txt
+    - aws s3 cp s3://$S3_BUCKET_STAGE$BASE_PATH/robots.txt s3://$S3_BUCKET_STAGE/robots.txt
     - aws s3 sync $CONFIGURATOR_SRC/ s3://$S3_BUCKET_STAGE$BASE_PATH/configurator/
   environment:
     name: staging
@@ -124,7 +124,7 @@ publish-prod:
   needs: ['build-prod']
   script:
     - aws s3 sync $DEPLOY_SRC/ s3://$S3_BUCKET_PROD$BASE_PATH/
-    - aws s3 sync $DEPLOY_SRC/robots.txt s3://$S3_BUCKET_PROD/robots.txt
+    - aws s3 cp s3://$S3_BUCKET_PROD$BASE_PATH/robots.txt s3://$S3_BUCKET_PROD/robots.txt
     - aws s3 sync $CONFIGURATOR_SRC/ s3://$S3_BUCKET_PROD$BASE_PATH/configurator/
   environment:
     name: production

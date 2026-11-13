@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.5.1] 2026-11-13
+
 ### Fixed
 
 * CI pipeline incorrectly triggering production builds outside of a production build
@@ -15,6 +17,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   [#65](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/65)
 
 ## [0.5.0] 2026-11-12
+
+### Added
+
+* Unit tests for the map build and ArcGIS watch hooks
+* Robots.txt
+  [#63](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/63)
 
 ### Changed
 
@@ -28,11 +36,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Updated the Antarctic basemap
   [#61](https://gitlab.data.bas.ac.uk/MAGIC/embedded-maps/-/issues/61)
 * README points at the v2 endpoint and uses updated example images
-
-### Added
-
-* Unit tests for the map build and ArcGIS watch hooks
-* Robots.txt
 
 ### Removed
 
